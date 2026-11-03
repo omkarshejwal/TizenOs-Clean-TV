@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <!-- JioCinema rounded square -->
+  <rect x="24" y="24" width="208" height="208" rx="48" fill="#D8005A" />
+  <!-- Play emblem -->
+  <circle cx="128" cy="128" r="64" fill="#FFFFFF" opacity="0.18" />
+  <polygon points="112,96 164,128 112,160" fill="#FFFFFF" />
+</svg>

@@ -1,0 +1,23 @@
+[
+  {
+    "name": "gradient1",
+    "path": "assets/wallpapers/gradient1.jpg",
+    "blurPath": "assets/wallpapers/gradient1_blur.jpg",
+    "thumbPath": "assets/wallpapers/gradient1_thumb.jpg",
+    "generated": true
+  },
+  {
+    "name": "gradient2",
+    "path": "assets/wallpapers/gradient2.jpg",
+    "blurPath": "assets/wallpapers/gradient2_blur.jpg",
+    "thumbPath": "assets/wallpapers/gradient2_thumb.jpg",
+    "generated": true
+  },
+  {
+    "name": "gradient3",
+    "path": "assets/wallpapers/gradient3.jpg",
+    "blurPath": "assets/wallpapers/gradient3_blur.jpg",
+    "thumbPath": "assets/wallpapers/gradient3_thumb.jpg",
+    "generated": true
+  }
+]

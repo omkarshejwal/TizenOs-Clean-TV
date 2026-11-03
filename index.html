@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1920, height=1080, user-scalable=no">
+  <title>CleanHome - Clean TV Launcher</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Wallpaper and fake glass blur companion layer -->
+    <div id="wallpaper"></div>
+    <div id="wallpaper-blur"></div>
+
+    <!-- Ambient glow in focused app's dominant colour -->
+    <div id="ambient-glow"></div>
+
+    <!-- Top Bar: Greeting, Clock, Date, and Frosted Button Pills -->
+    <div id="top-bar" role="banner">
+      <div class="top-bar-left">
+        <div class="greeting" id="greeting">GOOD EVENING</div>
+        <div class="clock-date-row">
+          <div class="clock" id="clock">12:00</div>
+          <div class="ampm" id="ampm">PM</div>
+          <div class="clock-divider"></div>
+          <div class="date-block">
+            <div class="date-text" id="date">SUN, 25 OCT</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="top-bar-right" role="toolbar" aria-label="Top Controls">
+        <div id="btn-inputs" class="top-btn" role="button" tabindex="0" aria-label="Inputs">
+          <img class="btn-icon" src="assets/icons/ic_input.svg" alt="" aria-hidden="true">
+          <span>Inputs</span>
+        </div>
+        <div id="btn-wifi" class="top-btn" role="button" tabindex="0" aria-label="Wi-Fi">
+          <img class="btn-icon" src="assets/icons/ic_wifi.svg" alt="" aria-hidden="true">
+          <span id="wifi-label">Wi-Fi</span>
+        </div>
+        <div id="btn-settings" class="top-btn" role="button" tabindex="0" aria-label="Settings">
+          <img class="btn-icon" src="assets/icons/ic_settings.svg" alt="" aria-hidden="true">
+          <span>Settings</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Top Shelf: large focused app name above dock -->
+    <div id="hero-shelf">
+      <div id="hero-name">Netflix</div>
+    </div>
+
+    <!-- Dock Band & Horizontal Tiles Row -->
+    <div id="dock-container">
+      <div id="dock-band"></div>
+      <div id="app-row" role="grid" aria-label="Application Tiles">
+        <!-- App tiles dynamically populated by JS -->
+      </div>
+    </div>
+
+    <!-- The Single Floating Glass Highlight that springs between tiles -->
+    <div id="glass-highlight"></div>
+
+    <!-- Frosted Inputs Dropdown Popup -->
+    <div id="inputs-popup" role="menu" aria-label="Input Sources">
+      <div class="input-row" data-input="hdmi1" role="menuitem" tabindex="0">
+        <img class="input-icon" src="assets/icons/ic_input.svg" alt="">
+        <span class="input-title">HDMI 1</span>
+        <div class="input-dot"></div>
+        <span class="input-status">Connected</span>
+      </div>
+      <div class="input-row" data-input="hdmi2" role="menuitem" tabindex="0">
+        <img class="input-icon" src="assets/icons/ic_input.svg" alt="">
+        <span class="input-title">HDMI 2</span>
+        <div class="input-dot"></div>
+        <span class="input-status">Connected</span>
+      </div>
+      <div class="input-row" data-input="av" role="menuitem" tabindex="0">
+        <img class="input-icon" src="assets/icons/ic_av.svg" alt="">
+        <span class="input-title">AV</span>
+        <span class="input-status"></span>
+      </div>
+      <div class="input-row" data-input="livetv" role="menuitem" tabindex="0">
+        <img class="input-icon" src="assets/icons/ic_livetv.svg" alt="">
+        <span class="input-title">Live TV</span>
+        <span class="input-status"></span>
+      </div>
+    </div>
+
+    <!-- App Library Dialog Popup (Yellow key) -->
+    <div id="app-library-dialog" role="dialog" aria-modal="true" aria-label="App Library">
+      <div class="library-panel">
+        <div class="library-header">
+          <span class="library-title">App library</span>
+          <span class="library-count" id="library-count">8 apps</span>
+        </div>
+        <div class="library-hint" id="library-hint">OK: Open</div>
+        <div class="library-shelf">
+          <div class="library-cards-track" id="library-cards-track">
+            <!-- Populated dynamically by JS -->
+          </div>
+          <!-- Glass highlight for library shelf -->
+          <div id="library-glass"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Wallpapers Dialog (Blue key) -->
+    <div id="wallpapers-dialog" role="dialog" aria-modal="true" aria-label="Wallpapers">
+      <div class="wallpapers-panel">
+        <div class="wallpapers-header">
+          <h2>Wallpapers</h2>
+          <span style="font-size: 14px; color: rgba(255,255,255,0.6);">Select with OK, Back to return</span>
+        </div>
+        <div class="wallpapers-grid" id="wallpapers-grid">
+          <!-- Populated dynamically by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Clock Screensaver (drifting clock during idle) -->
+    <div id="screensaver">
+      <div class="screensaver-content" id="screensaver-content">
+        <div class="screensaver-clock" id="screensaver-clock">12:00</div>
+        <div class="screensaver-date" id="screensaver-date">SUN, 25 OCT</div>
+      </div>
+    </div>
+
+    <!-- Toast notification container -->
+    <div id="toast-container"></div>
+  </div>
+
+  <script src="js/motion-config.js"></script>
+  <script src="js/remote.js"></script>
+  <script src="js/launcher.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

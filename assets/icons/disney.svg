@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <!-- Deep Disney blue background -->
+  <rect x="20" y="20" width="216" height="216" rx="44" fill="#040924" />
+  <!-- Disney curved star arc -->
+  <path d="M50,170 Q128,50 206,140" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" />
+  <!-- Star spark -->
+  <path d="M190,105 Q198,115 208,115 Q198,115 190,125 Q198,115 190,105 Z" fill="#00C8FF" />
+  <!-- Disney D text glyph -->
+  <text x="128" y="164" font-family="'Outfit', -apple-system, sans-serif" font-weight="900" font-size="68" fill="#FFFFFF" text-anchor="middle">D+</text>
+</svg>

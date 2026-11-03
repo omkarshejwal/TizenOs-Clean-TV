@@ -1,0 +1,10 @@
+{
+  "theme": "dark",
+  "clockFormat": "12h",
+  "clockPosition": "top-right",
+  "wallpaper": "assets/wallpaper.jpg",
+  "reducedMotion": false,
+  "autoLaunch": true,
+  "lastLaunched": "",
+  "version": "1.0.0"
+}

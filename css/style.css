@@ -1,0 +1,816 @@
+/* css/style.css - CleanHome Launcher Stylesheet
+ * 100% compliant with Samsung Tizen 4 (Chromium 56/69 baseline).
+ * STRICT TIZEN RULES:
+ * - Animate transform and opacity ONLY.
+ * - No box-shadow/filter/width/height/top/left animations.
+ * - No CSS gap property (use margin).
+ * - No CSS inset property (use top/right/bottom/left).
+ * - No linear() easing function.
+ * - will-change only on focused tile and wallpaper.
+ */
+
+@font-face {
+  font-family: 'Outfit';
+  src: url('../assets/outfit.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+}
+
+:root {
+  --bg-color: #000000;
+  --text-white: #FFFFFF;
+  --text-dim: rgba(255, 255, 255, 0.70);
+  --text-muted: rgba(255, 255, 255, 0.55);
+  --pill-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.08) 100%);
+  --pill-border: 1px solid rgba(255, 255, 255, 0.22);
+  --dock-band-bg: rgba(20, 20, 22, 0.80);
+  --dock-band-border: 1px solid rgba(255, 255, 255, 0.12);
+  --tile-bg: #1C1C1E;
+  --glass-panel-bg: linear-gradient(180deg, #2A2A2E 0%, #161618 100%);
+  --glass-panel-border: 1px solid rgba(255, 255, 255, 0.20);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+html, body {
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  background-color: #000000;
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: #FFFFFF;
+}
+
+#app {
+  position: relative;
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  background: #000000;
+}
+
+/* --------------------------------------------------------------------------
+   Wallpaper Layers (Fake Glass support with pre-blurred copy)
+   -------------------------------------------------------------------------- */
+#wallpaper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1920px;
+  height: 1080px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 1;
+  transition: opacity 300ms ease;
+  will-change: transform;
+}
+
+#wallpaper-blur {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1920px;
+  height: 1080px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 2;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+/* Ambient Glow behind focused app */
+#ambient-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1920px;
+  height: 1080px;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 220ms ease;
+}
+
+/* --------------------------------------------------------------------------
+   Top Bar: Greeting, Clock, Date, Frosted Button Pills
+   -------------------------------------------------------------------------- */
+#top-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 110px;
+  padding: 26px 56px 0 56px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.top-bar-left {
+  display: flex;
+  flex-direction: column;
+  pointer-events: auto;
+}
+
+.greeting {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.55);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-left: 4px;
+  margin-bottom: 2px;
+  line-height: 1.2;
+}
+
+.clock-date-row {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+}
+
+.clock {
+  font-size: 52px;
+  font-weight: 300;
+  color: #FFFFFF;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.ampm {
+  font-size: 15px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.70);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-left: 6px;
+  margin-bottom: 8px;
+  align-self: flex-end;
+}
+
+.clock-divider {
+  width: 1px;
+  height: 26px;
+  background: rgba(255, 255, 255, 0.20);
+  margin-left: 16px;
+  margin-right: 16px;
+  margin-bottom: 8px;
+  align-self: flex-end;
+}
+
+.date-block {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 9px;
+  align-self: flex-end;
+}
+
+.date-text {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.65);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+.top-bar-right {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-self: flex-end;
+  margin-bottom: 6px;
+  pointer-events: auto;
+}
+
+/* Frosted Button Pills */
+.top-btn {
+  height: 42px;
+  border-radius: 21px;
+  padding-left: 16px;
+  padding-right: 20px;
+  margin-left: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background: var(--pill-bg);
+  border: var(--pill-border);
+  color: #FFFFFF;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  outline: none;
+  cursor: pointer;
+  transition: transform 160ms cubic-bezier(0, 0, 0.2, 1);
+  will-change: transform;
+}
+
+.top-btn .btn-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 9px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.top-btn.focused {
+  background: #F5FFFFFF !important;
+  color: #111111 !important;
+  border-color: transparent !important;
+  transform: scale(1.04);
+}
+
+.top-btn.focused .btn-icon {
+  filter: brightness(0);
+}
+
+/* --------------------------------------------------------------------------
+   Top Shelf (Hero Area above Dock)
+   -------------------------------------------------------------------------- */
+#hero-shelf {
+  position: absolute;
+  left: 68px;
+  bottom: 334px;
+  z-index: 15;
+  pointer-events: none;
+}
+
+#hero-name {
+  font-size: 48px;
+  font-weight: 300;
+  color: #FFFFFF;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.6);
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+/* --------------------------------------------------------------------------
+   Dock Band & Horizontal App Tiles Row
+   -------------------------------------------------------------------------- */
+#dock-container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 96px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+/* Rounded Dock Band (DockDecoration.java) */
+#dock-band {
+  position: absolute;
+  border-radius: 26px;
+  background: var(--dock-band-bg);
+  border: var(--dock-band-border);
+  z-index: 1;
+  pointer-events: none;
+  /* Size and position dynamically computed or styled around tiles */
+}
+
+/* Horizontal Tiles Row */
+#app-row {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  position: relative;
+  z-index: 5;
+  padding: 14px 22px 0 22px;
+}
+
+.tile-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 12px;
+  margin-right: 12px;
+  outline: none;
+}
+
+/* 180x101 App Card (item_app.xml) */
+.card {
+  width: 180px;
+  height: 101px;
+  border-radius: 16px;
+  background: var(--tile-bg);
+  position: relative;
+  overflow: hidden;
+  transform-origin: center center;
+  outline: none;
+  cursor: pointer;
+  transition: transform 220ms cubic-bezier(0, 0, 0.2, 1);
+  will-change: transform;
+}
+
+.card .banner-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 16px;
+}
+
+.card .icon-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 56px;
+  height: 56px;
+  transform: translate(-50%, -50%);
+  display: block;
+}
+
+/* Name label under tile */
+.tile-name {
+  width: 180px;
+  height: 22px;
+  margin-top: 7px;
+  text-align: center;
+  color: #F2FFFFFF;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 220ms ease, transform 220ms ease;
+}
+
+/* Focused Tile State */
+.tile-wrapper.focused .card {
+  transform: scale(1.12) translateY(-4px);
+  z-index: 10;
+}
+
+.tile-wrapper.focused .tile-name {
+  opacity: 1;
+  transform: translateY(4px);
+}
+
+/* --------------------------------------------------------------------------
+   Single Floating Glass Highlight (GlassView.java)
+   -------------------------------------------------------------------------- */
+#glass-highlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 214px;
+  height: 125px;
+  border-radius: 18px;
+  border: 1.5px solid rgba(255, 255, 255, 0.80);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.24) 0%, rgba(255, 255, 255, 0.07) 100%);
+  box-shadow: 0 0 16px rgba(255, 255, 255, 0.19);
+  pointer-events: none;
+  z-index: 8;
+  opacity: 0;
+  transition: opacity 160ms ease;
+  will-change: transform, opacity;
+}
+
+/* Top 45% Sheen (specular highlight) */
+#glass-highlight::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 45%;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.40) 0%, rgba(255, 255, 255, 0.0) 100%);
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------------------------
+   Inputs Dropdown Popup (popup_inputs.xml)
+   -------------------------------------------------------------------------- */
+#inputs-popup {
+  position: absolute;
+  top: 80px;
+  right: 170px;
+  width: 220px;
+  border-radius: 20px;
+  background: var(--glass-panel-bg);
+  border: var(--glass-panel-border);
+  padding: 6px;
+  z-index: 50;
+  display: none;
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.7);
+}
+
+#inputs-popup.visible {
+  display: block;
+}
+
+.input-row {
+  height: 42px;
+  border-radius: 13px;
+  padding-left: 12px;
+  padding-right: 12px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  color: #FFFFFF;
+  font-size: 15px;
+  font-weight: 500;
+  outline: none;
+  cursor: pointer;
+  background: transparent;
+  margin-bottom: 2px;
+}
+
+.input-row:last-child {
+  margin-bottom: 0;
+}
+
+.input-row .input-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.input-row .input-title {
+  flex: 1;
+}
+
+.input-row .input-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #70D9A0;
+  margin-right: 6px;
+}
+
+.input-row .input-status {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.input-row.focused {
+  background: #F5FFFFFF !important;
+  color: #111111 !important;
+}
+
+.input-row.focused .input-status {
+  color: #333333 !important;
+}
+
+.input-row.focused .input-icon {
+  filter: brightness(0);
+}
+
+/* --------------------------------------------------------------------------
+   App Library Modal Dialog (AppLibraryDialog.java)
+   -------------------------------------------------------------------------- */
+#app-library-dialog {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1920px;
+  height: 1080px;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease;
+}
+
+#app-library-dialog.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.library-panel {
+  width: 800px;
+  height: 280px;
+  border-radius: 20px;
+  background: var(--glass-panel-bg);
+  border: var(--glass-panel-border);
+  padding: 12px 14px 14px 14px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.8);
+}
+
+.library-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 36px;
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+.library-title {
+  font-size: 22px;
+  font-weight: 500;
+  color: #FFFFFF;
+}
+
+.library-count {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.library-hint {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.73);
+  padding-left: 6px;
+  margin-top: 2px;
+  margin-bottom: 8px;
+}
+
+.library-shelf {
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.library-cards-track {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  transition: transform 260ms cubic-bezier(0, 0, 0.2, 1);
+  will-change: transform;
+}
+
+.library-card {
+  width: 132px;
+  height: 170px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  margin-left: 6px;
+  margin-right: 6px;
+  padding: 12px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  cursor: pointer;
+  outline: none;
+}
+
+.library-card .lib-icon {
+  width: 60px;
+  height: 60px;
+  margin-top: 4px;
+}
+
+.library-card .lib-name {
+  font-size: 15px;
+  font-weight: 500;
+  color: #FFFFFF;
+  margin-top: 10px;
+  max-height: 44px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.library-card .lib-status {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.73);
+  margin-top: auto;
+  margin-bottom: 4px;
+}
+
+.library-card.on-home .lib-status {
+  color: #70D9A0;
+}
+
+/* Library Glass Highlight */
+#library-glass {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 144px;
+  height: 182px;
+  border-radius: 20px;
+  border: 1.5px solid rgba(255, 255, 255, 0.85);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.24) 0%, rgba(255, 255, 255, 0.07) 100%);
+  box-shadow: 0 0 16px rgba(255, 255, 255, 0.25);
+  pointer-events: none;
+  z-index: 15;
+  opacity: 0;
+  transition: opacity 160ms ease;
+  will-change: transform, opacity;
+}
+
+/* --------------------------------------------------------------------------
+   Wallpapers Dialog (Blue key)
+   -------------------------------------------------------------------------- */
+#wallpapers-dialog {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1920px;
+  height: 1080px;
+  background: rgba(0, 0, 0, 0.65);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease;
+}
+
+#wallpapers-dialog.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.wallpapers-panel {
+  width: 1080px;
+  border-radius: 24px;
+  background: var(--glass-panel-bg);
+  border: var(--glass-panel-border);
+  padding: 24px 32px 32px 32px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.85);
+}
+
+.wallpapers-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.wallpapers-header h2 {
+  font-size: 28px;
+  font-weight: 500;
+}
+
+.wallpapers-grid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.wp-card {
+  width: 320px;
+  height: 180px;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 20px;
+  cursor: pointer;
+  outline: none;
+  border: 2px solid transparent;
+  transition: transform 160ms ease;
+}
+
+.wp-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.wp-card .wp-title {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 8px 12px;
+  background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.8) 100%);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.wp-card.focused {
+  border-color: #FFFFFF;
+  transform: scale(1.05);
+}
+
+/* --------------------------------------------------------------------------
+   Toast Container & Notifications
+   -------------------------------------------------------------------------- */
+#toast-container {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 200;
+  pointer-events: none;
+}
+
+.toast {
+  background: rgba(20, 20, 24, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.20);
+  color: #FFFFFF;
+  padding: 10px 24px;
+  border-radius: 20px;
+  font-size: 15px;
+  font-weight: 500;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 200ms ease, transform 200ms ease;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --------------------------------------------------------------------------
+   Clock Screensaver (drifts during idle)
+   -------------------------------------------------------------------------- */
+#screensaver {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1920px;
+  height: 1080px;
+  background: #000000;
+  z-index: 300;
+  display: none;
+  opacity: 0;
+  transition: opacity 500ms ease;
+  pointer-events: none;
+}
+
+#screensaver.active {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.screensaver-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 1000ms ease;
+}
+
+.screensaver-clock {
+  font-size: 110px;
+  font-weight: 200;
+  letter-spacing: -0.04em;
+  color: #FFFFFF;
+}
+
+.screensaver-date {
+  font-size: 24px;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.70);
+  text-transform: uppercase;
+  margin-top: 10px;
+}
+
+/* --------------------------------------------------------------------------
+   Reduced Motion Overrides
+   -------------------------------------------------------------------------- */
+[data-reduced-motion="true"] * {
+  transition-duration: 90ms !important;
+  animation-duration: 90ms !important;
+}
+
+[data-reduced-motion="true"] #glass-highlight {
+  transition-duration: 90ms !important;
+}
