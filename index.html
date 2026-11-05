@@ -17,7 +17,7 @@
 
     <!-- Scaled UI Stage (1920x1080 design space, scales proportionally to fill viewport) -->
     <div id="stage">
-      <!-- Top Bar: Greeting, Clock, Date, and Frosted Button Pills -->
+      <!-- Top Bar: Greeting, Clock, Date (Quick panel pills removed) -->
       <div id="top-bar" role="banner">
         <div class="top-bar-left">
           <div class="greeting" id="greeting">GOOD EVENING</div>
@@ -28,46 +28,6 @@
             <div class="date-block">
               <div class="date-text" id="date">SUN, 25 OCT</div>
             </div>
-          </div>
-        </div>
-
-        <div class="top-bar-right" role="toolbar" aria-label="Top Controls">
-          <!-- Inputs pill container with anchored dropdown directly below -->
-          <div class="inputs-pill-wrapper">
-            <div id="btn-inputs" class="top-btn" role="button" tabindex="0" aria-label="Inputs">
-              <img class="btn-icon" src="assets/icons/ic_input.svg" alt="" aria-hidden="true">
-              <span>Inputs</span>
-            </div>
-
-            <!-- Frosted Inputs Dropdown Popup (anchored right below Inputs pill) -->
-            <div id="inputs-popup" role="menu" aria-label="Input Sources">
-              <div class="input-row" data-input="hdmi1" role="menuitem" tabindex="0">
-                <img class="input-icon" src="assets/icons/ic_input.svg" alt="">
-                <span class="input-title">HDMI 1</span>
-              </div>
-              <div class="input-row" data-input="hdmi2" role="menuitem" tabindex="0">
-                <img class="input-icon" src="assets/icons/ic_input.svg" alt="">
-                <span class="input-title">HDMI 2</span>
-              </div>
-              <div class="input-row" data-input="av" role="menuitem" tabindex="0">
-                <img class="input-icon" src="assets/icons/ic_av.svg" alt="">
-                <span class="input-title">AV</span>
-              </div>
-              <div class="input-row" data-input="livetv" role="menuitem" tabindex="0">
-                <img class="input-icon" src="assets/icons/ic_livetv.svg" alt="">
-                <span class="input-title">Live TV</span>
-              </div>
-            </div>
-          </div>
-
-          <div id="btn-wifi" class="top-btn" role="button" tabindex="0" aria-label="Wi-Fi">
-            <img class="btn-icon" src="assets/icons/ic_wifi.svg" alt="" aria-hidden="true">
-            <span id="wifi-label">Wi-Fi</span>
-          </div>
-
-          <div id="btn-settings" class="top-btn" role="button" tabindex="0" aria-label="Settings">
-            <img class="btn-icon" src="assets/icons/ic_settings.svg" alt="" aria-hidden="true">
-            <span>Settings</span>
           </div>
         </div>
       </div>
@@ -81,6 +41,25 @@
       <div id="dock-container">
         <div id="app-row" role="grid" aria-label="Application Tiles">
           <!-- App tiles dynamically populated by JS with child glow and glass highlight -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings Dialog Modal (Full focusable rows list) -->
+    <div id="settings-dialog" role="dialog" aria-modal="true" aria-label="Settings">
+      <div class="settings-panel">
+        <div class="settings-header">
+          <h2 class="settings-title">Settings</h2>
+          <span class="settings-subtitle">Remote Up/Down to navigate, OK to change, Back to return</span>
+        </div>
+        <div class="settings-list" id="settings-list" role="menu">
+          <!-- Rows populated dynamically by JS:
+               1. Reduced motion: ON / OFF
+               2. Clock format: 12h / 24h
+               3. Wallpapers: Open picker...
+               4. Rich effects: ON / OFF (default OFF on TV)
+               5. Re-scan installed apps
+          -->
         </div>
       </div>
     </div>
@@ -121,6 +100,12 @@
         <div class="screensaver-date" id="screensaver-date">SUN, 25 OCT</div>
       </div>
     </div>
+
+    <!-- Global error display panel for TV -->
+    <div id="error-panel" class="error-panel hidden" role="alert"></div>
+
+    <!-- Small debug line overlay (toggled by Red key) -->
+    <div id="debug-line" class="debug-line hidden" aria-live="polite"></div>
 
     <!-- Toast notification container -->
     <div id="toast-container"></div>

@@ -1,11 +1,19 @@
 /* js/launcher.js - CleanHome Application Launcher & Discovery
- * Tizen application launch with fallback URLs and desktop mock support.
+ * Tizen application launch with launchAppControl fallback and zero web URLs by default.
  */
 
 "use strict";
 
 (function() {
   window.CleanHome = window.CleanHome || {};
+
+  var lastLaunchInfo = {
+    appId: "none",
+    appName: "none",
+    method: "none",
+    status: "idle",
+    error: ""
+  };
 
   function showToast(message, isError) {
     var container = document.getElementById("toast-container");
@@ -28,15 +36,28 @@
           container.removeChild(toast);
         }
       }, 250);
-    }, 2800);
+    }, 3200);
+  }
+
+  function setLastLaunch(appName, appId, status, method, errorText) {
+    lastLaunchInfo.appName = appName || "unknown";
+    lastLaunchInfo.appId = appId || "none";
+    lastLaunchInfo.status = status;
+    lastLaunchInfo.method = method;
+    lastLaunchInfo.error = errorText || "";
+
+    if (window.CleanHome && typeof window.CleanHome.updateDebugLine === "function") {
+      window.CleanHome.updateDebugLine();
+    }
   }
 
   function launchApp(tile) {
     if (!tile) return;
 
-    if (tile.name === "Inputs") {
-      if (window.CleanHome && typeof window.CleanHome.openInputsMenu === "function") {
-        window.CleanHome.openInputsMenu();
+    // Built-in special actions
+    if (tile.name === "Settings") {
+      if (window.CleanHome && typeof window.CleanHome.openSettingsDialog === "function") {
+        window.CleanHome.openSettingsDialog();
       }
       return;
     }
@@ -46,6 +67,7 @@
       if (typeof tizen !== "undefined" && tizen.application) {
         try {
           tizen.application.launch("org.tizen.tizenstore", null, function() {
+            setLastLaunch("Store", "org.tizen.tizenstore", "SUCCESS", "launch", "");
             showToast("Apps Store opened", false);
           });
           return;
@@ -53,6 +75,7 @@
           console.warn("Store launch failed: " + e.message);
         }
       }
+      setLastLaunch("Store", "org.tizen.tizenstore", "MOCK", "mock", "");
       showToast("Store: Opening Samsung Apps (desktop preview)", false);
       return;
     }
@@ -66,38 +89,84 @@
 
     showToast("Launching " + tile.name + "...", false);
 
+    // Physical Tizen TV runtime
     if (typeof tizen !== "undefined" && tizen.application && typeof tizen.application.launch === "function" && tile.appId) {
       try {
         tizen.application.launch(
           tile.appId,
           function() {
+            setLastLaunch(tile.name, tile.appId, "SUCCESS", "tizen.application.launch", "");
             showToast(tile.name + " launched successfully", false);
           },
-          function(err) {
-            console.warn("Tizen launch failed for " + tile.name + ": " + (err ? err.message : ""));
-            if (tile.fallbackUrl) {
-              openFallback(tile.fallbackUrl, tile.name);
-            } else {
-              showToast("Could not open " + tile.name, true);
-            }
+          function(launchErr) {
+            console.warn("tizen.application.launch failed for " + tile.name + ": " + (launchErr ? (launchErr.name + " " + launchErr.message) : ""));
+
+            // Secondary attempt: launchAppControl with the app ID
+            tryLaunchAppControl(tile, launchErr);
           }
         );
         return;
       } catch (e) {
         console.warn("Exception during Tizen launch for " + tile.name + ": " + e.message);
+        tryLaunchAppControl(tile, e);
+        return;
       }
     }
 
     // Desktop mock or fallback
-    if (tile.fallbackUrl) {
+    if (tile.allowWebFallback === true && tile.fallbackUrl) {
       openFallback(tile.fallbackUrl, tile.name);
+      setLastLaunch(tile.name, tile.appId, "FALLBACK_WEB", "web", tile.fallbackUrl);
     } else {
-      showToast("Mock: " + tile.name + " launched", false);
+      setLastLaunch(tile.name, tile.appId, "MOCK_SUCCESS", "desktop-mock", "");
+      showToast("Mock: " + tile.name + " launched" + (tile.appId ? " (" + tile.appId + ")" : ""), false);
+    }
+  }
+
+  function tryLaunchAppControl(tile, initialErr) {
+    if (typeof tizen !== "undefined" && tizen.application && typeof tizen.application.launchAppControl === "function" && tile.appId) {
+      try {
+        var appControl = new tizen.ApplicationControl("http://tizen.org/appcontrol/operation/default", null, null, null, null);
+        tizen.application.launchAppControl(
+          appControl,
+          tile.appId,
+          function() {
+            setLastLaunch(tile.name, tile.appId, "SUCCESS", "launchAppControl", "");
+            showToast(tile.name + " launched via ApplicationControl", false);
+          },
+          function(controlErr) {
+            handleLaunchFailure(tile, initialErr, controlErr);
+          },
+          null
+        );
+        return;
+      } catch (ctrlEx) {
+        handleLaunchFailure(tile, initialErr, ctrlEx);
+        return;
+      }
+    }
+    handleLaunchFailure(tile, initialErr, null);
+  }
+
+  function handleLaunchFailure(tile, initialErr, controlErr) {
+    var errObj = initialErr || controlErr || {};
+    var errName = errObj.name || "LaunchError";
+    var errMsg = errObj.message || (controlErr ? controlErr.message : "App not found or launch rejected");
+    var errorSummary = errName + " - " + errMsg;
+
+    setLastLaunch(tile.name, tile.appId, "FAILED", "failed", errorSummary);
+
+    // Show toast with REAL error details: error.name, error.message, and app ID tried
+    var toastMsg = tile.name + ": " + errName + " (" + errMsg + ", id " + (tile.appId || "none") + ")";
+    showToast(toastMsg, true);
+
+    // Only if explicitly allowed will web fallback run
+    if (tile.allowWebFallback === true && tile.fallbackUrl) {
+      openFallback(tile.fallbackUrl, tile.name);
     }
   }
 
   function openFallback(url, name) {
-    showToast("Opening " + name + " fallback...", false);
     if (typeof tizen !== "undefined" && tizen.application) {
       try {
         var appControl = new tizen.ApplicationControl("http://tizen.org/appcontrol/operation/view", url);
@@ -107,8 +176,7 @@
         console.warn("ApplicationControl fallback failed: " + e.message);
       }
     }
-    // Desktop preview mode
-    console.log("Desktop preview: fallback URL for " + name + " -> " + url);
+    console.log("Desktop preview fallback: " + name + " -> " + url);
   }
 
   function getInstalledApps(callback) {
@@ -143,4 +211,5 @@
   window.CleanHome.launchApp = launchApp;
   window.CleanHome.showToast = showToast;
   window.CleanHome.getInstalledApps = getInstalledApps;
+  window.CleanHome.getLastLaunchInfo = function() { return lastLaunchInfo; };
 })();

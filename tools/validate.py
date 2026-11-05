@@ -49,16 +49,16 @@ def main():
         with open(xml_path, "r", encoding="utf-8") as f:
             xml_text = f.read()
 
-        id_m = re.search(r'id="([^"]+)"', xml_text)
+        app_m = re.search(r'<tizen:application[^>]*id="([^"]+)"', xml_text)
         pkg_m = re.search(r'package="([^"]+)"', xml_text)
-        if not id_m or "." not in id_m.group(1):
-            error("config.xml app id must follow 'packageId.AppName' format with a dot.")
-        elif pkg_m and (len(pkg_m.group(1)) != 10 or not pkg_m.group(1).isalnum()):
-            error(f"config.xml package must be exactly 10 alphanumeric characters, got: {pkg_m.group(1)}")
+        if app_m and "." in app_m.group(1):
+            print(f"  [OK] App ID: {app_m.group(1)}")
         else:
-            print(f"  [OK] App ID: {id_m.group(1)}")
-            if pkg_m:
-                print(f"  [OK] Package ID: {pkg_m.group(1)} (10 chars alphanumeric)")
+            error("config.xml tizen:application id must follow 'packageId.AppName' format with a dot.")
+        if pkg_m and (len(pkg_m.group(1)) != 10 or not pkg_m.group(1).isalnum()):
+            error(f"config.xml package must be exactly 10 alphanumeric characters, got: {pkg_m.group(1)}")
+        elif pkg_m:
+            print(f"  [OK] Package ID: {pkg_m.group(1)} (10 chars alphanumeric)")
 
         required_privileges = [
             "http://tizen.org/privilege/application.launch",
@@ -81,7 +81,7 @@ def main():
             tiles = apps_data.get("tiles", [])
             print(f"  [OK] Found {len(tiles)} tiles in config")
             for i, t in enumerate(tiles):
-                for req in ["name", "icon", "appId", "fallbackUrl"]:
+                for req in ["name", "icon", "appId"]:
                     if req not in t:
                         error(f"Tile {i} missing property: {req}")
                 icon_name = t.get("icon", "")

@@ -1,5 +1,5 @@
 /* css/style.css - CleanHome Launcher Stylesheet
- * 100% compliant with Samsung Tizen 4 (Chromium 56/69 baseline).
+ * 100% compliant with Samsung Tizen 4 / 5.5 (Chromium 56/69 baseline).
  * STRICT TIZEN RULES:
  * - Animate transform and opacity ONLY.
  * - No box-shadow/filter/width/height/top/left animations.
@@ -8,6 +8,7 @@
  * - No linear() easing function.
  * - will-change only on focused tile and wallpaper.
  * - 100vw x 100vh root layout with zero black strips and no scrollbars.
+ * - TV Lite mode default for Tizen TV weak GPU.
  */
 
 @font-face {
@@ -15,6 +16,7 @@
   src: url('../assets/outfit.ttf') format('truetype');
   font-weight: 100 900;
   font-style: normal;
+  font-display: swap;
 }
 
 :root {
@@ -22,8 +24,6 @@
   --text-white: #FFFFFF;
   --text-dim: rgba(255, 255, 255, 0.70);
   --text-muted: rgba(255, 255, 255, 0.55);
-  --pill-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.08) 100%);
-  --pill-border: 1px solid rgba(255, 255, 255, 0.22);
   --dock-band-bg: rgba(20, 20, 22, 0.80);
   --dock-band-border: 1px solid rgba(255, 255, 255, 0.12);
   --tile-bg: rgba(255, 255, 255, 0.08);
@@ -46,7 +46,7 @@ html, body {
   padding: 0;
   overflow: hidden;
   background-color: #000000;
-  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "TizenSans";
   color: #FFFFFF;
 }
 
@@ -91,7 +91,7 @@ html, body {
   pointer-events: none;
 }
 
-/* Ambient Glow behind focused app */
+/* Ambient Glow behind focused app (Rich Mode only) */
 #ambient-glow {
   position: absolute;
   top: 0;
@@ -105,7 +105,7 @@ html, body {
 }
 
 /* --------------------------------------------------------------------------
-   UI Stage (1920x1080 Design Coordinate Space, scales to fill viewport)
+   UI Stage (1920x1080 Design Coordinate Space with 48px TV-safe overscan margins)
    -------------------------------------------------------------------------- */
 #stage {
   position: absolute;
@@ -119,18 +119,18 @@ html, body {
 }
 
 /* --------------------------------------------------------------------------
-   Top Bar: Greeting, Clock, Date, Frosted Button Pills
+   Top Bar: Greeting, Clock, Date (Quick panel pills removed)
    -------------------------------------------------------------------------- */
 #top-bar {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 110px;
-  padding: 26px 56px 0 56px;
+  height: 120px;
+  padding: 48px 48px 0 48px;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: flex-start;
   z-index: 20;
   pointer-events: none;
@@ -143,13 +143,13 @@ html, body {
 }
 
 .greeting {
-  font-size: 12px;
+  font-size: 24px;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.55);
-  letter-spacing: 0.22em;
+  color: rgba(255, 255, 255, 0.65);
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  margin-left: 4px;
-  margin-bottom: 2px;
+  margin-left: 2px;
+  margin-bottom: 6px;
   line-height: 1.2;
 }
 
@@ -160,7 +160,7 @@ html, body {
 }
 
 .clock {
-  font-size: 52px;
+  font-size: 64px;
   font-weight: 300;
   color: #FFFFFF;
   letter-spacing: -0.04em;
@@ -168,160 +168,40 @@ html, body {
 }
 
 .ampm {
-  font-size: 15px;
+  font-size: 24px;
   font-weight: 500;
   color: rgba(255, 255, 255, 0.70);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  margin-left: 6px;
-  margin-bottom: 8px;
+  margin-left: 8px;
+  margin-bottom: 6px;
   align-self: flex-end;
 }
 
 .clock-divider {
-  width: 1px;
-  height: 26px;
-  background: rgba(255, 255, 255, 0.20);
-  margin-left: 16px;
-  margin-right: 16px;
-  margin-bottom: 8px;
+  width: 2px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.25);
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-bottom: 6px;
   align-self: flex-end;
 }
 
 .date-block {
   display: flex;
   flex-direction: column;
-  margin-bottom: 9px;
+  margin-bottom: 6px;
   align-self: flex-end;
 }
 
 .date-text {
-  font-size: 14px;
+  font-size: 24px;
   font-weight: 400;
-  color: rgba(255, 255, 255, 0.65);
-  letter-spacing: 0.14em;
+  color: rgba(255, 255, 255, 0.70);
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   line-height: 1.2;
-}
-
-.top-bar-right {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  align-self: flex-end;
-  margin-bottom: 6px;
-  pointer-events: auto;
-}
-
-.inputs-pill-wrapper {
-  position: relative;
-  display: inline-block;
-}
-
-/* Frosted Button Pills */
-.top-btn {
-  height: 42px;
-  border-radius: 21px;
-  padding-left: 16px;
-  padding-right: 20px;
-  margin-left: 10px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  background: var(--pill-bg);
-  border: var(--pill-border);
-  color: #FFFFFF;
-  font-size: 15px;
-  font-weight: 500;
-  letter-spacing: 0.01em;
-  outline: none;
-  cursor: pointer;
-  transition: transform 160ms cubic-bezier(0, 0, 0.2, 1);
-  will-change: transform;
-}
-
-.top-btn .btn-icon {
-  width: 20px;
-  height: 20px;
-  margin-right: 9px;
-  display: inline-block;
-  vertical-align: middle;
-}
-
-.top-btn.focused {
-  background: #F5FFFFFF !important;
-  color: #111111 !important;
-  border-color: transparent !important;
-  transform: scale(1.04);
-}
-
-.top-btn.focused .btn-icon {
-  filter: brightness(0);
-}
-
-/* --------------------------------------------------------------------------
-   Inputs Dropdown Popup (popup_inputs.xml)
-   Anchored directly below Inputs pill without covering Wi-Fi and Settings
-   -------------------------------------------------------------------------- */
-#inputs-popup {
-  position: absolute;
-  top: 48px;
-  left: 10px;
-  width: 180px;
-  border-radius: 18px;
-  background: var(--glass-panel-bg);
-  border: var(--glass-panel-border);
-  padding: 6px;
-  z-index: 60;
-  display: none;
-  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.7);
-  pointer-events: auto;
-}
-
-#inputs-popup.visible {
-  display: block;
-}
-
-.input-row {
-  height: 40px;
-  border-radius: 12px;
-  padding-left: 12px;
-  padding-right: 12px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-  color: #FFFFFF;
-  font-size: 14px;
-  font-weight: 500;
-  outline: none;
-  cursor: pointer;
-  background: transparent;
-  margin-bottom: 2px;
-}
-
-.input-row:last-child {
-  margin-bottom: 0;
-}
-
-.input-row .input-icon {
-  width: 18px;
-  height: 18px;
-  margin-right: 10px;
-}
-
-.input-row .input-title {
-  flex: 1;
-}
-
-.input-row.focused {
-  background: #F5FFFFFF !important;
-  color: #111111 !important;
-}
-
-.input-row.focused .input-icon {
-  filter: brightness(0);
 }
 
 /* --------------------------------------------------------------------------
@@ -329,7 +209,7 @@ html, body {
    -------------------------------------------------------------------------- */
 #hero-shelf {
   position: absolute;
-  left: 68px;
+  left: 48px;
   bottom: 334px;
   z-index: 15;
   pointer-events: none;
@@ -351,14 +231,15 @@ html, body {
    -------------------------------------------------------------------------- */
 #dock-container {
   position: absolute;
-  left: 0;
-  right: 0;
+  left: 48px;
+  right: 48px;
   bottom: 96px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   z-index: 10;
+  overflow: hidden;
   pointer-events: none;
 }
 
@@ -367,7 +248,7 @@ html, body {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   position: relative;
   z-index: 5;
   background: var(--dock-band-bg);
@@ -375,6 +256,8 @@ html, body {
   border-radius: 26px;
   padding: 14px 22px 14px 22px;
   pointer-events: auto;
+  transition: transform 220ms cubic-bezier(0.2, 0, 0, 1);
+  will-change: transform;
 }
 
 .tile-wrapper {
@@ -387,29 +270,21 @@ html, body {
   outline: none;
 }
 
-/* 180x101 App Card (item_app.xml) - Translucent glass tile with local stacking context */
+/* 180x101 App Card - Translucent glass tile with local stacking context */
 .card {
   width: 180px;
   height: 101px;
   border-radius: 16px;
-  background: transparent; /* Translucent glass: never opaque grey */
+  background: transparent;
   position: relative;
-  overflow: visible; /* Allows outer .glow to extend -28px without clipping */
-  isolation: isolate; /* Local stacking context so z-index: -1 stays within the card */
+  overflow: visible;
+  isolation: isolate;
   transform-origin: center center;
   outline: none;
   cursor: pointer;
   transition: transform 220ms cubic-bezier(0, 0, 0.2, 1);
   will-change: transform;
 }
-
-/* --------------------------------------------------------------------------
-   Four-Layer Focus Glass System:
-   1. .glow: Outer soft halo (-28px, pre-rendered radial-gradient, no hard border)
-   2. .body: Translucent glass surface (16px radius, overflow: hidden, 0.08 -> 0.14)
-   3. .sheen & .shine-sweep: Top ~45% specular highlight + diagonal sweep clipped by .body
-   4. .icon: Brand logo, always on top (z-index: 10)
-   -------------------------------------------------------------------------- */
 
 /* 1. .glow: OUTER soft halo */
 .card .glow {
@@ -421,7 +296,7 @@ html, body {
   border-radius: 28px;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 220ms ease;
+  transition: opacity 200ms ease;
   will-change: opacity;
   z-index: -1;
   border: none;
@@ -442,11 +317,11 @@ html, body {
   border: 1px solid rgba(255, 255, 255, 0.14);
   box-sizing: border-box;
   pointer-events: none;
-  transition: background-color 220ms ease, border-color 220ms ease;
+  transition: background-color 200ms ease, border-color 200ms ease;
   z-index: 1;
 }
 
-/* 3. .sheen: top-edge highlight only (top ~45% of tile) */
+/* 3. .sheen: top-edge highlight only (Rich mode) */
 .card .sheen {
   position: absolute;
   top: 0;
@@ -456,12 +331,12 @@ html, body {
   background: linear-gradient(to bottom, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0) 40%);
   pointer-events: none;
   opacity: 0.35;
-  transition: opacity 220ms ease;
+  transition: opacity 200ms ease;
   will-change: opacity;
   z-index: 2;
 }
 
-/* Diagonal shine sweep inside .body's clipping */
+/* Diagonal shine sweep inside .body's clipping (Rich mode) */
 .card .shine-sweep {
   position: absolute;
   top: 0;
@@ -505,26 +380,7 @@ html, body {
 }
 
 .tile-wrapper.focused .sheen {
-  opacity: 1;
-}
-
-.tile-wrapper.focused .shine-sweep {
-  opacity: 0.50;
-  animation: shine-sweep 700ms ease-out 1;
-}
-
-@keyframes shine-sweep {
-  0% {
-    transform: skewX(-20deg) translateX(-100%);
-  }
-  100% {
-    transform: skewX(-20deg) translateX(550%);
-  }
-}
-
-/* Unfocused Tiles: .glow opacity 0, .sheen opacity 0.35, .body at base alpha 0.08 */
-.tile-wrapper:not(.focused) .glow {
-  opacity: 0;
+  opacity: 0.85;
 }
 
 .tile-wrapper:not(.focused) .body {
@@ -539,6 +395,111 @@ html, body {
 .tile-wrapper:not(.focused) .shine-sweep {
   opacity: 0;
   animation: none;
+}
+
+/* --------------------------------------------------------------------------
+   Settings Modal Dialog (Dedicated view with focusable rows)
+   -------------------------------------------------------------------------- */
+#settings-dialog {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.70);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease;
+}
+
+#settings-dialog.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.settings-panel {
+  width: 780px;
+  max-width: 90vw;
+  border-radius: 24px;
+  background: var(--glass-panel-bg);
+  border: var(--glass-panel-border);
+  padding: 36px 40px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.85);
+}
+
+.settings-header {
+  margin-bottom: 24px;
+}
+
+.settings-title {
+  font-size: 34px;
+  font-weight: 500;
+  color: #FFFFFF;
+}
+
+.settings-subtitle {
+  font-size: 24px;
+  color: rgba(255, 255, 255, 0.65);
+  display: block;
+  margin-top: 8px;
+}
+
+.settings-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.settings-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 24px;
+  margin-bottom: 12px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  color: #FFFFFF;
+  cursor: pointer;
+  outline: none;
+  transition: transform 140ms ease, background 140ms ease;
+}
+
+.settings-row:last-child {
+  margin-bottom: 0;
+}
+
+.settings-row-label {
+  font-size: 24px;
+  font-weight: 400;
+  color: #FFFFFF;
+}
+
+.settings-row-value {
+  font-size: 24px;
+  font-weight: 500;
+  color: #00FFCC;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 6px 16px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.settings-row.focused {
+  background: rgba(255, 255, 255, 0.18) !important;
+  border-color: rgba(255, 255, 255, 0.60) !important;
+  transform: scale(1.02);
+}
+
+.settings-row.focused .settings-row-label {
+  color: #FFFFFF;
+  font-weight: 500;
 }
 
 /* --------------------------------------------------------------------------
@@ -677,12 +638,6 @@ html, body {
   color: #70D9A0;
 }
 
-/* Library Glass Highlight (child of .library-card) */
-.library-card {
-  position: relative;
-  overflow: visible;
-}
-
 .library-card .lib-highlight {
   position: absolute;
   top: 0;
@@ -815,14 +770,14 @@ html, body {
 }
 
 .toast {
-  background: rgba(20, 20, 24, 0.92);
-  border: 1px solid rgba(255, 255, 255, 0.20);
+  background: rgba(20, 20, 24, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.25);
   color: #FFFFFF;
-  padding: 10px 24px;
+  padding: 14px 28px;
   border-radius: 20px;
-  font-size: 15px;
+  font-size: 24px;
   font-weight: 500;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
   opacity: 0;
   transform: translateY(10px);
   transition: opacity 200ms ease, transform 200ms ease;
@@ -833,8 +788,13 @@ html, body {
   transform: translateY(0);
 }
 
+.toast.error {
+  border-color: rgba(255, 80, 80, 0.6);
+  color: #FFB0B0;
+}
+
 /* --------------------------------------------------------------------------
-   Clock Screensaver (drifts during idle)
+   Clock Screensaver (drifts in rich mode, static centered in lite mode)
    -------------------------------------------------------------------------- */
 #screensaver {
   position: absolute;
@@ -862,7 +822,6 @@ html, body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: transform 1000ms ease;
 }
 
 .screensaver-clock {
@@ -879,6 +838,99 @@ html, body {
   color: rgba(255, 255, 255, 0.70);
   text-transform: uppercase;
   margin-top: 10px;
+}
+
+/* --------------------------------------------------------------------------
+   Global Error Display Panel
+   -------------------------------------------------------------------------- */
+.error-panel {
+  position: fixed;
+  top: 48px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(220, 20, 20, 0.95);
+  color: #FFFFFF;
+  padding: 16px 32px;
+  border-radius: 14px;
+  font-size: 24px;
+  font-weight: 500;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+  z-index: 99999;
+  pointer-events: none;
+  max-width: 80vw;
+  text-align: center;
+}
+
+.error-panel.hidden {
+  display: none;
+}
+
+/* --------------------------------------------------------------------------
+   Debug Line Overlay (Toggled by Red Key)
+   -------------------------------------------------------------------------- */
+.debug-line {
+  position: fixed;
+  bottom: 24px;
+  left: 48px;
+  right: 48px;
+  background: rgba(10, 10, 14, 0.90);
+  border: 1px solid rgba(0, 255, 204, 0.35);
+  color: #00FFCC;
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-family: Consolas, Menlo, Monaco, monospace;
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 99998;
+  pointer-events: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+}
+
+.debug-line.hidden {
+  display: none;
+}
+
+/* --------------------------------------------------------------------------
+   TV Lite Mode (Optimized for Weak GPU / Default on TV)
+   -------------------------------------------------------------------------- */
+body.tv-lite #ambient-glow,
+body.tv-lite #wallpaper-blur {
+  display: none !important;
+}
+
+body.tv-lite .card .sheen,
+body.tv-lite .card .shine-sweep {
+  display: none !important;
+}
+
+body.tv-lite .tile-wrapper.focused .card {
+  transform: scale(1.08) translateZ(0);
+}
+
+body.tv-lite .tile-wrapper:not(.focused) .card {
+  transform: none;
+}
+
+body.tv-lite .tile-wrapper.focused .glow {
+  opacity: 1;
+  transition: opacity 160ms ease;
+}
+
+body.tv-lite .tile-wrapper:not(.focused) .glow {
+  opacity: 0;
+  transition: opacity 160ms ease;
+}
+
+body.tv-lite #app-row {
+  will-change: transform;
+  transition: transform 220ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+body.tv-lite #hero-name {
+  text-shadow: none;
 }
 
 /* --------------------------------------------------------------------------

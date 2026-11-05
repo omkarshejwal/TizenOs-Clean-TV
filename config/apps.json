@@ -3,53 +3,45 @@
     {
       "name": "Netflix",
       "icon": "netflix",
-      "appId": "org.netflix.tv",
-      "fallbackUrl": "https://www.netflix.com"
+      "appId": "org.netflix.tv"
     },
     {
       "name": "YouTube",
       "icon": "youtube",
-      "appId": "com.google.youtube.tv",
-      "fallbackUrl": "https://www.youtube.com"
+      "appId": "com.google.youtube.tv"
     },
     {
       "name": "Prime Video",
       "icon": "primevideo",
-      "appId": "amazon.amazonvideo.amazonvideo",
-      "fallbackUrl": "https://www.primevideo.com"
+      "appId": "amazon.amazonvideo.amazonvideo"
     },
     {
       "name": "Disney+ Hotstar",
       "icon": "disney",
-      "appId": "disney.hotstar",
-      "fallbackUrl": "https://www.disneyplushotstar.com"
+      "appId": "disney.hotstar"
     },
     {
       "name": "JioCinema",
       "icon": "jiocinema",
-      "appId": "jiocinema.jio",
-      "fallbackUrl": "https://www.jio.com/jocinema"
+      "appId": "jiocinema.jio"
     },
     {
       "name": "Spotify",
       "icon": "spotify",
-      "appId": "com.spotify.tv",
-      "fallbackUrl": "https://open.spotify.com"
+      "appId": "com.spotify.tv"
     },
     {
       "name": "Samsung Internet",
       "icon": "samsung-internet",
-      "appId": "com.sec.android.app.sbrowser",
-      "fallbackUrl": "https://www.samsung.com/internet"
+      "appId": "com.sec.android.app.sbrowser"
     },
     {
-      "name": "Inputs",
-      "icon": "inputs",
-      "appId": "",
-      "fallbackUrl": ""
+      "name": "Settings",
+      "icon": "settings",
+      "appId": ""
     }
   ],
-  "description": "CleanHome tile configuration matching CleanYourTV dock layout.",
+  "description": "CleanHome tile configuration with end-of-row Settings tile and zero web fallbacks.",
   "brand-colors": {
     "netflix": "#E50914",
     "youtube": "#FF0000",
@@ -58,6 +50,6 @@
     "jiocinema": "#D8005A",
     "spotify": "#1DB954",
     "samsung-internet": "#2C2684",
-    "inputs": "#666666"
+    "settings": "#8E8E93"
   }
 }

@@ -28,15 +28,19 @@ def get_app_info(root_dir):
         widget_id = root.get("id", "c1eanhome1.CleanHome")
         version = root.get("version", "1.0.0")
         
-        # Check tizen:application
-        ns = {"tizen": "http://tizen.org/2013/tizen", "w3c": "http://www.w3.org/ns/widgets"}
-        app_elem = root.find("tizen:application", ns)
+        # Check tizen:application across namespaces
+        app_elem = None
+        for elem in root.iter():
+            if elem.tag.endswith("application") and "id" in elem.attrib:
+                app_elem = elem
+                break
+        
         if app_elem is not None:
-            app_id = app_elem.get("id", widget_id)
+            app_id = app_elem.get("id", "c1eanhome1.CleanHome")
             pkg_id = app_elem.get("package", "c1eanhome1")
         else:
-            app_id = widget_id
-            pkg_id = widget_id.split(".")[0]
+            app_id = "c1eanhome1.CleanHome"
+            pkg_id = "c1eanhome1"
         
         app_name = app_id.split(".")[-1] if "." in app_id else "CleanHome"
         return pkg_id, app_name, version, app_id
