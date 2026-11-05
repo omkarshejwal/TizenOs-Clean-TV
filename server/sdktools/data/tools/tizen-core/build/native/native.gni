@@ -1,0 +1,74 @@
+template("build_executable") {
+    forward_variables_from(invoker, ["sources", "public_configs", "configs", "deps", "libs", "lib_dirs", "native_build_path"])
+
+    output_dir = "$native_build_path/$native_out_dir/bin"
+    executable(target_name) {
+        configs += [
+            "$tizen_core/build/native:executable_config",
+            "$tizen_core/build/native:profile_config",
+        ]
+    }
+}
+
+template("build_shared_lib") {
+    forward_variables_from(invoker, ["sources", "public_configs", "configs", "deps", "libs", "lib_dirs", "native_build_path"])
+
+    output_dir = "$native_build_path/$native_out_dir/lib"
+    shared_library(target_name) {
+        configs += [
+            "$tizen_core/build/native:sharedlib_config",
+            "$tizen_core/build/native:profile_config",
+        ]
+    }
+}
+
+template("build_static_lib") {
+    forward_variables_from(invoker, ["sources", "public_configs", "configs", "deps", "libs", "lib_dirs", "native_build_path"])
+
+    output_dir = "$native_build_path/$native_out_dir/lib"
+    static_library(target_name) {
+        configs += [
+            "$tizen_core/build/native:staticlib_config",
+            "$tizen_core/build/native:profile_config",
+        ]
+    }
+}
+
+template("build_test") {
+    forward_variables_from(invoker, ["sources", "public_configs", "configs", "deps", "libs", "lib_dirs", "native_build_path"])
+    not_needed(["native_build_path"])
+
+    source_set(target_name) {
+        configs += [
+            "$tizen_core/build/native:test_config",
+            "$tizen_core/build/native:profile_config",
+        ]
+    }
+}
+
+template("build_native") {
+    forward_variables_from(invoker, ["project_type", "sources", "public_configs", "configs", "deps", "libs", "lib_dirs", "native_build_path"])
+    if (!test_build) {
+        if (project_type == "native_app") {
+            build_executable(target_name) {
+            }
+        } else if (project_type == "shared_lib") {
+            build_shared_lib(target_name) {
+            }
+        } else if (project_type == "static_lib") {
+            build_static_lib(target_name) {
+            }
+        } else if (project_type == "test_runner") {
+            build_test(target_name) {
+            }
+        }
+    } else {
+        if (project_type == "test_runner") {
+            build_executable(target_name) {
+            }
+        } else {
+            build_test(target_name) {
+            }
+        }
+    }
+}

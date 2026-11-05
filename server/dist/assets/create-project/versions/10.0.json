@@ -1,0 +1,8 @@
+{
+  "title": "Tizen OS 10.0",
+  "description": "delivers a modernized core and developer stack with upgraded kernels, faster IPC, and a new HAL IPC separating platform from product. The toolchain jumps to GCC 14, LLVM 19, and glibc 2.40, while graphics and UI gain Wayland 1.23, Vulkan 1.3.296, and a redesigned Enlightenment for multi-display. Web moves to Chromium 130/Electron 33, multimedia to FFmpeg 7.1 with codec HAL, and AppFW/.NET adds RPK and AI-ready Action Framework. ML API 1.8.8 and NNStreamer 2.4.4 bring async inference and llama.cpp support for next-gen performance and productivity.",
+  "thumbnail": "10.0.webp",
+  "badge": ["AI-Ready", "GPU-Engine", "Modern Toolchain"],
+  "link": "https://github.com/Samsung/tizen-docs/blob/master/docs/platform/release-notes/tizen-10-0.md",
+  "version": "1.0.0"
+}

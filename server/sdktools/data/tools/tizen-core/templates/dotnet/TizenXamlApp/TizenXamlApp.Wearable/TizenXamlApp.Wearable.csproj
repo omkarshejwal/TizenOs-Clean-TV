@@ -1,0 +1,30 @@
+﻿<Project Sdk="{{tizen_net_sdk_version}}">
+
+  <!-- Property Group for Tizen50 Project -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>{{target_framework_version}}</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>None</DebugType>
+  </PropertyGroup>
+  
+<PropertyGroup>
+        <ProjectTypeGuids>{B484D2DE-331C-4CA2-B931-2B4BDAD9945F}</ProjectTypeGuids>
+  </PropertyGroup>
+    
+  <ItemGroup>
+    <Folder Include="lib\" />
+    <Folder Include="res\" />
+  </ItemGroup>
+
+  
+  <ItemGroup>
+    <ProjectReference Include="..\{{project_name}}\{{project_name}}.csproj" />
+  </ItemGroup>
+
+</Project>

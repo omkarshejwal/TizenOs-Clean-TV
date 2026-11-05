@@ -1,0 +1,28 @@
+mobile-6.5:
+    - name: rpk_app
+      type: resource_app
+      path: templates/rpk/rpk_app
+mobile-7.0:
+    - name: rpk_app
+      type: resource_app
+      path: templates/rpk/rpk_app
+wearable-6.5:
+    - name: rpk_app
+      type: resource_app
+      path: templates/rpk/rpk_app
+wearable-7.0:
+    - name: rpk_app
+      type: resource_app
+      path: templates/rpk/rpk_app
+tizen-8.0:
+    - name: rpk_app
+      type: resource_app
+      path: templates/rpk/rpk_app
+tizen-9.0:
+    - name: rpk_app
+      type: resource_app
+      path: templates/rpk/rpk_app
+tizen-10.0:
+    - name: rpk_app
+      type: resource_app
+      path: templates/rpk/rpk_app

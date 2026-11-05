@@ -1,0 +1,56 @@
+import("$tizen_core/build/dotnet/dotnetbuild.gni")
+
+template("copy_files") {
+    forward_variables_from(invoker, [ "proj_deps" ])
+    copy(target_name) {
+        sources = [ target_name ]
+        outputs = [
+            "${root_out_dir}/$out_dir/{{source_target_relative}}",
+        ]
+        deps = proj_deps
+    }
+}
+
+template("dotnet_project") {
+    forward_variables_from(invoker, "*", [])
+    not_needed(["csprojpath"])   
+    proj_deps = []
+
+    if (defined(deps)) {
+        foreach(proj, deps) {
+            proj_deps += [ "//${proj}:all"]
+        }
+        deps = []
+    }
+    projName = string_replace(target_name, ":","_")
+    projName = string_replace(projName, "/","_")
+    projName = string_replace(projName, "\\","_")
+    
+    if (deps_type == "hybrid" && hyb_final_pkg_type != "dotnet") {
+        dotnet_build_path = "${root_out_dir}/dotnet_build"
+    } else {
+        dotnet_build_path = "${root_out_dir}"
+    }
+    
+    if(!is_dep){
+        csprojpath = rebase_path(csprojpath)        
+        # build           
+        # check whether the expected outputs(dll/tpk) are present
+        check_status(projName + "_status_check"){}
+
+        # execute tz subcmd 
+        csproj_build(projName + "_csproj_build") {
+            csprojBuild_deps = [":$projName"+"_status_check"] + proj_deps
+        }
+        proj_deps += [ ":$projName"+"_csproj_build" ]
+    } else{
+        monitor_src_files(projName + "_monitor_files"){}
+        proj_deps += [ ":$projName"+"_monitor_files"]
+    }
+    
+    # create hashes
+    hash_deps = []
+    group("out") {deps = proj_deps}
+    group("all") { deps = proj_deps }
+    group("hash") { deps = hash_deps }
+}

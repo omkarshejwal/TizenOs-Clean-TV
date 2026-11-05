@@ -1,0 +1,17 @@
+name: TizenUITestApp
+type: dotnet_app
+description: A project for creating automated UI tests for Tizen."
+icon: ""
+shampshot: ""
+
+templates:
+  UITestApp.csproj: {{project_name}}.csproj
+  UITestApp.cs: {{project_name}}.cs
+  AppInitializer.cs: AppInitializer.cs
+  TizenDriverApp.cs: TizenDriverApp.cs
+  tizen_dotnet_project.yaml: tizen_dotnet_project.yaml
+  
+folders:
+  - res
+  - lib
+

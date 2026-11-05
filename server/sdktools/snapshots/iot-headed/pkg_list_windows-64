@@ -1,0 +1,578 @@
+Package : IOT-Headed-4.0-NativeAppDevelopment-CLI
+Label : Native app. development (CLI)
+Version : 0.0.15
+OS : windows-64, ubuntu-64, macos-64
+Build-host-os : ubuntu-64
+Maintainer : Taekgoo Kim <taekgoo.kim@samsung.com>, Moonkyu Kang <moon.kang@samsung.com>, Seungbum Kim <sb0729.kim@samsung.com>
+Attribute : root
+Install-dependency : iot-headed-4.0-rs-device.core, iot-headed-4.0-core-add-ons, 4.0-iot-things-headed-add-ons
+Source : meta-platform-components
+Path : /binary/IOT-Headed-4.0-NativeAppDevelopment-CLI_0.0.15_windows-64.zip
+Origin : local
+SHA256 : 5d674bc625029d134132b354a82c879545771dc0639654b813c2d3d0a6b1a417
+Size : 1259
+Uncompressed-size : 8192
+C-SelectedGroup : NativeCLI, NativeToolchain-Gcc-6.2
+C-advanced : true
+Description : Tizen IoT Headed Custom Platform CLI.
+
+Package : IOT-Headed-4.0-NativeAppDevelopment
+Label : Native app. development (IDE)
+Version : 0.0.15
+OS : windows-64, ubuntu-64, macos-64
+Build-host-os : ubuntu-64
+Maintainer : Taekgoo Kim <taekgoo.kim@samsung.com>, Moonkyu Kang <moon.kang@samsung.com>, Seungbum Kim <sb0729.kim@samsung.com>
+Attribute : root
+Install-dependency : iot-headed-4.0-rs-device.core, iot-headed-4.0-core-add-ons, 4.0-iot-things-headed-add-ons
+Source : meta-platform-components
+Path : /binary/IOT-Headed-4.0-NativeAppDevelopment_0.0.15_windows-64.zip
+Origin : local
+SHA256 : 1104798c0abea9c6d1c73c5b543e3f0142be1778711ce1692437c48a39f21cdd
+Size : 1313
+Uncompressed-size : 8192
+C-SelectedGroup : IOT-Headed-4.0-NativeAppDevelopment-CLI, NativeCLI, NativeIDE, NativeToolchain-Gcc-6.2
+C-ExtName : IOT-Headed-4.0 Native app. development
+C-Platform : 4.0
+C-ExtProfile : iot-headed
+C-DevelopEnv : NativeAppDevelopment
+C-ExtPath : platforms/tizen-4.0/iot-headed
+Description : Tizen IoT Headed Custom Platform IDE.
+
+Package : IOT-Headed-4.0
+Label : IOT-Headed-4.0
+Version : 0.0.15
+OS : windows-64, ubuntu-64, macos-64
+Build-host-os : ubuntu-64
+Maintainer : Taekgoo Kim <taekgoo.kim@samsung.com>, Moonkyu Kang <moon.kang@samsung.com>, Seungbum Kim <sb0729.kim@samsung.com>
+Attribute : root
+Install-dependency : IOT-Headed-4.0-NativeAppDevelopment, IOT-Headed-4.0-NativeAppDevelopment-CLI
+Source : meta-platform-components
+Path : /binary/IOT-Headed-4.0_0.0.15_windows-64.zip
+Origin : local
+SHA256 : e8ade41b741cc92caaf04b4252660c9fc8f0667e7de89af6dc9aff852d5f076d
+Size : 1171
+Uncompressed-size : 8192
+Description : Tizen IoT Headed Custom Platform.
+
+Package : IOT-Headed-5.0-NativeAppDevelopment-CLI
+Label : Native app. development (CLI)
+Version : 0.0.15
+OS : windows-64, ubuntu-64, macos-64
+Build-host-os : ubuntu-64
+Maintainer : Taekgoo Kim <taekgoo.kim@samsung.com>, Moonkyu Kang <moon.kang@samsung.com>, Seungbum Kim <sb0729.kim@samsung.com>
+Attribute : root
+Install-dependency : iot-headed-5.0-rs-device.core, iot-headed-5.0-core-add-ons, 5.0-iot-things-headed-add-ons
+Source : meta-platform-components
+Path : /binary/IOT-Headed-5.0-NativeAppDevelopment-CLI_0.0.15_windows-64.zip
+Origin : local
+SHA256 : 0f49d918965515b41a3dc3651ceec094249c13e0a1d04e7e59f9cf0e8238f402
+Size : 1259
+Uncompressed-size : 8192
+C-SelectedGroup : NativeCLI, NativeToolchain-Gcc-6.2
+C-advanced : true
+Description : Tizen IoT Headed Custom Platform CLI.
+
+Package : IOT-Headed-5.0-NativeAppDevelopment
+Label : Native app. development (IDE)
+Version : 0.0.15
+OS : windows-64, ubuntu-64, macos-64
+Build-host-os : ubuntu-64
+Maintainer : Taekgoo Kim <taekgoo.kim@samsung.com>, Moonkyu Kang <moon.kang@samsung.com>, Seungbum Kim <sb0729.kim@samsung.com>
+Attribute : root
+Install-dependency : iot-headed-5.0-rs-device.core, iot-headed-5.0-core-add-ons, 5.0-iot-things-headed-add-ons
+Source : meta-platform-components
+Path : /binary/IOT-Headed-5.0-NativeAppDevelopment_0.0.15_windows-64.zip
+Origin : local
+SHA256 : 14b329ba0265dbaa8725fb8151c0f05a02dc65daf9458246013199be0176b749
+Size : 1313
+Uncompressed-size : 8192
+C-SelectedGroup : IOT-Headed-5.0-NativeAppDevelopment-CLI, NativeCLI, NativeIDE, NativeToolchain-Gcc-6.2
+C-ExtName : IOT-Headed-5.0 Native app. development
+C-Platform : 5.0
+C-ExtProfile : iot-headed
+C-DevelopEnv : NativeAppDevelopment
+C-ExtPath : platforms/tizen-5.0/iot-headed
+Description : Tizen IoT Headed Custom Platform IDE.
+
+Package : IOT-Headed-5.0
+Label : IOT-Headed-5.0
+Version : 0.0.15
+OS : windows-64, ubuntu-64, macos-64
+Build-host-os : ubuntu-64
+Maintainer : Taekgoo Kim <taekgoo.kim@samsung.com>, Moonkyu Kang <moon.kang@samsung.com>, Seungbum Kim <sb0729.kim@samsung.com>
+Attribute : root
+Install-dependency : IOT-Headed-5.0-NativeAppDevelopment, IOT-Headed-5.0-NativeAppDevelopment-CLI
+Source : meta-platform-components
+Path : /binary/IOT-Headed-5.0_0.0.15_windows-64.zip
+Origin : local
+SHA256 : e835822f8285cc2712dd0d6b260c15e792d317fd1592845684234d841b371b77
+Size : 1171
+Uncompressed-size : 8192
+Description : Tizen IoT Headed Custom Platform.
+
+Package : IOT-Headed-5.5-NativeAppDevelopment-CLI
+Label : Native app. development (CLI)
+Version : 0.0.15
+OS : windows-64, ubuntu-64, macos-64
+Build-host-os : ubuntu-64
+Maintainer : Taekgoo Kim <taekgoo.kim@samsung.com>, Moonkyu Kang <moon.kang@samsung.com>, Seungbum Kim <sb0729.kim@samsung.com>
+Attribute : root
+Install-dependency : iot-headed-5.5-rs-device.core, iot-headed-5.5-core-add-ons, 5.5-iot-things-headed-add-ons
+Source : meta-platform-components
+Path : /binary/IOT-Headed-5.5-NativeAppDevelopment-CLI_0.0.15_windows-64.zip
+Origin : local
+SHA256 : e627e5d67eee15c8f62ce7f3ec54cb05356d564717159dbbb9b5cb0defe1502c
+Size : 1260
+Uncompressed-size : 8192
+C-SelectedGroup : NativeCLI, NativeToolchain-Gcc-6.2
+C-advanced : true
+Description : Tizen IoT Headed Custom Platform CLI.
+
+Package : IOT-Headed-5.5-NativeAppDevelopment
+Label : Native app. development (IDE)
+Version : 0.0.15
+OS : windows-64, ubuntu-64, macos-64
+Build-host-os : ubuntu-64
+Maintainer : Taekgoo Kim <taekgoo.kim@samsung.com>, Moonkyu Kang <moon.kang@samsung.com>, Seungbum Kim <sb0729.kim@samsung.com>
+Attribute : root
+Install-dependency : iot-headed-5.5-rs-device.core, iot-headed-5.5-core-add-ons, 5.5-iot-things-headed-add-ons
+Source : meta-platform-components
+Path : /binary/IOT-Headed-5.5-NativeAppDevelopment_0.0.15_windows-64.zip
+Origin : local
+SHA256 : cd23732a5812deb575a447f9896718ca5284ca841a9e0a47f8414adc0a0ce207
+Size : 1313
+Uncompressed-size : 8192
+C-SelectedGroup : IOT-Headed-5.5-NativeAppDevelopment-CLI, NativeCLI, NativeIDE, NativeToolchain-Gcc-6.2
+C-ExtName : IOT-Headed-5.5 Native app. development
+C-Platform : 5.5
+C-ExtProfile : iot-headed
+C-DevelopEnv : NativeAppDevelopment
+C-ExtPath : platforms/tizen-5.5/iot-headed
+Description : Tizen IoT Headed Custom Platform IDE.
+
+Package : IOT-Headed-5.5
+Label : IOT-Headed-5.5
+Version : 0.0.15
+OS : windows-64, ubuntu-64, macos-64
+Build-host-os : ubuntu-64
+Maintainer : Taekgoo Kim <taekgoo.kim@samsung.com>, Moonkyu Kang <moon.kang@samsung.com>, Seungbum Kim <sb0729.kim@samsung.com>
+Attribute : root
+Install-dependency : IOT-Headed-5.5-NativeAppDevelopment, IOT-Headed-5.5-NativeAppDevelopment-CLI
+Source : meta-platform-components
+Path : /binary/IOT-Headed-5.5_0.0.15_windows-64.zip
+Origin : local
+SHA256 : 29ff7603b8d7a0fb5d65eda49a65dbd37f62ec43fcac8893dd9207591b867bd5
+Size : 1171
+Uncompressed-size : 8192
+Description : Tizen IoT Headed Custom Platform.
+
+Package : IOT-Headed-6.0-NativeAppDevelopment-CLI
+Label : Native app. development (CLI)
+Version : 0.0.15
+OS : windows-64, ubuntu-64, macos-64
+Build-host-os : ubuntu-64
+Maintainer : Taekgoo Kim <taekgoo.kim@samsung.com>, Moonkyu Kang <moon.kang@samsung.com>, Seungbum Kim <sb0729.kim@samsung.com>
+Attribute : root
+Install-dependency : iot-headed-6.0-rs-device.core, iot-headed-6.0-rs-device64.core, iot-headed-6.0-core-add-ons, 6.0-iot-things-headed-add-ons
+Source : meta-platform-components
+Path : /binary/IOT-Headed-6.0-NativeAppDevelopment-CLI_0.0.15_windows-64.zip
+Origin : local
+SHA256 : 7f30a252ccf40128b26622ca3e5756596afef24fb320f7e721a629befb46a6de
+Size : 1265
+Uncompressed-size : 8192
+C-SelectedGroup : NativeCLI, NativeToolchain-Gcc-9.2
+C-advanced : true
+Description : Tizen IoT Headed Custom Platform CLI.
+
+Package : IOT-Headed-6.0-NativeAppDevelopment
+Label : Native app. development (IDE)
+Version : 0.0.15
+OS : windows-64, ubuntu-64, macos-64
+Build-host-os : ubuntu-64
+Maintainer : Taekgoo Kim <taekgoo.kim@samsung.com>, Moonkyu Kang <moon.kang@samsung.com>, Seungbum Kim <sb0729.kim@samsung.com>
+Attribute : root
+Install-dependency : iot-headed-6.0-rs-device.core, iot-headed-6.0-rs-device64.core, iot-headed-6.0-core-add-ons, 6.0-iot-things-headed-add-ons
+Source : meta-platform-components
+Path : /binary/IOT-Headed-6.0-NativeAppDevelopment_0.0.15_windows-64.zip
+Origin : local
+SHA256 : f77c73c3b178b5fff5026ceacbf73d32edd10218ea9928831370a6503be3384a
+Size : 1318
+Uncompressed-size : 8192
+C-SelectedGroup : IOT-Headed-6.0-NativeAppDevelopment-CLI, NativeCLI, NativeIDE, NativeToolchain-Gcc-9.2
+C-ExtName : IOT-Headed-6.0 Native app. development
+C-Platform : 6.0
+C-ExtProfile : iot-headed
+C-DevelopEnv : NativeAppDevelopment
+C-ExtPath : platforms/tizen-6.0/iot-headed
+Description : Tizen IoT Headed Custom Platform IDE.
+
+Package : IOT-Headed-6.0
+Label : IOT-Headed-6.0
+Version : 0.0.15
+OS : windows-64, ubuntu-64, macos-64
+Build-host-os : ubuntu-64
+Maintainer : Taekgoo Kim <taekgoo.kim@samsung.com>, Moonkyu Kang <moon.kang@samsung.com>, Seungbum Kim <sb0729.kim@samsung.com>
+Attribute : root
+Install-dependency : IOT-Headed-6.0-NativeAppDevelopment, IOT-Headed-6.0-NativeAppDevelopment-CLI
+Source : meta-platform-components
+Path : /binary/IOT-Headed-6.0_0.0.15_windows-64.zip
+Origin : local
+SHA256 : b97fd1b2ba0132a2bbd15dad6e9cfefabd51aa796f57a03709ccc2ca143b4c60
+Size : 1171
+Uncompressed-size : 8192
+Description : Tizen IoT Headed Custom Platform.
+
+Package : iot-headed-4.0-rs-device.core
+Version : 0.0.42
+OS : windows-64, ubuntu-32, ubuntu-64, windows-32, macos-64
+Maintainer : Seunghwan Lee <sh.cat.lee@samsung.com>
+Attribute : binary
+Path : /binary/iot-headed-4.0-rs-device.core_0.0.42_windows-64.zip
+Origin : local
+SHA256 : 59316f64be65834664b9b4d4dfcfeeab65e1cdbf682f7ecbc6974fd58866de6e
+Size : 80262215
+Description : rootstrap for native app development
+
+Package : iot-headed-4.0-core-add-ons
+Version : 0.0.163
+OS : windows-64
+Build-host-os : ubuntu-64
+Maintainer : namki.lee <namki.lee@samsung.com>
+Path : /binary/iot-headed-4.0-core-add-ons_0.0.163_windows-64.zip
+Origin : local
+SHA256 : d5cc82f2a69b23c1f950530de3897006f5306bae0bffbf4f28dc4863519589ed
+Size : 215921
+Uncompressed-size : 601981
+Description : Samples/Templates for developing core project.
+
+Package : 4.0-iot-things-headed-add-ons
+Version : 0.0.27
+OS : windows-64, ubuntu-32, ubuntu-64, macos-64, windows-32
+Build-host-os : ubuntu-64
+Maintainer : Changseok Oh <seok.oh@samsung.com>
+Path : /binary/4.0-iot-things-headed-add-ons_0.0.27_windows-64.zip
+Origin : local
+SHA256 : 5b05531bc6313c9485ad7d5e6a6420a36f542ecf34133cf469ea1a829ad1b58b
+Size : 1313457
+Uncompressed-size : 2961620
+Description : iot-things template and rootstrap
+
+Package : iot-headed-5.0-rs-device.core
+Version : 0.0.54
+OS : windows-64, ubuntu-32, ubuntu-64, windows-32, macos-64
+Maintainer : Seunghwan Lee <sh.cat.lee@samsung.com>
+Attribute : binary
+Path : /binary/iot-headed-5.0-rs-device.core_0.0.54_windows-64.zip
+Origin : local
+SHA256 : f418f7c9c8fcfe73de08ba092661c016737d81974f16eba01b68eddbb574e364
+Size : 127287597
+Description : rootstrap for native app development
+
+Package : iot-headed-5.0-core-add-ons
+Version : 0.0.177
+OS : windows-64
+Build-host-os : ubuntu-64
+Maintainer : namki.lee <namki.lee@samsung.com>
+Path : /binary/iot-headed-5.0-core-add-ons_0.0.177_windows-64.zip
+Origin : local
+SHA256 : 5fc8f75d4a0d892e47d29572b929349f64ad0c7dd7459227f7472dc26e804b61
+Size : 215921
+Uncompressed-size : 601981
+Description : Samples/Templates for developing core project.
+
+Package : 5.0-iot-things-headed-add-ons
+Version : 0.0.44
+OS : windows-64, ubuntu-32, ubuntu-64, macos-64, windows-32
+Build-host-os : ubuntu-64
+Maintainer : Changseok Oh <seok.oh@samsung.com>
+Path : /binary/5.0-iot-things-headed-add-ons_0.0.44_windows-64.zip
+Origin : local
+SHA256 : e3cb8323c0b1eac91367febf08f975bb35884b0ae39e32768c87c365264ce788
+Size : 132971
+Uncompressed-size : 483910
+Description : iot-things template and rootstrap
+
+Package : iot-headed-5.5-rs-device.core
+Version : 0.0.67
+OS : ubuntu-64, windows-64, macos-64
+Maintainer : Seunghwan Lee <sh.cat.lee@samsung.com>
+Attribute : binary
+Path : /binary/iot-headed-5.5-rs-device.core_0.0.67_windows-64.zip
+Origin : local
+SHA256 : 5f642d18fd2398ad59893c409aa5e93e758f3ee35df7b323f2efa9f9ebd091fa
+Size : 109395351
+Description : rootstrap for native app development
+
+Package : iot-headed-5.5-core-add-ons
+Version : 0.0.193
+OS : windows-64
+Build-host-os : ubuntu-64
+Maintainer : namki.lee <namki.lee@samsung.com>
+Path : /binary/iot-headed-5.5-core-add-ons_0.0.193_windows-64.zip
+Origin : local
+SHA256 : e5bbfc6593599fa3d35bee7ab8f866a0068e85449f4b9026b2846f9997c94742
+Size : 215934
+Uncompressed-size : 601981
+Description : Samples/Templates for developing core project.
+
+Package : 5.5-iot-things-headed-add-ons
+Version : 0.0.55
+OS : windows-64, ubuntu-64, macos-64
+Build-host-os : ubuntu-64
+Maintainer : Changseok Oh <seok.oh@samsung.com>
+Path : /binary/5.5-iot-things-headed-add-ons_0.0.55_windows-64.zip
+Origin : local
+SHA256 : 1f6d1e07021ff55e47bd09d9b209cfc8965f820874ce6c0ba9ad0110125563fb
+Size : 5758
+Uncompressed-size : 32469
+Description : iot-things template and rootstrap
+
+Package : iot-headed-6.0-rs-device.core
+Version : 0.0.78
+OS : ubuntu-64, windows-64, macos-64
+Maintainer : Seunghwan Lee <sh.cat.lee@samsung.com>
+Attribute : binary
+Path : /binary/iot-headed-6.0-rs-device.core_0.0.78_windows-64.zip
+Origin : local
+SHA256 : 8cd90f988c43a6a83be24aef8e8853a5cd7153685e2e783268b46c9522cb01d8
+Size : 114875833
+Description : rootstrap for native app development
+
+Package : iot-headed-6.0-rs-device64.core
+Version : 0.0.33
+OS : ubuntu-64, windows-64, macos-64
+Maintainer : Seunghwan Lee <sh.cat.lee@samsung.com>
+Attribute : binary
+Path : /binary/iot-headed-6.0-rs-device64.core_0.0.33_windows-64.zip
+Origin : local
+SHA256 : fc95f0f4000a4ab32e721949908313a8d127842636ebb94189d23545e5abc31d
+Size : 122956241
+Description : rootstrap for native app development
+
+Package : iot-headed-6.0-core-add-ons
+Version : 0.0.214
+OS : windows-64
+Build-host-os : ubuntu-64
+Maintainer : namki.lee <namki.lee@samsung.com>
+Path : /binary/iot-headed-6.0-core-add-ons_0.0.214_windows-64.zip
+Origin : local
+SHA256 : 35a84d1fdbdaa23a6824144b6fa41367bb31514829d964061bf8d7141556e453
+Size : 215943
+Uncompressed-size : 602068
+Description : Samples/Templates for developing core project.
+
+Package : 6.0-iot-things-headed-add-ons
+Version : 0.0.60
+OS : windows-64, ubuntu-64, macos-64
+Build-host-os : ubuntu-64
+Maintainer : Changseok Oh <seok.oh@samsung.com>
+Path : /binary/6.0-iot-things-headed-add-ons_0.0.60_windows-64.zip
+Origin : local
+SHA256 : 0f8fbc3233a2949ace284fea74401fae534a409e98de2ce310a69ed5d04971e3
+Size : 5783
+Uncompressed-size : 32469
+Description : iot-things template and rootstrap
+
+Package : iot-headed-6.5-rs-device.core
+Version : 0.0.94
+OS : ubuntu-64, windows-64, macos-64
+Maintainer : Seunghwan Lee <sh.cat.lee@samsung.com>
+Attribute : binary
+Path : /binary/iot-headed-6.5-rs-device.core_0.0.94_windows-64.zip
+Origin : local
+SHA256 : 0a4d090690866fd4382e6703104ae715afa59e753dee6891497623c52d4b3f97
+Size : 117486808
+Description : rootstrap for native app development
+
+Package : iot-headed-6.5-rs-device64.core
+Version : 0.0.49
+OS : ubuntu-64, windows-64, macos-64
+Maintainer : Seunghwan Lee <sh.cat.lee@samsung.com>
+Attribute : binary
+Path : /binary/iot-headed-6.5-rs-device64.core_0.0.49_windows-64.zip
+Origin : local
+SHA256 : d48c89fafe3b3ce913e12646de64a2b076755d6b5dc09e5c0a4070a7d8adf919
+Size : 125660747
+Description : rootstrap for native app development
+
+Package : IOT-Headed-6.5-NativeAppDevelopment-CLI
+Label : Native app. development (CLI)
+Version : 0.0.16
+OS : windows-64, ubuntu-64, macos-64
+Build-host-os : ubuntu-64
+Maintainer : Taekgoo Kim <taekgoo.kim@samsung.com>, Moonkyu Kang <moon.kang@samsung.com>, Seungbum Kim <sb0729.kim@samsung.com>
+Attribute : root
+Install-dependency : iot-headed-6.5-rs-device.core, iot-headed-6.5-rs-device64.core, iot-headed-6.5-core-add-ons, 6.5-iot-things-headed-add-ons
+Source : meta-platform-components
+Path : /binary/IOT-Headed-6.5-NativeAppDevelopment-CLI_0.0.16_windows-64.zip
+Origin : local
+SHA256 : 565ff6b9243a031e540c0e92ac9f0bdd164d7a1a42c46af93216a0fb3b77897d
+Size : 1286
+Uncompressed-size : 8192
+C-SelectedGroup : NativeCLI, NativeToolchain-Gcc-9.2
+C-advanced : true
+Description : Tizen IoT Headed Custom Platform CLI.
+
+Package : IOT-Headed-6.5-NativeAppDevelopment
+Label : Native app. development (IDE)
+Version : 0.0.16
+OS : windows-64, ubuntu-64, macos-64
+Build-host-os : ubuntu-64
+Maintainer : Taekgoo Kim <taekgoo.kim@samsung.com>, Moonkyu Kang <moon.kang@samsung.com>, Seungbum Kim <sb0729.kim@samsung.com>
+Attribute : root
+Install-dependency : iot-headed-6.5-rs-device.core, iot-headed-6.5-rs-device64.core, iot-headed-6.5-core-add-ons, 6.5-iot-things-headed-add-ons
+Source : meta-platform-components
+Path : /binary/IOT-Headed-6.5-NativeAppDevelopment_0.0.16_windows-64.zip
+Origin : local
+SHA256 : 2e51203fa46e2cd52c7edb5b350924fa53b69f74b35b8996b4f63ed54be311db
+Size : 1339
+Uncompressed-size : 8192
+C-SelectedGroup : IOT-Headed-6.5-NativeAppDevelopment-CLI, NativeCLI, NativeIDE, NativeToolchain-Gcc-9.2
+C-ExtName : IOT-Headed-6.5 Native app. development
+C-Platform : 6.5
+C-ExtProfile : iot-headed
+C-DevelopEnv : NativeAppDevelopment
+C-ExtPath : platforms/tizen-6.5/iot-headed
+Description : Tizen IoT Headed Custom Platform IDE.
+
+Package : IOT-Headed-6.5
+Label : IOT-Headed-6.5
+Version : 0.0.16
+OS : windows-64, ubuntu-64, macos-64
+Build-host-os : ubuntu-64
+Maintainer : Taekgoo Kim <taekgoo.kim@samsung.com>, Moonkyu Kang <moon.kang@samsung.com>, Seungbum Kim <sb0729.kim@samsung.com>
+Attribute : root
+Install-dependency : IOT-Headed-6.5-NativeAppDevelopment, IOT-Headed-6.5-NativeAppDevelopment-CLI
+Source : meta-platform-components
+Path : /binary/IOT-Headed-6.5_0.0.16_windows-64.zip
+Origin : local
+SHA256 : d7f0b1d74007e07004797ecc8d3b7b836c0bf655905f35520371aed97bf4dbd2
+Size : 1192
+Uncompressed-size : 8192
+Description : Tizen IoT Headed Custom Platform.
+
+Package : iot-headed-6.5-core-add-ons
+Version : 0.0.228
+OS : windows-64
+Build-host-os : ubuntu-64
+Maintainer : namki.lee <namki.lee@samsung.com>
+Path : /binary/iot-headed-6.5-core-add-ons_0.0.228_windows-64.zip
+Origin : local
+SHA256 : a6d1c4948735154b8ffa176a6d3c29fbf3a5d0717bc714c800e7abd4baf5448b
+Size : 215959
+Uncompressed-size : 602068
+Description : Samples/Templates for developing core project.
+
+Package : 6.5-iot-things-headed-add-ons
+Version : 0.0.70
+OS : windows-64, ubuntu-64, macos-64
+Build-host-os : ubuntu-64
+Maintainer : Changseok Oh <seok.oh@samsung.com>
+Path : /binary/6.5-iot-things-headed-add-ons_0.0.70_windows-64.zip
+Origin : local
+SHA256 : 890e1698c60c460d9a65d346f854c56fede0416e59d92f05e1afe8b5babdc9ee
+Size : 5784
+Uncompressed-size : 32469
+Description : iot-things template and rootstrap
+
+Package : iot-headed-7.0-rs-device64.core
+Version : 0.0.66
+OS : ubuntu-64, windows-64, macos-64
+Maintainer : Seunghwan Lee <sh.cat.lee@samsung.com>
+Attribute : binary
+Path : /binary/iot-headed-7.0-rs-device64.core_0.0.66_windows-64.zip
+Origin : local
+SHA256 : 0c707d0acf8981b27d3c436d691fb1c0f672cb5c87001d7a0b7d64bc54d309c5
+Size : 121701827
+Description : rootstrap for native app development
+
+Package : iot-headed-7.0-rs-device.core
+Version : 0.0.116
+OS : ubuntu-64, windows-64, macos-64
+Maintainer : Seunghwan Lee <sh.cat.lee@samsung.com>
+Attribute : binary
+Path : /binary/iot-headed-7.0-rs-device.core_0.0.116_windows-64.zip
+Origin : local
+SHA256 : d9eae062ea835593a250a31bf0c64c2ba0842022c5cada7360fb732a7efac332
+Size : 114427107
+Description : rootstrap for native app development
+
+Package : IOT-Headed-7.0-NativeAppDevelopment-CLI
+Label : Native app. development (CLI)
+Version : 0.0.17
+OS : windows-64, ubuntu-64, macos-64
+Build-host-os : ubuntu-64
+Maintainer : Taekgoo Kim <taekgoo.kim@samsung.com>, Moonkyu Kang <moon.kang@samsung.com>, Seungbum Kim <sb0729.kim@samsung.com>
+Attribute : root
+Install-dependency : iot-headed-7.0-rs-device.core, iot-headed-7.0-rs-device64.core, iot-headed-7.0-core-add-ons, 7.0-iot-things-headed-add-ons
+Source : meta-platform-components
+Path : /binary/IOT-Headed-7.0-NativeAppDevelopment-CLI_0.0.17_windows-64.zip
+Origin : local
+SHA256 : 3c40695e6754e354407a0d17fff11647f56ee73befe133de69abdd9af5c2794b
+Size : 1303
+Uncompressed-size : 8192
+C-SelectedGroup : NativeCLI, NativeToolchain-Gcc-9.2
+C-advanced : true
+Description : Tizen IoT Headed Custom Platform CLI.
+
+Package : IOT-Headed-7.0-NativeAppDevelopment
+Label : Native app. development (IDE)
+Version : 0.0.17
+OS : windows-64, ubuntu-64, macos-64
+Build-host-os : ubuntu-64
+Maintainer : Taekgoo Kim <taekgoo.kim@samsung.com>, Moonkyu Kang <moon.kang@samsung.com>, Seungbum Kim <sb0729.kim@samsung.com>
+Attribute : root
+Install-dependency : iot-headed-7.0-rs-device.core, iot-headed-7.0-rs-device64.core, iot-headed-7.0-core-add-ons, 7.0-iot-things-headed-add-ons
+Source : meta-platform-components
+Path : /binary/IOT-Headed-7.0-NativeAppDevelopment_0.0.17_windows-64.zip
+Origin : local
+SHA256 : d7aeebe246e250f4c5719f0e20e2a596f429350fa983beb8ee287d015dac89af
+Size : 1355
+Uncompressed-size : 8192
+C-SelectedGroup : IOT-Headed-7.0-NativeAppDevelopment-CLI, NativeCLI, NativeIDE, NativeToolchain-Gcc-9.2
+C-ExtName : IOT-Headed-7.0 Native app. development
+C-Platform : 7.0
+C-ExtProfile : iot-headed
+C-DevelopEnv : NativeAppDevelopment
+C-ExtPath : platforms/tizen-7.0/iot-headed
+Description : Tizen IoT Headed Custom Platform IDE.
+
+Package : IOT-Headed-7.0
+Label : IOT-Headed-7.0
+Version : 0.0.17
+OS : windows-64, ubuntu-64, macos-64
+Build-host-os : ubuntu-64
+Maintainer : Taekgoo Kim <taekgoo.kim@samsung.com>, Moonkyu Kang <moon.kang@samsung.com>, Seungbum Kim <sb0729.kim@samsung.com>
+Attribute : root
+Install-dependency : IOT-Headed-7.0-NativeAppDevelopment, IOT-Headed-7.0-NativeAppDevelopment-CLI
+Source : meta-platform-components
+Path : /binary/IOT-Headed-7.0_0.0.17_windows-64.zip
+Origin : local
+SHA256 : b9322286a18d99a89bdf863fc1858f4837f15f59549121f5c29dc79357437611
+Size : 1208
+Uncompressed-size : 8192
+Description : Tizen IoT Headed Custom Platform.
+
+Package : iot-headed-7.0-core-add-ons
+Version : 0.0.241
+OS : windows-64
+Build-host-os : ubuntu-64
+Maintainer : namki.lee <namki.lee@samsung.com>
+Path : /binary/iot-headed-7.0-core-add-ons_0.0.241_windows-64.zip
+Origin : local
+SHA256 : a522b5577f20da60763be16a779bfbe7ccae20a25e81e6d78ee15e71d4b30f50
+Size : 215941
+Uncompressed-size : 602068
+Description : Samples/Templates for developing core project.
+
+Package : 7.0-iot-things-headed-add-ons
+Version : 0.0.80
+OS : windows-64, ubuntu-64, macos-64
+Build-host-os : ubuntu-64
+Maintainer : Changseok Oh <seok.oh@samsung.com>
+Path : /binary/7.0-iot-things-headed-add-ons_0.0.80_windows-64.zip
+Origin : local
+SHA256 : c04e9f0ca1d170e507e759a76c747e273f63570bf2fa90c3f232228a8b4c445f
+Size : 5784
+Uncompressed-size : 32469
+Description : iot-things template and rootstrap

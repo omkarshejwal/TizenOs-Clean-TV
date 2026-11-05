@@ -1,0 +1,46 @@
+# csproj file path
+csproj_file: {{.CsprojPath}}
+
+# Default profile, Tizen API version
+profile: {{.ProfileID}}
+api_version: "{{.APIVersion}}"
+
+# Build type [Debug/ Release/ Test]
+build_type: {{.BuildType}}
+
+# Output path for build
+output_path: "{{.OutputPath}}"
+
+# Signing profile to be used for Tizen package signing
+# If value is empty: "", active signing profile will be used
+# Else If value is ".", default signing profile will be used
+signing_profile: "{{.SigningProfile}}"
+
+
+{{- if .PackAsRpk}}
+pack_as_rpk: true
+
+# List of resource files to be packed in rpk
+resources:
+  - res/
+{{- end}}
+
+# files monitored for dirty/modified status
+{{- if .Files }}
+files:
+  {{- range unique .Files}}
+  - {{to_slash .}}
+  {{- end}}
+{{- else}}
+files: []
+{{- end}}
+
+# project dependencies
+{{- if .Deps }}
+deps:
+  {{- range unique .Deps}}
+  - {{to_slash .}}
+  {{- end}}
+{{- else}}
+deps: []
+{{- end}}

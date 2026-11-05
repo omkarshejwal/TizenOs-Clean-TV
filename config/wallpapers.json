@@ -1,6 +1,7 @@
 [
   {
     "name": "gradient1",
+    "title": "Sunset Glow",
     "path": "assets/wallpapers/gradient1.jpg",
     "blurPath": "assets/wallpapers/gradient1_blur.jpg",
     "thumbPath": "assets/wallpapers/gradient1_thumb.jpg",
@@ -8,6 +9,7 @@
   },
   {
     "name": "gradient2",
+    "title": "Emerald Aurora",
     "path": "assets/wallpapers/gradient2.jpg",
     "blurPath": "assets/wallpapers/gradient2_blur.jpg",
     "thumbPath": "assets/wallpapers/gradient2_thumb.jpg",
@@ -15,9 +17,34 @@
   },
   {
     "name": "gradient3",
+    "title": "Deep Indigo",
     "path": "assets/wallpapers/gradient3.jpg",
     "blurPath": "assets/wallpapers/gradient3_blur.jpg",
     "thumbPath": "assets/wallpapers/gradient3_thumb.jpg",
+    "generated": true
+  },
+  {
+    "name": "nightsky",
+    "title": "Night Sky",
+    "path": "assets/wallpapers/nightsky.jpg",
+    "blurPath": "assets/wallpapers/nightsky_blur.jpg",
+    "thumbPath": "assets/wallpapers/nightsky_thumb.jpg",
+    "generated": true
+  },
+  {
+    "name": "ocean",
+    "title": "Ocean Breeze",
+    "path": "assets/wallpapers/ocean.jpg",
+    "blurPath": "assets/wallpapers/ocean_blur.jpg",
+    "thumbPath": "assets/wallpapers/ocean_thumb.jpg",
+    "generated": true
+  },
+  {
+    "name": "sunset",
+    "title": "Dusk Horizon",
+    "path": "assets/wallpapers/sunset.jpg",
+    "blurPath": "assets/wallpapers/sunset_blur.jpg",
+    "thumbPath": "assets/wallpapers/sunset_thumb.jpg",
     "generated": true
   }
 ]

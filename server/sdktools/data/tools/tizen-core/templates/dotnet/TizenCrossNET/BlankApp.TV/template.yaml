@@ -1,0 +1,21 @@
+name: BlankApp/BlankApp.TV
+type: dotnet_app
+description: "A TV project template for building XAML apps with Xamarin.Forms"
+icon: ""
+shampshot: ""
+
+templates:  
+  BlankApp.TV/BlankApp.TV.csproj: {{project_name}}.TV/{{project_name}}.TV.csproj
+  BlankApp.TV/BlankApp.TV.cs: {{project_name}}.TV/{{project_name}}.TV.cs
+  BlankApp.TV/tizen-manifest.xml: {{project_name}}.TV/tizen-manifest.xml
+  BlankApp.TV/tizen_dotnet_project.yaml: {{project_name}}.TV/tizen_dotnet_project.yaml
+  
+
+files:
+  BlankApp.TV/shared/res/BlankApp.TV.png: {{project_name}}.TV/shared/res/{{project_name}}.TV.png
+  
+folders:
+  - {{project_name}}.TV/res
+  - {{project_name}}.TV/lib
+
+deps: [ {{project_name}}/{{project_name}} ]

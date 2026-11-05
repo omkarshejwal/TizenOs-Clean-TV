@@ -1,0 +1,15 @@
+import("$tizen_core/build/resource/project.gni")
+
+resource_project("{{.Path}}") {
+  files = [
+    {{- range .Resources}}
+      "//{{.}}",
+    {{- end}}
+  ]
+  
+  deps = [
+    {{- range .Deps}}
+      "//{{.}}",
+    {{- end}}
+  ]
+}

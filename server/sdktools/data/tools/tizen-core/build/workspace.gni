@@ -1,0 +1,44 @@
+import("$tizen_core/build/manifest.gni")
+import("$tizen_core/build/pack.gni")
+import("$tizen_core/build/hybrid_pack.gni")
+import("$tizen_core/build/device.gni")
+
+# Tizen workspace
+template("tizen_workspace") {
+    forward_variables_from(invoker, "*", [])
+
+    projects_all = []
+    foreach(proj, projects) {
+        projects_all += [ "//${proj}:all"]
+    }
+
+    group("build") {
+        deps = projects_all
+    }
+
+    project_hashes = []
+    foreach(proj, projects) {
+        project_hashes += [ "//${proj}:hash"]
+    }
+
+    if (defined(manifests) && manifests != []) {
+        # merge manifest files
+        merge_manifests("manifest"){}
+        project_hashes += [":manifest"]
+    }
+
+    group("hash") {
+        # for native project in ws : represents manifest merge step
+        deps = project_hashes
+    }
+    
+    if (deps_type == "hybrid") {
+        sign_and_pack_hybrid("pack"){
+            sign_deps = project_hashes
+        }
+    } else {
+        sign_and_pack_single("pack"){
+            sign_deps = project_hashes
+        }
+    }
+}

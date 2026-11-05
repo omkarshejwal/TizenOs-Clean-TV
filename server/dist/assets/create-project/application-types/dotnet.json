@@ -1,0 +1,8 @@
+{
+  "title": "Tizen .NET",
+  "description": "Tizen .NET allows you to build applications using C# and the .NET runtime, with rich UI frameworks such as Xamarin.Forms and .NET MAUI–style components. It offers managed memory, modern language features, and extensive libraries to help you create reliable apps quickly and efficiently.",
+  "thumbnail": "dotnet.webp",
+  "badge": ["Fast Dev.", "Rich UI", "Reliability"],
+  "link": "https://samsungtizenos.com/docs/library/?sid=PcTNnHMREAqHh0bhttps://samsungtizenos.com/docs/library/?sid=PcTNnHMREAqHh0b",
+  "version": "1.0.0"
+}

@@ -1,0 +1,10 @@
+template("copy_lib") {
+    forward_variables_from(invoker, ["native_build_path", "precompiled_libs"])
+
+    copy(target_name) {
+        sources = precompiled_libs
+        outputs = [
+            "${native_build_path}/$native_out_dir/lib/{{source_file_part}}",
+        ]
+    }
+}

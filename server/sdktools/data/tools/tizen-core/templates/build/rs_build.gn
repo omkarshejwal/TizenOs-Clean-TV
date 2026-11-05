@@ -1,0 +1,17 @@
+config("rootstrap_config") {
+    cflags = [
+            "--sysroot={{.Sysroot}}",
+        {{- range .IncludePath}}
+            "-I={{.}}",
+        {{- end}}
+    ]
+    ldflags = [
+            "--sysroot={{.Sysroot}}",
+        {{- range .LibPath}}
+            "-L{{.}}",
+        {{- end}}
+        {{- range .Library}}
+            "-l{{.}}",
+        {{- end}}
+    ]
+}

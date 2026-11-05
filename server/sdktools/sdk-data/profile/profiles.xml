@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<profiles active="CleanHomeCert" version="3.1">
+  <profile name="CleanHomeCert">
+    <profileitem ca="" distributor="0" key="C:\Users\ADMIN\SamsungCertificate\CleanHomeCert\author.p12" password="C:\Users\ADMIN\SamsungCertificate\CleanHomeCert\author.pwd" rootca=""/>
+    <profileitem ca="" distributor="1" key="C:\Users\ADMIN\SamsungCertificate\CleanHomeCert\distributor.p12" password="C:\Users\ADMIN\SamsungCertificate\CleanHomeCert\distributor.pwd" rootca=""/>
+    <profileitem ca="" distributor="2" key="" password="" rootca=""/>
+  </profile>
+</profiles>

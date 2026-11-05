@@ -2,88 +2,86 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=1920, height=1080, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>CleanHome - Clean TV Launcher</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <div id="app">
-    <!-- Wallpaper and fake glass blur companion layer -->
+    <!-- Wallpaper and fake glass blur companion layer (100vw x 100vh) -->
     <div id="wallpaper"></div>
     <div id="wallpaper-blur"></div>
 
     <!-- Ambient glow in focused app's dominant colour -->
     <div id="ambient-glow"></div>
 
-    <!-- Top Bar: Greeting, Clock, Date, and Frosted Button Pills -->
-    <div id="top-bar" role="banner">
-      <div class="top-bar-left">
-        <div class="greeting" id="greeting">GOOD EVENING</div>
-        <div class="clock-date-row">
-          <div class="clock" id="clock">12:00</div>
-          <div class="ampm" id="ampm">PM</div>
-          <div class="clock-divider"></div>
-          <div class="date-block">
-            <div class="date-text" id="date">SUN, 25 OCT</div>
+    <!-- Scaled UI Stage (1920x1080 design space, scales proportionally to fill viewport) -->
+    <div id="stage">
+      <!-- Top Bar: Greeting, Clock, Date, and Frosted Button Pills -->
+      <div id="top-bar" role="banner">
+        <div class="top-bar-left">
+          <div class="greeting" id="greeting">GOOD EVENING</div>
+          <div class="clock-date-row">
+            <div class="clock" id="clock">12:00</div>
+            <div class="ampm" id="ampm">PM</div>
+            <div class="clock-divider"></div>
+            <div class="date-block">
+              <div class="date-text" id="date">SUN, 25 OCT</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="top-bar-right" role="toolbar" aria-label="Top Controls">
+          <!-- Inputs pill container with anchored dropdown directly below -->
+          <div class="inputs-pill-wrapper">
+            <div id="btn-inputs" class="top-btn" role="button" tabindex="0" aria-label="Inputs">
+              <img class="btn-icon" src="assets/icons/ic_input.svg" alt="" aria-hidden="true">
+              <span>Inputs</span>
+            </div>
+
+            <!-- Frosted Inputs Dropdown Popup (anchored right below Inputs pill) -->
+            <div id="inputs-popup" role="menu" aria-label="Input Sources">
+              <div class="input-row" data-input="hdmi1" role="menuitem" tabindex="0">
+                <img class="input-icon" src="assets/icons/ic_input.svg" alt="">
+                <span class="input-title">HDMI 1</span>
+              </div>
+              <div class="input-row" data-input="hdmi2" role="menuitem" tabindex="0">
+                <img class="input-icon" src="assets/icons/ic_input.svg" alt="">
+                <span class="input-title">HDMI 2</span>
+              </div>
+              <div class="input-row" data-input="av" role="menuitem" tabindex="0">
+                <img class="input-icon" src="assets/icons/ic_av.svg" alt="">
+                <span class="input-title">AV</span>
+              </div>
+              <div class="input-row" data-input="livetv" role="menuitem" tabindex="0">
+                <img class="input-icon" src="assets/icons/ic_livetv.svg" alt="">
+                <span class="input-title">Live TV</span>
+              </div>
+            </div>
+          </div>
+
+          <div id="btn-wifi" class="top-btn" role="button" tabindex="0" aria-label="Wi-Fi">
+            <img class="btn-icon" src="assets/icons/ic_wifi.svg" alt="" aria-hidden="true">
+            <span id="wifi-label">Wi-Fi</span>
+          </div>
+
+          <div id="btn-settings" class="top-btn" role="button" tabindex="0" aria-label="Settings">
+            <img class="btn-icon" src="assets/icons/ic_settings.svg" alt="" aria-hidden="true">
+            <span>Settings</span>
           </div>
         </div>
       </div>
 
-      <div class="top-bar-right" role="toolbar" aria-label="Top Controls">
-        <div id="btn-inputs" class="top-btn" role="button" tabindex="0" aria-label="Inputs">
-          <img class="btn-icon" src="assets/icons/ic_input.svg" alt="" aria-hidden="true">
-          <span>Inputs</span>
+      <!-- Top Shelf: large focused app name above dock (matched with CleanYourTV reference) -->
+      <div id="hero-shelf">
+        <div id="hero-name">Netflix</div>
+      </div>
+
+      <!-- Dock Band & Horizontal Tiles Row -->
+      <div id="dock-container">
+        <div id="app-row" role="grid" aria-label="Application Tiles">
+          <!-- App tiles dynamically populated by JS with child glow and glass highlight -->
         </div>
-        <div id="btn-wifi" class="top-btn" role="button" tabindex="0" aria-label="Wi-Fi">
-          <img class="btn-icon" src="assets/icons/ic_wifi.svg" alt="" aria-hidden="true">
-          <span id="wifi-label">Wi-Fi</span>
-        </div>
-        <div id="btn-settings" class="top-btn" role="button" tabindex="0" aria-label="Settings">
-          <img class="btn-icon" src="assets/icons/ic_settings.svg" alt="" aria-hidden="true">
-          <span>Settings</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Top Shelf: large focused app name above dock -->
-    <div id="hero-shelf">
-      <div id="hero-name">Netflix</div>
-    </div>
-
-    <!-- Dock Band & Horizontal Tiles Row -->
-    <div id="dock-container">
-      <div id="dock-band"></div>
-      <div id="app-row" role="grid" aria-label="Application Tiles">
-        <!-- App tiles dynamically populated by JS -->
-      </div>
-    </div>
-
-    <!-- The Single Floating Glass Highlight that springs between tiles -->
-    <div id="glass-highlight"></div>
-
-    <!-- Frosted Inputs Dropdown Popup -->
-    <div id="inputs-popup" role="menu" aria-label="Input Sources">
-      <div class="input-row" data-input="hdmi1" role="menuitem" tabindex="0">
-        <img class="input-icon" src="assets/icons/ic_input.svg" alt="">
-        <span class="input-title">HDMI 1</span>
-        <div class="input-dot"></div>
-        <span class="input-status">Connected</span>
-      </div>
-      <div class="input-row" data-input="hdmi2" role="menuitem" tabindex="0">
-        <img class="input-icon" src="assets/icons/ic_input.svg" alt="">
-        <span class="input-title">HDMI 2</span>
-        <div class="input-dot"></div>
-        <span class="input-status">Connected</span>
-      </div>
-      <div class="input-row" data-input="av" role="menuitem" tabindex="0">
-        <img class="input-icon" src="assets/icons/ic_av.svg" alt="">
-        <span class="input-title">AV</span>
-        <span class="input-status"></span>
-      </div>
-      <div class="input-row" data-input="livetv" role="menuitem" tabindex="0">
-        <img class="input-icon" src="assets/icons/ic_livetv.svg" alt="">
-        <span class="input-title">Live TV</span>
-        <span class="input-status"></span>
       </div>
     </div>
 
@@ -97,10 +95,8 @@
         <div class="library-hint" id="library-hint">OK: Open</div>
         <div class="library-shelf">
           <div class="library-cards-track" id="library-cards-track">
-            <!-- Populated dynamically by JS -->
+            <!-- Populated dynamically by JS with child glass highlight -->
           </div>
-          <!-- Glass highlight for library shelf -->
-          <div id="library-glass"></div>
         </div>
       </div>
     </div>

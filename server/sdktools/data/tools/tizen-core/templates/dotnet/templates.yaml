@@ -1,0 +1,409 @@
+ 
+mobile-6.0:
+    - name: TizenCrossNET
+      type: dotnet_app
+      path: templates/dotnet/TizenCrossNET
+    - name: TizenElmSharpApp
+      type: dotnet_app
+      path: templates/dotnet/TizenElmSharpApp
+    - name: TizenNSClassLib
+      type: dotnet_app
+      path: templates/dotnet/TizenNSClassLib
+    - name: TizenNUIApp
+      type: dotnet_app
+      path: templates/dotnet/TizenNUIApp
+    - name: TizenNUIXamlApp
+      type: dotnet_app
+      path: templates/dotnet/TizenNUIXamlApp
+    - name: TizenOpenTKApp
+      type: dotnet_app
+      path: templates/dotnet/TizenOpenTKApp
+    - name: TizenServiceApp
+      type: dotnet_app
+      path: templates/dotnet/TizenServiceApp
+    - name: TizenUITestApp
+      type: dotnet_app
+      path: templates/dotnet/TizenUITestApp 
+    - name: TizenXamlApp
+      type: dotnet_app
+      path: templates/dotnet/TizenXamlApp
+mobile-6.5:
+    - name: TizenCrossNET
+      type: dotnet_app
+      path: templates/dotnet/TizenCrossNET
+    - name: TizenElmSharpApp
+      type: dotnet_app
+      path: templates/dotnet/TizenElmSharpApp
+    - name: TizenNSClassLib
+      type: dotnet_app
+      path: templates/dotnet/TizenNSClassLib
+    - name: TizenNUIApp
+      type: dotnet_app
+      path: templates/dotnet/TizenNUIApp
+    - name: TizenNUIXamlApp
+      type: dotnet_app
+      path: templates/dotnet/TizenNUIXamlApp
+    - name: TizenOpenTKApp
+      type: dotnet_app
+      path: templates/dotnet/TizenOpenTKApp
+    - name: TizenServiceApp
+      type: dotnet_app
+      path: templates/dotnet/TizenServiceApp
+    - name: TizenUITestApp
+      type: dotnet_app
+      path: templates/dotnet/TizenUITestApp 
+    - name: TizenXamlApp
+      type: dotnet_app
+      path: templates/dotnet/TizenXamlApp
+mobile-7.0:
+    - name: TizenCrossNET
+      type: dotnet_app
+      path: templates/dotnet/TizenCrossNET
+    - name: TizenElmSharpApp
+      type: dotnet_app
+      path: templates/dotnet/TizenElmSharpApp
+    - name: TizenNSClassLib
+      type: dotnet_app
+      path: templates/dotnet/TizenNSClassLib
+    - name: TizenNUIApp
+      type: dotnet_app
+      path: templates/dotnet/TizenNUIApp
+    - name: TizenNUIGadget_inhouse
+      type: dotnet_app
+      path: templates/dotnet/TizenNUIGadget_inhouse
+    - name: TizenNUIXamlApp
+      type: dotnet_app
+      path: templates/dotnet/TizenNUIXamlApp
+    - name: TizenOpenTKApp
+      type: dotnet_app
+      path: templates/dotnet/TizenOpenTKApp
+    - name: TizenServiceApp
+      type: dotnet_app
+      path: templates/dotnet/TizenServiceApp
+    - name: TizenUITestApp
+      type: dotnet_app
+      path: templates/dotnet/TizenUITestApp 
+    - name: TizenXamlApp
+      type: dotnet_app
+      path: templates/dotnet/TizenXamlApp 
+wearable-6.0:
+    - name: TizenCrossNET
+      type: dotnet_app
+      path: templates/dotnet/TizenCrossNET
+    - name: TizenElmSharpApp
+      type: dotnet_app
+      path: templates/dotnet/TizenElmSharpApp
+    - name: TizenNSClassLib
+      type: dotnet_app
+      path: templates/dotnet/TizenNSClassLib
+    - name: TizenNUIApp
+      type: dotnet_app
+      path: templates/dotnet/TizenNUIApp
+    - name: TizenNUIXamlApp
+      type: dotnet_app
+      path: templates/dotnet/TizenNUIXamlApp
+    - name: TizenOpenTKApp
+      type: dotnet_app
+      path: templates/dotnet/TizenOpenTKApp
+    - name: TizenServiceApp
+      type: dotnet_app
+      path: templates/dotnet/TizenServiceApp
+    - name: TizenUITestApp
+      type: dotnet_app
+      path: templates/dotnet/TizenUITestApp
+    - name: TizenWatchfaceApp
+      type: dotnet_app
+      path: templates/dotnet/TizenWatchfaceApp
+    - name: TizenWearableApp
+      type: dotnet_app
+      path: templates/dotnet/TizenWearableApp      
+    - name: TizenWearableXamlApp
+      type: dotnet_app
+      path: templates/dotnet/TizenWearableXamlApp 
+    - name: TizenXamlApp
+      type: dotnet_app
+      path: templates/dotnet/TizenXamlApp
+wearable-6.5:
+    - name: TizenCrossNET
+      type: dotnet_app
+      path: templates/dotnet/TizenCrossNET
+    - name: TizenElmSharpApp
+      type: dotnet_app
+      path: templates/dotnet/TizenElmSharpApp
+    - name: TizenNSClassLib
+      type: dotnet_app
+      path: templates/dotnet/TizenNSClassLib
+    - name: TizenNUIApp
+      type: dotnet_app
+      path: templates/dotnet/TizenNUIApp
+    - name: TizenNUIXamlApp
+      type: dotnet_app
+      path: templates/dotnet/TizenNUIXamlApp
+    - name: TizenOpenTKApp
+      type: dotnet_app
+      path: templates/dotnet/TizenOpenTKApp
+    - name: TizenServiceApp
+      type: dotnet_app
+      path: templates/dotnet/TizenServiceApp
+    - name: TizenUITestApp
+      type: dotnet_app
+      path: templates/dotnet/TizenUITestApp
+    - name: TizenWatchfaceApp
+      type: dotnet_app
+      path: templates/dotnet/TizenWatchfaceApp
+    - name: TizenWearableApp
+      type: dotnet_app
+      path: templates/dotnet/TizenWearableApp      
+    - name: TizenWearableXamlApp
+      type: dotnet_app
+      path: templates/dotnet/TizenWearableXamlApp 
+    - name: TizenXamlApp
+      type: dotnet_app
+      path: templates/dotnet/TizenXamlApp
+wearable-7.0:
+    - name: TizenCrossNET
+      type: dotnet_app
+      path: templates/dotnet/TizenCrossNET
+    - name: TizenElmSharpApp
+      type: dotnet_app
+      path: templates/dotnet/TizenElmSharpApp
+    - name: TizenNSClassLib
+      type: dotnet_app
+      path: templates/dotnet/TizenNSClassLib
+    - name: TizenNUIApp
+      type: dotnet_app
+      path: templates/dotnet/TizenNUIApp
+    - name: TizenNUIGadget_inhouse
+      type: dotnet_app
+      path: templates/dotnet/TizenNUIGadget_inhouse
+    - name: TizenNUIXamlApp
+      type: dotnet_app
+      path: templates/dotnet/TizenNUIXamlApp
+    - name: TizenOpenTKApp
+      type: dotnet_app
+      path: templates/dotnet/TizenOpenTKApp
+    - name: TizenServiceApp
+      type: dotnet_app
+      path: templates/dotnet/TizenServiceApp
+    - name: TizenUITestApp
+      type: dotnet_app
+      path: templates/dotnet/TizenUITestApp
+    - name: TizenWatchfaceApp
+      type: dotnet_app
+      path: templates/dotnet/TizenWatchfaceApp
+    - name: TizenWearableApp
+      type: dotnet_app
+      path: templates/dotnet/TizenWearableApp      
+    - name: TizenWearableXamlApp
+      type: dotnet_app
+      path: templates/dotnet/TizenWearableXamlApp 
+    - name: TizenXamlApp
+      type: dotnet_app
+      path: templates/dotnet/TizenXamlApp 
+tv-samsung-6.0:
+    - name: TizenCrossNET
+      type: dotnet_app
+      path: templates/dotnet/TizenCrossNET
+    - name: TizenElmSharpApp
+      type: dotnet_app
+      path: templates/dotnet/TizenElmSharpApp
+    - name: TizenNSClassLib
+      type: dotnet_app
+      path: templates/dotnet/TizenNSClassLib
+    - name: TizenNUIApp
+      type: dotnet_app
+      path: templates/dotnet/TizenNUIApp
+    - name: TizenNUIXamlApp
+      type: dotnet_app
+      path: templates/dotnet/TizenNUIXamlApp
+    - name: TizenOpenTKApp
+      type: dotnet_app
+      path: templates/dotnet/TizenOpenTKApp
+    - name: TizenServiceApp
+      type: dotnet_app
+      path: templates/dotnet/TizenServiceApp
+    - name: TizenUITestApp
+      type: dotnet_app
+      path: templates/dotnet/TizenUITestApp 
+    - name: TizenXamlApp
+      type: dotnet_app
+      path: templates/dotnet/TizenXamlApp
+tv-samsung-6.5:
+    - name: TizenCrossNET
+      type: dotnet_app
+      path: templates/dotnet/TizenCrossNET
+    - name: TizenElmSharpApp
+      type: dotnet_app
+      path: templates/dotnet/TizenElmSharpApp
+    - name: TizenNSClassLib
+      type: dotnet_app
+      path: templates/dotnet/TizenNSClassLib
+    - name: TizenNUIApp
+      type: dotnet_app
+      path: templates/dotnet/TizenNUIApp
+    - name: TizenNUIXamlApp
+      type: dotnet_app
+      path: templates/dotnet/TizenNUIXamlApp
+    - name: TizenOpenTKApp
+      type: dotnet_app
+      path: templates/dotnet/TizenOpenTKApp
+    - name: TizenServiceApp
+      type: dotnet_app
+      path: templates/dotnet/TizenServiceApp
+    - name: TizenUITestApp
+      type: dotnet_app
+      path: templates/dotnet/TizenUITestApp 
+    - name: TizenXamlApp
+      type: dotnet_app
+      path: templates/dotnet/TizenXamlApp
+tv-samsung-7.0:
+    - name: TizenCrossNET
+      type: dotnet_app
+      path: templates/dotnet/TizenCrossNET
+    - name: TizenElmSharpApp
+      type: dotnet_app
+      path: templates/dotnet/TizenElmSharpApp
+    - name: TizenNSClassLib
+      type: dotnet_app
+      path: templates/dotnet/TizenNSClassLib
+    - name: TizenNUIApp
+      type: dotnet_app
+      path: templates/dotnet/TizenNUIApp
+    - name: TizenNUIGadget_inhouse
+      type: dotnet_app
+      path: templates/dotnet/TizenNUIGadget_inhouse
+    - name: TizenNUIXamlApp
+      type: dotnet_app
+      path: templates/dotnet/TizenNUIXamlApp
+    - name: TizenOpenTKApp
+      type: dotnet_app
+      path: templates/dotnet/TizenOpenTKApp
+    - name: TizenServiceApp
+      type: dotnet_app
+      path: templates/dotnet/TizenServiceApp
+    - name: TizenUITestApp
+      type: dotnet_app
+      path: templates/dotnet/TizenUITestApp 
+    - name: TizenXamlApp
+      type: dotnet_app
+      path: templates/dotnet/TizenXamlApp
+tv-samsung-8.0:
+    - name: TizenNSClassLib
+      type: dotnet_app
+      path: templates/dotnet/TizenNSClassLib
+    - name: TizenNUIApp
+      type: dotnet_app
+      path: templates/dotnet/TizenNUIApp
+    - name: TizenNUIGadget_inhouse
+      type: dotnet_app
+      path: templates/dotnet/TizenNUIGadget_inhouse
+    - name: TizenNUIXamlApp
+      type: dotnet_app
+      path: templates/dotnet/TizenNUIXamlApp
+    - name: TizenOpenTKApp
+      type: dotnet_app
+      path: templates/dotnet/TizenOpenTKApp
+    - name: TizenServiceApp
+      type: dotnet_app
+      path: templates/dotnet/TizenServiceApp
+    - name: TizenUITestApp
+      type: dotnet_app
+      path: templates/dotnet/TizenUITestApp
+tv-samsung-9.0:
+    - name: TizenNSClassLib
+      type: dotnet_app
+      path: templates/dotnet/TizenNSClassLib
+    - name: TizenNUIApp
+      type: dotnet_app
+      path: templates/dotnet/TizenNUIApp
+    - name: TizenNUIGadget_inhouse
+      type: dotnet_app
+      path: templates/dotnet/TizenNUIGadget_inhouse
+    - name: TizenNUIXamlApp
+      type: dotnet_app
+      path: templates/dotnet/TizenNUIXamlApp
+    - name: TizenOpenTKApp
+      type: dotnet_app
+      path: templates/dotnet/TizenOpenTKApp
+    - name: TizenServiceApp
+      type: dotnet_app
+      path: templates/dotnet/TizenServiceApp
+    - name: TizenUITestApp
+      type: dotnet_app
+      path: templates/dotnet/TizenUITestApp 
+tv-samsung-10.0:
+    - name: TizenNSClassLib
+      type: dotnet_app
+      path: templates/dotnet/TizenNSClassLib
+    - name: TizenNUITemplate
+      type: dotnet_app
+      path: templates/dotnet/TizenNUITemplate
+    - name: TizenNUIGadget_inhouse
+      type: dotnet_app
+      path: templates/dotnet/TizenNUIGadget_inhouse
+    - name: TizenServiceApp
+      type: dotnet_app
+      path: templates/dotnet/TizenServiceApp
+    - name: TizenLibRpk
+      type: dotnet_app
+      path: templates/dotnet/TizenLibRpk
+tizen-8.0:
+    - name: TizenNSClassLib
+      type: dotnet_app
+      path: templates/dotnet/TizenNSClassLib
+    - name: TizenNUIApp
+      type: dotnet_app
+      path: templates/dotnet/TizenNUIApp
+    - name: TizenNUIGadget_inhouse
+      type: dotnet_app
+      path: templates/dotnet/TizenNUIGadget_inhouse
+    - name: TizenNUIXamlApp
+      type: dotnet_app
+      path: templates/dotnet/TizenNUIXamlApp
+    - name: TizenOpenTKApp
+      type: dotnet_app
+      path: templates/dotnet/TizenOpenTKApp
+    - name: TizenServiceApp
+      type: dotnet_app
+      path: templates/dotnet/TizenServiceApp
+    - name: TizenUITestApp
+      type: dotnet_app
+      path: templates/dotnet/TizenUITestApp 
+tizen-9.0:
+    - name: TizenNSClassLib
+      type: dotnet_app
+      path: templates/dotnet/TizenNSClassLib
+    - name: TizenNUIApp
+      type: dotnet_app
+      path: templates/dotnet/TizenNUIApp
+    - name: TizenNUIGadget_inhouse
+      type: dotnet_app
+      path: templates/dotnet/TizenNUIGadget_inhouse
+    - name: TizenNUIXamlApp
+      type: dotnet_app
+      path: templates/dotnet/TizenNUIXamlApp
+    - name: TizenOpenTKApp
+      type: dotnet_app
+      path: templates/dotnet/TizenOpenTKApp
+    - name: TizenServiceApp
+      type: dotnet_app
+      path: templates/dotnet/TizenServiceApp
+    - name: TizenUITestApp
+      type: dotnet_app
+      path: templates/dotnet/TizenUITestApp
+tizen-10.0:
+    - name: TizenNSClassLib
+      type: dotnet_app
+      path: templates/dotnet/TizenNSClassLib
+    - name: TizenNUITemplate
+      type: dotnet_app
+      path: templates/dotnet/TizenNUITemplate
+    - name: TizenNUIGadget_inhouse
+      type: dotnet_app
+      path: templates/dotnet/TizenNUIGadget_inhouse
+    - name: TizenServiceApp
+      type: dotnet_app
+      path: templates/dotnet/TizenServiceApp
+    - name: TizenLibRpk
+      type: dotnet_app
+      path: templates/dotnet/TizenLibRpk

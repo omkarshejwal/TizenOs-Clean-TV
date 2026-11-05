@@ -1,0 +1,4 @@
+import("${tizen_core}/dotnet/toolchains/toolchain.gni")
+
+tizen_toolchain("dotnet") {
+}

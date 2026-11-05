@@ -1,0 +1,9 @@
+{
+  "version": "1.0.1",
+  "created": "2025-11-04T00:00:00.000Z",
+  "categories": {
+    "applicationTypes": ["web", "dotnet", "native", "rpk"],
+    "devices": ["TV", "IOT"],
+    "versions": ["10.0", "9.0", "8.0"]
+  }
+}

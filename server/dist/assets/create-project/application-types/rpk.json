@@ -1,0 +1,8 @@
+{
+  "title": "RPK Package",
+  "description": "The RPK (Resource Package) for the Tizen operating system is a dedicated package format introduced in Tizen 6.5 that allows developers to bundle only resource files (such as images, layouts or locale assets) separately from application logic, enabling more efficient updates and modularization of resources.The RPK (Resource Package) for the Tizen operating system is a dedicated package format introduced in Tizen 6.5 that allows developers to bundle only resource files (such as images, layouts or locale assets) separately from application logic, enabling more efficient updates and modularization of resources.",
+  "thumbnail": "rpk.webp",
+  "badge": ["React-like", "Modular", "JavaScript"],
+  "link": "https://docs.tizen.org/application/tizen-studio/native-tools/rpk-package",
+  "version": "1.0.0"
+}

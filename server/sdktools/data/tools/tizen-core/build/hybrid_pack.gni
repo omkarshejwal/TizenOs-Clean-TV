@@ -1,0 +1,137 @@
+import("$tizen_core/build/pack.gni")
+
+
+template("re_sign_and_pack"){
+    forward_variables_from(invoker, [ "hybrid_pack_deps"])
+    cmd_args = []
+    output_args = []
+    if (hyb_web_pkg != ""){
+        cmd_args += ["-w", hyb_web_pkg]
+    }
+    if (hyb_native_pkg != ""){
+        cmd_args += ["-n", hyb_native_pkg]
+    }
+    if (hyb_dotnet_pkg != ""){
+        cmd_args += ["-d", hyb_dotnet_pkg]
+    }
+    if (hyb_resource_pkg != ""){
+        cmd_args += ["-r", hyb_resource_pkg]
+    }
+    if (hyb_dotnet_dep_pkgs != ""){
+        cmd_args += ["-D", hyb_dotnet_dep_pkgs]
+    }
+    if (hyb_base_pkg != ""){
+        cmd_args += ["-b", hyb_base_pkg]
+    }
+    if (hyb_final_pkg != ""){
+        cmd_args += ["-f", hyb_final_pkg]
+        output_args += ["${root_out_dir}/${hyb_final_pkg}"]
+    }
+    if (hyb_action_code != ""){
+        cmd_args += ["-a", hyb_action_code]
+    }
+    if (hyb_pack_check){
+        cmd_args += ["-c"]
+    }
+    if (profiles_path != ""){
+        cmd_args += ["-p", profiles_path]
+    }
+    if (signing_profile != ""){
+        cmd_args += ["-s", signing_profile]
+    }
+    if (deps_type != ""){
+        cmd_args += ["-X", deps_type]
+    }
+    
+    output_args = []
+    output_args = ["${root_out_dir}/test"]
+
+    action(target_name) {
+        command = "$tizen_core/tz"
+        description = "Repack the hybrid pkg file"
+        args = [
+            "sign-pack","hybrid",
+        ] + cmd_args
+        outputs = output_args
+        deps = hybrid_pack_deps
+    }
+}
+
+template("sign_and_pack_hybrid"){
+    forward_variables_from(invoker, [ "package_file", "sign_deps", "projects", "resources","main_web_project","dep_web_widgets", "dep_web_projects", "package_type" ])     
+    not_needed(["package_file", "sign_deps", "projects", "resources", "main_web_project","dep_web_widgets", "dep_web_projects", "package_type" ])
+    # hybrid ws
+    hybrid_pack_deps = []
+    # DOTNET
+    if (hyb_dotnet_pkg != "" || hyb_dotnet_dep_pkgs != ""){
+        group("pack_dotnet"){
+            deps = ["//Build:build"]
+        }
+        hybrid_pack_deps += [":pack_dotnet"]
+    }
+                
+    # WEB
+    if (hyb_web_pkg != ""){
+        sign_and_pack("pack_web"){
+            sign_pack_deps = sign_deps
+            package_file = "${root_out_dir}/${hyb_web_pkg}"
+            package_type = "web"
+        }
+        hybrid_pack_deps += [":pack_web"]
+    }
+    
+    # NATIVE
+    if (hyb_native_pkg != ""){
+        # sign package files
+        sign_and_pack("pack_native"){
+            sign_pack_deps = sign_deps
+            package_file = "${root_out_dir}/${hyb_native_pkg}"
+            package_type = "native"
+        }
+
+        hybrid_pack_deps += [":pack_native"]
+    }
+
+    # RESOURCE
+    if (hyb_resource_pkg != ""){
+        # sign package files
+        sign_and_pack("pack_resource"){
+            sign_pack_deps = sign_deps
+            package_file = "${root_out_dir}/${hyb_resource_pkg}"
+            package_type = "resource"
+        }
+
+        hybrid_pack_deps += [":pack_resource"]
+    }
+    re_sign_and_pack(target_name){}
+}
+
+template("sign_and_pack_single"){
+    forward_variables_from(invoker, [ "package_file", "sign_deps", "projects", "resources","main_web_project","dep_web_widgets", "dep_web_projects", "package_type" ])     
+    not_needed(["package_file", "sign_deps", "projects", "resources", "main_web_project","dep_web_widgets", "dep_web_projects", "package_type" ])
+    # hybrid ws
+    
+    if (hyb_web_pkg != ""){
+        sign_and_pack(target_name){
+            sign_pack_deps = sign_deps
+            package_file = "${root_out_dir}/${hyb_web_pkg}"
+            package_type = "web"
+        }
+    } 
+    else if (hyb_native_pkg != ""){
+        # sign package files
+        sign_and_pack(target_name){
+            sign_pack_deps = sign_deps
+            package_file = "${root_out_dir}/${hyb_native_pkg}"
+            package_type = "native"
+        }
+    } 
+    else {
+        # sign package files
+        sign_and_pack(target_name){
+            sign_pack_deps = sign_deps
+            package_file = "${root_out_dir}/${hyb_resource_pkg}"
+            package_type = "resource"
+        }
+    }
+}

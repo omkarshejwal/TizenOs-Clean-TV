@@ -1,0 +1,8 @@
+{
+  "title": "Tizen Native",
+  "description": "Tizen Native provides C/C++ APIs for building applications that require optimized performance and fine-grained control over device resources. It offers direct access to low-level features such as multimedia, graphics, and sensors, making it ideal for performance-intensive applications.",
+  "thumbnail": "native.webp",
+  "badge": ["High Perf.", "Device Control", "C/C++"],
+  "link": "https://samsungtizenos.com/docs/library/?sid=ZWSMdLUN0YUP4s3",
+  "version": "1.0.0"
+}

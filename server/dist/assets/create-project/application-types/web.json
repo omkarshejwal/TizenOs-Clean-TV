@@ -1,0 +1,8 @@
+{
+  "title": "Tizen Web",
+  "description": "Tizen Web enables application development with standard web technologies such as HTML5, CSS, and JavaScript. It is easy to learn for web developers and allows high code reusability across platforms.",
+  "thumbnail": "web.webp",
+  "badge": ["Web-friendly", "Easy to Learn", "Reusability"],
+  "link": "https://samsungtizenos.com/docs/library/?sid=ebA6wIlA0RTC9n5",
+  "version": "1.0.0"
+}

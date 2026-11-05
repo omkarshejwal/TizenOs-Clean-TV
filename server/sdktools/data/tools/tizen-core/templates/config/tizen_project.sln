@@ -1,0 +1,25 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31005.135
+MinimumVisualStudioVersion = 10.0.40219.1
+{{- range $name, $value := guid_csproj_map}}
+Project("{{"{"}}{{$value.TypeGUID}}{{"}"}}") = "{{$value.ProjectName}}", "{{$name}}", "{{"{"}}{{$value.ProjectGUID}}{{"}"}}"
+EndProject
+{{- end }}
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|{{arch}} = Debug|{{arch}}
+		Release|{{arch}} = Release|{{arch}}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+{{- range $name, $value := guid_csproj_map}}
+		{{"{"}}{{$value.ProjectGUID}}{{"}"}}.Debug|{{$value.Arch}}.ActiveCfg = Debug|{{$value.Host}}
+		{{"{"}}{{$value.ProjectGUID}}{{"}"}}.Debug|{{$value.Arch}}.Build.0 = Debug|{{$value.Host}}
+		{{"{"}}{{$value.ProjectGUID}}{{"}"}}.Release|{{$value.Arch}}.ActiveCfg = Release|{{$value.Host}}
+		{{"{"}}{{$value.ProjectGUID}}{{"}"}}.Release|{{$value.Arch}}.Build.0 = Release|{{$value.Host}}
+{{end}}
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

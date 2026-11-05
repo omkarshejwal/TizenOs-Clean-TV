@@ -1,0 +1,69 @@
+{
+  "icons": [
+    {
+      "name": "netflix",
+      "appId": "org.netflix.tv",
+      "displayName": "Netflix"
+    },
+    {
+      "name": "youtube",
+      "appId": "com.google.youtube.tv",
+      "displayName": "YouTube"
+    },
+    {
+      "name": "primevideo",
+      "appId": "amazon.amazonvideo.amazonvideo",
+      "displayName": "Prime Video"
+    },
+    {
+      "name": "disney",
+      "appId": "disney.hotstar",
+      "displayName": "Disney+ Hotstar"
+    },
+    {
+      "name": "jiocinema",
+      "appId": "jiocinema.jio",
+      "displayName": "JioCinema"
+    },
+    {
+      "name": "spotify",
+      "appId": "com.spotify.tv",
+      "displayName": "Spotify"
+    },
+    {
+      "name": "samsung-internet",
+      "appId": "com.sec.android.app.sbrowser",
+      "displayName": "Samsung Internet"
+    },
+    {
+      "name": "inputs",
+      "appId": "",
+      "displayName": "Inputs"
+    },
+    {
+      "name": "store",
+      "appId": "",
+      "displayName": "Store"
+    },
+    {
+      "name": "wallpapers",
+      "appId": "",
+      "displayName": "Wallpapers"
+    },
+    {
+      "name": "settings",
+      "appId": "",
+      "displayName": "Settings"
+    },
+    {
+      "name": "wifi",
+      "appId": "",
+      "displayName": "Wi-Fi"
+    },
+    {
+      "name": "apps",
+      "appId": "",
+      "displayName": "App Library"
+    }
+  ]
+}

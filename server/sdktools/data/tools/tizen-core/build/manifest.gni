@@ -1,0 +1,21 @@
+template("merge_manifests") {
+    forward_variables_from(invoker, [ "manifests" ])
+
+    target = target_name
+    if (deps_type == "hybrid") {
+        package_manifest = "${root_out_dir}/native_build/$native_out_dir/tizen-manifest.xml"
+    } else if (deps_type == "single") {
+        package_manifest = "${root_out_dir}/$native_out_dir/tizen-manifest.xml"
+    } else {
+        package_manifest = "${root_out_dir}/$arch/$native_out_dir/tizen-manifest.xml"
+    }
+    
+    action(target) {
+        command = "$tizen_core/tz merge manifest --out {{output}}"
+        description = "MANIFEST {{output}}"
+        sources = manifests
+        outputs = [ package_manifest ]
+        args = ["-a", "${api_version}", "-v", "${hyb_native_pkg_ver}", "-p", "${profile}", "-P", "${hyb_native_pkg_id}"]
+        args += rebase_path(manifests, root_out_dir)
+    }
+}

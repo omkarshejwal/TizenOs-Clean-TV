@@ -1,0 +1,79 @@
+{{- with .Studio}}
+
+# Tizen Studio installation details
+studio:
+    # Tizen Studio path
+    path: "{{to_slash .Path}}"
+
+    # Tizen Studio data path
+    data_path: "{{to_slash .DataPath}}"
+
+    # JDK path for Tizen Studio
+    jdk_path: "{{to_slash .JdkPath}}"
+
+{{- end}}
+
+{{- with .Workspace}}
+
+# Default configuration for Tizen workspace
+workspace:
+    # Default device profile in <profile_id>-<tizen_version> format
+    profile: {{.Profile}}
+
+    # Default build type for app compilation
+    build_type: {{.BuildType}}
+
+    # Default compiler for native app compilation [llvm/ gcc]
+    compiler: {{.Compiler}}
+
+    # Default arch for Tizen app, [x86/ arm]
+    arch: {{.Arch}}
+
+    # Default rootstrap for compiling native app
+    rootstrap: {{.Rootstrap}}
+
+{{- end}}
+
+chrome_path: {{.ChromePath}}
+
+msbuild_path: {{.MSBuildPath}}
+
+dotnet_cli_path: {{.DotnetCLIPath}}
+
+# Path of profiles.xml, containing the signing profiles
+# If value is empty, the profiles.xml in the data_path specified in tizen-studio/tools/tizen-core/config.yaml will be used
+profiles_xml_path: {{.ProfilesPath}}
+
+# Default tool for dotnet build [dotnet-cli/ msbuild]
+dotnet_build_tool: {{.DotnetBuild}}
+
+# Default options to be passed to Chrome when running web simulator
+{{- if .ChromeSimulatorOptions }}
+chrome_simulator_options:
+{{- range .ChromeSimulatorOptions}}
+- {{to_slash .}}
+{{- end}}
+{{- else}}
+chrome_simulator_options: []
+{{- end}}
+
+# Default path for Web Simulator data
+chrome_simulator_data_path: {{.ChromeSimulatorDataPath}}
+
+# Default path for Samsung Tizen TV Simulator
+tv_simulator_path: {{.TvSimulatorPath}}
+
+# Default options to be passed to Chrome when running web inspector
+{{- if .ChromeInspectorOptions }}
+chrome_inspector_options:
+{{- range .ChromeInspectorOptions}}
+- {{to_slash .}}
+{{- end}}
+{{- else}}
+chrome_inspector_options: []
+{{- end}}
+
+# Default path for Web Inspector data
+chrome_inspector_data_path: {{.ChromeInspectorDataPath}}
+
+build_cmd_timeout_in_minute: -1

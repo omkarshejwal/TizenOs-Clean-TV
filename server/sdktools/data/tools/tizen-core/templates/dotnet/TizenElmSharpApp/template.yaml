@@ -1,0 +1,18 @@
+name: TizenElmSharp
+type: dotnet_app
+description: "A single project template for building Tizen apps with ElmSharp"
+icon: ""
+shampshot: ""
+
+templates:
+  TizenElmSharp.csproj: {{project_name}}.csproj
+  TizenElmSharp_App.cs: {{project_name}}_App.cs
+  tizen-manifest.xml: tizen-manifest.xml
+  tizen_dotnet_project.yaml: tizen_dotnet_project.yaml
+
+files:
+  shared/res/TizenElmSharp.png: shared/res/{{project_name}}.png
+  
+folders:
+  - res
+  - lib

@@ -1,0 +1,1 @@
+{"webapi-rule-checker":["30","31","32","33","34","36","38","39"], "coding-rule-checker":["67","68","69","51","52","50","61","63","53","54","55","56","57","58","59","60","62","64"], "tizen-apis" : [ { "mobile-2.3.1" : "{{tizen_studio_path}}\\tools\\jsa\\db\\mobile-2.3.db" }, { "wearable-2.3.1" : "{{tizen_studio_path}}\\tools\\jsa\\db\\wearable-2.3.db" } ]}

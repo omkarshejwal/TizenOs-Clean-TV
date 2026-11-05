@@ -1,0 +1,14 @@
+name: TizenClassLib
+type: dotnet_app
+description: "A single project template for creating .NET Class Library"
+icon: ""
+shampshot: ""
+
+templates:
+  TizenClassLib.csproj: {{project_name}}.csproj
+  TizenClassLib.cs: {{project_name}}.cs
+  tizen_dotnet_project.yaml: tizen_dotnet_project.yaml
+  
+folders:
+  - res
+  - lib

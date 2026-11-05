@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns="http://tizen.org/ns/packages" api-version="{{manifest_api_version}}" package="org.tizen.example.{{project_name}}.Mobile" version="1.0.0">
+	<profile name="mobile" />
+	<ui-application appid="org.tizen.example.{{project_name}}.Mobile"
+					exec="{{project_name}}.Mobile.dll"
+					type="{{project_type}}"
+					multiple="false"
+					taskmanage="true"
+					nodisplay="false"
+					launch_mode="single"
+                    {{manifest_api_version2}}>
+  <label>{{project_name}}.Mobile</label>
+	<icon>{{project_name}}.Mobile.png</icon>
+        <metadata key="http://tizen.org/metadata/prefer_dotnet_aot" value="true" />
+	</ui-application>
+</manifest>

@@ -1,0 +1,17 @@
+template("build_po") {
+    forward_variables_from(invoker, ["po_files", "output_name", "native_build_path"])
+
+    msgfmt = "msgfmt"
+    if (host_os == "win") {
+        msgfmt = "$tizen_studio/tools/msys2/usr/bin/msgfmt"
+    }
+
+    action_foreach(target_name) {
+        command = "$msgfmt -o {{output}} {{source}}"
+        description = "PO {{output}}"
+        sources = po_files
+        outputs = [
+            "${native_build_path}/$native_out_dir/res/locale/{{source_name_part}}/LC_MESSAGES/${output_name}.mo",
+        ]
+    }
+}

@@ -1,0 +1,21 @@
+import("$tizen_core/build/dotnet/project.gni")
+
+dotnet_project("{{.Path}}") {   
+  csprojpath = "//{{.CsprojPath}}"
+  is_dep = {{.IsDep}}
+
+  {{- if .PackAsRpk}}
+  pack_as_rpk = {{.PackAsRpk}}
+  {{- end}}
+
+  files = [
+    {{- range .Files}}
+      "//{{.}}",
+    {{- end}}
+  ]
+  deps = [
+    {{- range .DepsName}}
+      "//{{.}}",
+    {{- end}}
+  ]
+}

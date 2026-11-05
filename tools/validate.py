@@ -50,14 +50,20 @@ def main():
             xml_text = f.read()
 
         id_m = re.search(r'id="([^"]+)"', xml_text)
+        pkg_m = re.search(r'package="([^"]+)"', xml_text)
         if not id_m or "." not in id_m.group(1):
             error("config.xml app id must follow 'packageId.AppName' format with a dot.")
+        elif pkg_m and (len(pkg_m.group(1)) != 10 or not pkg_m.group(1).isalnum()):
+            error(f"config.xml package must be exactly 10 alphanumeric characters, got: {pkg_m.group(1)}")
         else:
             print(f"  [OK] App ID: {id_m.group(1)}")
+            if pkg_m:
+                print(f"  [OK] Package ID: {pkg_m.group(1)} (10 chars alphanumeric)")
 
         required_privileges = [
-            "http://tizen.org/privilege/tv.inputdevice",
-            "http://tizen.org/privilege/application.info"
+            "http://tizen.org/privilege/application.launch",
+            "http://tizen.org/privilege/application.info",
+            "http://tizen.org/privilege/tv.inputdevice"
         ]
         for priv in required_privileges:
             if priv not in xml_text:
@@ -139,20 +145,26 @@ def main():
     check_file(os.path.join(PROJECT_ROOT, "js", "launcher.js"), "js/launcher.js")
     check_file(os.path.join(PROJECT_ROOT, "js", "remote.js"), "js/remote.js")
 
-    # 7. Package Size Calculation
+    # 7. Package Size Calculation (Packageable WGT assets, excluding docs/tools/dev files)
     print("\n7. Checking package size...")
-    total_size = 0
-    for root, dirs, files in os.walk(PROJECT_ROOT):
-        # exclude git, pycache, tests, docs
-        if any(part in root for part in [".git", "__pycache__"]):
-            continue
-        for f in files:
-            fp = os.path.join(root, f)
-            total_size += os.path.getsize(fp)
+    pkg_dirs = ['css', 'js', 'assets', 'config']
+    pkg_files = ['config.xml', 'index.html', 'icon.png']
+    total_size = sum(os.path.getsize(os.path.join(PROJECT_ROOT, f)) for f in pkg_files if os.path.isfile(os.path.join(PROJECT_ROOT, f)))
+
+    for d in pkg_dirs:
+        dir_path = os.path.join(PROJECT_ROOT, d)
+        if os.path.isdir(dir_path):
+            for root, _, files in os.walk(dir_path):
+                for f in files:
+                    fp = os.path.join(root, f)
+                    total_size += os.path.getsize(fp)
+
     size_mb = total_size / (1024 * 1024)
-    print(f"  [OK] Total package size: {size_mb:.2f} MB")
-    if size_mb > 15:
-        error(f"Package size exceeds 15 MB threshold: {size_mb:.2f} MB")
+    print(f"  [OK] Packageable WGT size: {size_mb:.2f} MB ({total_size} bytes)")
+    if size_mb > 3.0:
+        error(f"Package size exceeds 3 MB limit: {size_mb:.2f} MB")
+    else:
+        print(f"  [OK] Package size is well under 3 MB limit: {size_mb:.2f} MB")
 
     print("\n=== Validation Summary ===")
     if EXIT_CODE == 0:

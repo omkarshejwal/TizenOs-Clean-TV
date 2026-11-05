@@ -1,0 +1,21 @@
+# csproj file path
+csproj_file: {{project_name}}.Mobile.csproj
+
+# Default profile, Tizen API version
+profile: {{ProfileID}}
+api_version: "{{APIVersion}}"
+
+# Build type [Debug/ Release/ Test]
+build_type: {{BuildType}}
+
+# Signing profile to be used for Tizen package signing
+# If value is empty: "", active signing profile will be used
+# Else If value is ".", default signing profile will be used
+signing_profile: "{{SigningProfile}}"
+
+# files monitored for dirty/modified status
+files:
+  - {{project_name}}.Mobile.csproj
+  - {{project_name}}.Mobile.cs
+  - tizen-manifest.xml
+  - shared/res/{{project_name}}.Mobile.png

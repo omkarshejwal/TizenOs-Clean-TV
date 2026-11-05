@@ -1,0 +1,15 @@
+* 0.1.4
+- Add new distributor certificate for 8.0 and above
+== Adhavan M <adhavan.m@samsung.com> 2023-09-21
+* 0.1.3
+- Version Up
+== Aditya Aswani <aswani.aditya@samsung.com> 2020-04-29
+* 0.1.2
+- Added support for SHA512
+== Aditya Aswani <aswani.aditya@samsung.com> 2019-04-15
+* 0.1.1
+- Updated build files and fixed bugs
+== Aditya Aswani <aswani.aditya@samsung.com> 2019-04-15
+* 0.1.0
+- Added author generation jar to this repo
+== Aditya Aswani <a.aswani@samsung.com> 2019-04-15

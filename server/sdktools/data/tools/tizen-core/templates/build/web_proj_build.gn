@@ -1,0 +1,25 @@
+import("$tizen_core/build/web/project.gni")
+
+web_project("{{.Path}}") {
+  files = [
+    {{- range .Files}}
+      "//{{.}}",
+    {{- end}}
+  ]
+
+if (opt) {
+  opt_files = [
+    {{- range .OptFiles}}
+      "//{{.}}",
+    {{- end}}
+  ]
+}
+  
+  deps = [
+    {{- range .DepsName}}
+      "{{.}}",
+    {{- end}}
+  ]
+
+  project_path = "{{.ProjectPath}}"
+}

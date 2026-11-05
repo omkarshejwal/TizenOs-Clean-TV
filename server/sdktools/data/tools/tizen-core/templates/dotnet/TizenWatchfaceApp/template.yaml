@@ -1,0 +1,21 @@
+name: TizenWatchfaceApp
+type: dotnet_app
+description: "Tizen Watchface App project template for building Tizen Watchface Application"
+icon: ""
+shampshot: ""
+
+templates:
+  TizenWatchfaceApp.csproj: {{project_name}}.csproj
+  TizenWatchfaceApp.cs: {{project_name}}.cs
+  ClockViewModel.cs: ClockViewModel.cs
+  TextWatchApplication.xaml: TextWatchApplication.xaml
+  TextWatchApplication.xaml.cs: TextWatchApplication.xaml.cs
+  tizen-manifest.xml: tizen-manifest.xml
+  tizen_dotnet_project.yaml: tizen_dotnet_project.yaml
+
+files:
+  shared/res/TizenWatchfaceApp.png: shared/res/{{project_name}}.png
+  
+folders:
+  - res
+  - lib

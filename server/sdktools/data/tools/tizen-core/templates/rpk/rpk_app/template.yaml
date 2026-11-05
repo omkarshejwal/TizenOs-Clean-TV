@@ -1,0 +1,14 @@
+name: rpk_app
+type: resource_app
+description: "This is an empty template project for developing resource package"
+icon: ""
+shampshot: ""
+
+templates:
+  tizen-manifest.xml: tizen-manifest.xml
+  tizen_resource_project.yaml: tizen_resource_project.yaml
+
+files:
+  shared/res/mainmenu.png: shared/res/{{app_name}}.png
+  res/allowed/tizen.sample.resource/sample_resource: res/allowed/{{res_type}}/sample_resource
+  res/global/tizen.sample.resource/sample_resource: res/global/{{res_type}}/sample_resource

@@ -1,0 +1,20 @@
+name: gtest_runner
+type: native_app
+description: "This is an empty template project for gtest runner"
+icon: ""
+shampshot: ""
+
+templates:
+  inc/main.h: inc/main.h
+  tizen-manifest.xml: tizen-manifest.xml
+  tizen_native_project.yaml: tizen_native_project.yaml
+
+files:
+  src/main_test.cpp: src/main_test.cpp
+  src/sample_test.cpp: src/{{app_name}}_test.cpp
+  shared/res/mainmenu.png: shared/res/{{app_name}}.png
+
+common-templates:
+  templates/native/tizen_native_project.vcxproj: {{project_name}}.vcxproj
+  templates/native/tizen_native_project.vcxproj.user: {{project_name}}.vcxproj.user
+  templates/native/tizen_native_build.targets: {{project_name}}.targets

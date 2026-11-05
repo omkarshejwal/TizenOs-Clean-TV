@@ -1,0 +1,14 @@
+name: BlankApp/BlankApp
+type: dotnet_app
+description: "A base project template for building XAML apps with Xamarin.Forms"
+icon: ""
+shampshot: ""
+
+templates:
+  BlankApp/BlankApp.cs: {{project_name}}/{{project_name}}.cs
+  BlankApp/BlankApp.csproj: {{project_name}}/{{project_name}}.csproj
+  BlankApp/tizen_dotnet_project.yaml: {{project_name}}/tizen_dotnet_project.yaml
+  
+folders:
+  - {{project_name}}/res
+  - {{project_name}}/lib

@@ -1,0 +1,17 @@
+name: TizenLibRpk
+type: dotnet_app
+description: "A single project template for building Tizen library RPK"
+icon: ""
+shampshot: ""
+
+templates:
+  TizenLibRpk.csproj: {{project_name}}.csproj
+  TizenLibRpk.cs: {{project_name}}.cs
+  tizen-manifest.xml: tizen-manifest.xml
+  tizen_dotnet_project.yaml: tizen_dotnet_project.yaml
+
+files:
+  shared/res/TizenLibRpk.png: shared/res/{{project_name}}.png
+  
+folders:
+  - lib

@@ -1,0 +1,18 @@
+template("minify_folder") {
+    forward_variables_from(invoker, [ "proj_deps" , "dep_project_name"])
+    minify = "$tizen_core/minify"
+
+    out_path = "${root_out_dir}/$web_out_dir/{{source_target_relative}}"
+    if (defined(dep_project_name)){
+        out_path = "${root_out_dir}/dep_project/${dep_project_name}/{{source_target_relative}}"
+    }
+    action_foreach(target_name) {
+        command = "$minify -a -o {{output}} {{source}}"
+        description = "minify {{output}}"
+        sources = [ target_name ]
+        outputs = [
+            out_path,
+        ]
+        deps = proj_deps
+    }
+}

@@ -1,0 +1,20 @@
+name: TizenNUIXAML
+type: dotnet_app
+description: "A NUI Xaml project template for building Tizen apps with Tizen NUI"
+icon: ""
+shampshot: ""
+
+templates:
+  NUIXamlApp.csproj: {{project_name}}.csproj
+  NUIXamlApp.cs: {{project_name}}.cs
+  tizen-manifest.xml: tizen-manifest.xml
+  XamlPage.xaml.cs: XamlPage.xaml.cs
+  res/layout/XamlPage.xaml: res/layout/XamlPage.xaml
+  tizen_dotnet_project.yaml: tizen_dotnet_project.yaml
+
+files:
+  shared/res/NUIXamlApp.png: shared/res/{{project_name}}.png
+  
+folders:
+  - res
+  - lib

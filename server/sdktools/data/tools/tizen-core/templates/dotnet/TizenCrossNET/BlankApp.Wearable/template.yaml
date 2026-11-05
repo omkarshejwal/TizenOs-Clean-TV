@@ -1,0 +1,21 @@
+name: BlankApp/BlankApp.Wearable
+type: dotnet_app
+description: "A wearable project template for building XAML apps with Xamarin.Forms"
+icon: ""
+shampshot: ""
+
+templates:
+  BlankApp.Wearable/BlankApp.Wearable.csproj: {{project_name}}.Wearable/{{project_name}}.Wearable.csproj
+  BlankApp.Wearable/BlankApp.Wearable.cs: {{project_name}}.Wearable/{{project_name}}.Wearable.cs
+  BlankApp.Wearable/tizen-manifest.xml: {{project_name}}.Wearable/tizen-manifest.xml
+  BlankApp.Wearable/tizen_dotnet_project.yaml: {{project_name}}.Wearable/tizen_dotnet_project.yaml
+ 
+
+files:
+  BlankApp.Wearable/shared/res/BlankApp.Wearable.png: {{project_name}}.Wearable/shared/res/{{project_name}}.Wearable.png
+  
+folders:
+  - {{project_name}}.Wearable/res
+  - {{project_name}}.Wearable/lib
+
+deps: [ {{project_name}}/{{project_name}} ]

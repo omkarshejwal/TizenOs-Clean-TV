@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns="http://tizen.org/ns/packages" api-version="{{manifest_api_version}}"
+  package="org.tizen.example.{{project_name}}" version="1.0.0"
+  res-type="org.tizen.appfw.gadget.{{project_name}}" res-version="1.0.0">
+  <allowed-package id="org.tizen.example.*"/>
+  <metadata key="http://tizen.org/metadata/ui-gadget/dll" value="{{project_name}}.dll" />
+</manifest>

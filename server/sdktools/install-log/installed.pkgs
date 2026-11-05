@@ -1,0 +1,142 @@
+[
+  {
+    "DevGroup": "emulator-manager",
+    "Package": "emulator-manager",
+    "Version": "10.1.3",
+    "TimeStamp": "2026-11-05 17:41:39",
+    "Duration": "",
+    "PlatformVersions": [
+      "10.0"
+    ]
+  },
+  {
+    "DevGroup": "package-manager",
+    "Package": "package-manager",
+    "Version": "10.1.3",
+    "TimeStamp": "2026-11-05 17:41:40",
+    "Duration": "",
+    "PlatformVersions": [
+      "10.0"
+    ]
+  },
+  {
+    "DevGroup": "certificate-manager",
+    "Package": "certificate-manager",
+    "Version": "10.1.3",
+    "TimeStamp": "2026-11-05 17:41:40",
+    "Duration": "",
+    "PlatformVersions": [
+      "10.0"
+    ]
+  },
+  {
+    "DevGroup": "device-manager",
+    "Package": "device-manager",
+    "Version": "10.1.3",
+    "TimeStamp": "2026-11-05 17:41:40",
+    "Duration": "",
+    "PlatformVersions": [
+      "10.0"
+    ]
+  },
+  {
+    "DevGroup": "core-app",
+    "Package": "web-privilege-checker",
+    "Version": "0.0.2",
+    "TimeStamp": "2026-11-05 17:42:02",
+    "Duration": "00:00:11",
+    "PlatformVersions": [
+      "10.0"
+    ]
+  },
+  {
+    "DevGroup": "core-app",
+    "Package": "tizen-core",
+    "Version": "10.0.18",
+    "TimeStamp": "2026-11-05 17:42:05",
+    "Duration": "00:00:13",
+    "PlatformVersions": [
+      "10.0"
+    ]
+  },
+  {
+    "DevGroup": "core-app",
+    "Package": "certificate-encryptor",
+    "Version": "1.0.10",
+    "TimeStamp": "2026-11-05 17:42:10",
+    "Duration": "00:00:03",
+    "PlatformVersions": [
+      "10.0"
+    ]
+  },
+  {
+    "DevGroup": "core-app",
+    "Package": "version-manager",
+    "Version": "2.2.25",
+    "TimeStamp": "2026-11-05 17:42:10",
+    "Duration": "00:00:04",
+    "PlatformVersions": [
+      "10.0"
+    ]
+  },
+  {
+    "DevGroup": "core-app",
+    "Package": "sdk-utils",
+    "Version": "0.2.26",
+    "TimeStamp": "2026-11-05 17:42:10",
+    "Duration": "00:00:04",
+    "PlatformVersions": [
+      "10.0"
+    ]
+  },
+  {
+    "DevGroup": "core-app",
+    "Package": "sdb",
+    "Version": "4.2.36",
+    "TimeStamp": "2026-11-05 17:42:10",
+    "Duration": "00:00:04",
+    "PlatformVersions": [
+      "10.0"
+    ]
+  },
+  {
+    "DevGroup": "core-app",
+    "Package": "COMMON-MANDATORY",
+    "Version": "3.1.3",
+    "TimeStamp": "2026-11-05 17:42:10",
+    "Duration": "00:00:04",
+    "PlatformVersions": [
+      "10.0"
+    ]
+  },
+  {
+    "DevGroup": "core-app",
+    "Package": "sdk-info",
+    "Version": "2.5.0",
+    "TimeStamp": "2026-11-05 17:42:11",
+    "Duration": "00:00:04",
+    "PlatformVersions": [
+      "10.0"
+    ]
+  },
+  {
+    "DevGroup": "core-app",
+    "Package": "sdk-utils-core",
+    "Version": "0.2.26",
+    "TimeStamp": "2026-11-05 17:42:11",
+    "Duration": "00:00:04",
+    "PlatformVersions": [
+      "10.0"
+    ]
+  },
+  {
+    "DevGroup": "core-app",
+    "Package": "certificate-generator",
+    "Version": "0.1.4",
+    "TimeStamp": "2026-11-05 17:42:12",
+    "Duration": "00:00:05",
+    "PlatformVersions": [
+      "10.0"
+    ]
+  }
+]

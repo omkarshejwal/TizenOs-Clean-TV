@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <!-- Dark blue pill container for contrast on any background -->
+  <rect x="20" y="44" width="216" height="168" rx="28" fill="#00050D" />
+  <!-- prime text -->
+  <g fill="#FFFFFF" font-family="'Outfit', -apple-system, sans-serif" font-weight="700">
+    <text x="128" y="128" font-size="52" text-anchor="middle" letter-spacing="1">prime</text>
+  </g>
+  <!-- Curved cyan/blue smile arrow -->
+  <path d="M68,148 Q128,184 188,150" fill="none" stroke="#00A8E1" stroke-width="8" stroke-linecap="round" />
+  <path d="M182,142 L194,152 L178,160 Z" fill="#00A8E1" />
+</svg>

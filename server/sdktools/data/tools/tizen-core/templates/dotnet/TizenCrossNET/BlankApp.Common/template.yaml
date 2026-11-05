@@ -1,0 +1,20 @@
+name: BlankApp/BlankApp.Common
+type: dotnet_app
+description: "A common project template for building XAML apps with Xamarin.Forms"
+icon: ""
+shampshot: ""
+
+templates:  
+  BlankApp.Common/BlankApp.Common.csproj: {{project_name}}.Common/{{project_name}}.Common.csproj
+  BlankApp.Common/BlankApp.Common.cs: {{project_name}}.Common/{{project_name}}.Common.cs
+  BlankApp.Common/tizen-manifest.xml: {{project_name}}.Common/tizen-manifest.xml
+  BlankApp.Common/tizen_dotnet_project.yaml: {{project_name}}.Common/tizen_dotnet_project.yaml  
+
+files:
+  BlankApp.Common/shared/res/BlankApp.Common.png: {{project_name}}.Common/shared/res/{{project_name}}.Common.png
+  
+folders:
+  - {{project_name}}.Common/res
+  - {{project_name}}.Common/lib
+
+deps: [ {{project_name}}/{{project_name}} ]

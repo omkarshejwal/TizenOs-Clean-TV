@@ -1,0 +1,29 @@
+import("$tizen_core/build/pack.gni")
+
+template("build_resource"){
+    forward_variables_from(invoker, [ "build_deps", "files", "projName", "resource_build_path"])
+
+    status_file = "${resource_build_path}/status/$target_name"
+    source_files = files
+    projPath = rebase_path("..")
+
+    outputPath = rebase_path("${resource_build_path}/projects/${projName}")
+    # convert the source files to their final output paths,
+    abs_file_paths = rebase_path(source_files)
+    output_paths = []
+    foreach(file_path, abs_file_paths) {
+        output_paths += [string_replace(file_path, projPath , "${resource_build_path}/projects/${projName}")]
+    }
+    
+    action(target_name) {
+        command = "$tizen_core/tz"
+        description = "Build resource-project : $projName"
+        sources = source_files
+        args = [
+            "resource-build", "-o", outputPath , "-p", "$projPath",
+            "-s", rebase_path(status_file)
+        ]
+        outputs = [ "${status_file}" ] + output_paths
+        deps = build_deps
+    }
+}

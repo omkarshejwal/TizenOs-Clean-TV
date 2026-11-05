@@ -1,0 +1,8 @@
+{
+  "title": "Tizen OS for TV Device",
+  "description": "The TV development profile in Tizen (used from version 8.0 onward) is tailored for smart television and set-top box devices, supporting web and .NET application types and optimized for large-screen, remote-control interactions, media playback and UI navigation. Developers targeting this profile benefit from device-specific APIs for TV features (e.g., screen groups, input devices, display rotation) and an ecosystem designed around consumer living-room experiences and content-rich environments.",
+  "thumbnail": "tv.webp",
+  "badge": ["Media-rich", "Leanback Exp.", "Large-screen"],
+  "link": "https://developer.samsung.com/smarttv",
+  "version": "1.0.0"
+}

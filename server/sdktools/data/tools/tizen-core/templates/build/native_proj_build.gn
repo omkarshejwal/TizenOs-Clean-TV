@@ -1,0 +1,185 @@
+import("$tizen_core/build/native/project.gni")
+
+config("{{.Name}}_public_config") {
+    include_dirs = [
+      {{- range .IncludeDirsProcessed}}
+        "{{.}}",
+      {{- end}}
+    ]
+}
+
+config("{{.Name}}_config") {
+  {{- if .Cflags }}
+
+    cflags = [
+      {{- range .Cflags}}
+        "{{.}}",
+      {{- end}}
+    ]
+
+  {{- end}}
+
+  {{- if .CflagsC }}
+
+    cflags_c = [
+      {{- range .CflagsC}}
+        "{{.}}",
+      {{- end}}
+    ]
+
+  {{- end}}
+
+  {{- if .CflagsCc }}
+
+    cflags_cc = [
+      {{- range .CflagsCc}}
+        "{{.}}",
+      {{- end}}
+    ]
+  {{- end}}
+
+  {{- if .Asmflags }}
+
+    asmflags = [
+      {{- range .Asmflags}}
+        "{{.}}",
+      {{- end}}
+    ]
+
+  {{- end}}
+
+  {{- if .Defines }}
+
+    defines = [
+      {{- range .Defines}}
+        "{{.}}",
+      {{- end}}
+    ]
+
+  {{- end}}
+
+  {{- if .LibDirsProcessed }}
+
+    lib_dirs = [
+      {{- range .LibDirsProcessed}}
+        "{{.}}",
+      {{- end}}
+    ]
+
+  {{- end}}
+
+  {{- if .Libs }}
+
+    libs = [
+      {{- range .Libs}}
+        "{{.}}",
+      {{- end}}
+    ]
+
+  {{- end}}
+
+  {{- if .Ldflags }}
+
+    ldflags = [
+      {{- range .Ldflags}}
+        "{{.}}",
+      {{- end}}
+    ]
+
+  {{- end}}
+}
+
+native_project("{{.Name}}") {
+  output_name = "{{.OutputName}}"
+  project_type = "{{.Type}}"
+
+  src_files = [
+    {{- range .Sources}}
+      "//{{.}}",
+    {{- end}}
+  ]
+
+  {{- if .LibFiles }}
+
+  lib_files =  [
+    {{- range .LibFiles}}
+      "//{{.}}",
+    {{- end}}
+  ]
+
+  {{- end}}
+
+  {{- if .EdcFiles }}
+
+  edc_files =  [
+    {{- range .EdcFiles}}
+      "//{{.}}",
+    {{- end}}
+  ]
+
+  {{- end}}
+
+  {{- if .EdcImagesDirsProcessed }}
+
+  image_dirs = [
+    {{- range .EdcImagesDirsProcessed}}
+      "{{.}}",
+    {{- end}}
+  ]
+
+  {{- end}}
+
+  {{- if .EdcSoundDirsProcessed }}
+
+  sound_dirs = [
+    {{- range .EdcSoundDirsProcessed}}
+      "{{.}}",
+    {{- end}}
+  ]
+
+  {{- end}}
+
+  {{- if .EdcFontDirsProcessed }}
+
+  font_dirs = [
+    {{- range .EdcFontDirsProcessed}}
+      "{{.}}",
+    {{- end}}
+  ]
+
+  {{- end}}
+
+  {{- if .PoFilesProcessed }}
+
+  po_files = [
+    {{- range .PoFilesProcessed}}
+      "{{.}}",
+    {{- end}}
+  ]
+
+  {{- end}}
+
+  {{- if .Resources }}
+
+  resourcespaths = [
+    {{- range .Resources}}
+      "//{{.}}",
+    {{- end}}
+  ]
+
+  {{- end}}
+
+  deps = [
+    {{- range .DepsName}}
+      "//{{.}}",
+    {{- end}}
+  ]
+
+  public_configs = [
+      ":{{.Name}}_public_config",
+  ]
+
+  configs = [
+      ":{{.Name}}_config",
+  ]
+}

@@ -1,0 +1,188 @@
+
+template("_toolchain") {
+    forward_variables_from(invoker, "*", [])
+
+    uutils = "$tizen_core/uutils"
+
+    toolchain("${target_name}") {
+        tool("cc") {
+            depfile = "{{output}}.d"
+            command = "$cc -MMD -MF $depfile {{defines}} {{include_dirs}} {{cflags}} {{cflags_c}} -c {{source}} -o {{output}}"
+            description = "CC {{output}}"
+            depsformat = "gcc"
+            if (host_os == "win") {
+                outputs = [
+                    "{{source_out_dir}}/{{source_name_part}}.o",
+                ]
+            } else {
+                outputs = [
+                    "{{source_root_relative_dir}}/{{source_name_part}}.o",
+                ]
+            }
+        }
+
+        tool("cxx") {
+            depfile = "{{output}}.d"
+            command = "$cxx -MMD -MF $depfile {{defines}} {{include_dirs}} {{cflags}} {{cflags_cc}} -c {{source}} -o {{output}}"
+            description = "CXX {{output}}"
+            depsformat = "gcc"
+            if (host_os == "win") {
+                outputs = [
+                    "{{source_out_dir}}/{{source_name_part}}.o",
+                ]
+            } else {
+                outputs = [
+                    "{{source_root_relative_dir}}/{{source_name_part}}.o",
+                ]
+            }
+        }
+
+        tool("asm") {
+            depfile = "{{output}}.d"
+            command = "$cc -MMD -MF $depfile {{defines}} {{include_dirs}} {{asmflags}} -c {{source}} -o {{output}}"
+            description = "ASM {{output}}"
+            depsformat = "gcc"
+            if (host_os == "win") {
+                outputs = [
+                    "{{source_out_dir}}/{{source_name_part}}.o",
+                ]
+            } else {
+                outputs = [
+                    "{{source_root_relative_dir}}/{{source_name_part}}.o",
+                ]
+            }
+        }
+
+        tool("alink") {
+            command = "$uutils rm -f {{output}} && $ar {{arflags}} rcsD {{output}} {{inputs}}"
+            if (host_os == "win") {
+                command = "cmd /c \" $command \""
+            }
+
+            description = "AR {{output}}"
+            default_output_dir = "{{root_out_dir}}/$native_out_dir/lib"
+            default_output_extension = ".a"
+            output_prefix = "lib"
+            outputs = [
+                "{{output_dir}}/{{target_output_name}}{{output_extension}}",
+            ]
+        }
+
+        tool("solink") {
+            outfile = "{{output_dir}}/{{target_output_name}}{{output_extension}}"
+            default_output_dir = "{{root_out_dir}}/$native_out_dir/lib"
+            default_output_extension = ".so"
+            output_prefix = "lib"
+            description = "SOLINK {{output}}"
+
+            unstripped_outfile = outfile
+            if (strip_debug_info) {
+                unstripped_outfile = "{{root_out_dir}}/lib.unstripped/{{target_output_name}}{{output_extension}}"
+            }
+
+            outputs = [ outfile]
+            if (outfile != unstripped_outfile) {
+                outputs += [ unstripped_outfile ]
+            }
+
+            command = "$cxx -shared -o \"$unstripped_outfile\" {{inputs}} {{libs}} {{ldflags}}"
+            if (strip_debug_info) {
+                command += " && ${strip} --strip-all $unstripped_outfile $outfile"
+
+                if (is_win) {
+                    command = "cmd /c \" $command \""
+                }
+            }
+        }
+
+        tool("link") {
+            outfile = "{{output_dir}}/{{target_output_name}}{{output_extension}}"
+            default_output_dir = "{{root_out_dir}}/$native_out_dir/bin"
+            description = "LINK {{output}}"
+
+            unstripped_outfile = outfile
+            if (strip_debug_info) {
+                unstripped_outfile = "{{root_out_dir}}/exe.unstripped/{{target_output_name}}{{output_extension}}"
+            }
+
+            outputs = [ outfile]
+            if (outfile != unstripped_outfile) {
+                outputs += [ unstripped_outfile ]
+            }
+
+            command = "$cxx -o \"$unstripped_outfile\" {{inputs}} {{libs}} {{ldflags}} "
+            if (strip_debug_info) {
+                command += " && ${strip} --strip-all $unstripped_outfile -o $outfile"
+
+                if (host_os == "win") {
+                    command = "cmd /c \" $command \""
+                }
+            }
+        }
+
+        tool("stamp") {
+            command = "$uutils touch {{output}}"
+            description = "STAMP {{output}}"
+        }
+
+        tool("copy") {
+            command = "$uutils ln -f {{source}} {{output}} 2>/dev/null || ($uutils rm -rf {{output}} && $uutils cp {{source}} {{output}})"
+            description = "COPY {{output}}"
+
+            if (host_os == "win") {
+                command = "cmd /c \" $uutils ln -f {{source}} {{output}} 2> NUL || ($uutils rm -rf {{output}} && $uutils cp {{source}} {{output}}) \""
+            }
+        }
+    }
+}
+
+template("tizen_toolchain") {
+    forward_variables_from(invoker, "*", [])
+
+    config("${target_name}_gcc_config") {
+        cflags = []
+        ldflags = []
+
+        if (defined(gcc_cflags)) {
+            cflags += gcc_cflags
+            
+        }
+
+        if (defined(gcc_ldflags)) {
+            ldflags += gcc_ldflags
+        }
+    }
+
+    _toolchain("${target_name}_gcc") {
+        cc      = "\"${gcc_path}/bin/${gcc_prefix}gcc\""
+        cxx     = "\"${gcc_path}/bin/${gcc_prefix}g++\""
+        ar      = "\"${gcc_path}/bin/${gcc_prefix}ar\""
+        if (strip_debug_info) {
+            strip   = "\"${gcc_path}/bin/${gcc_prefix}strip\""
+        }
+    }
+
+    config("${target_name}_llvm_config") {
+        cflags = []
+
+        ldflags = []
+
+        if (defined(llvm_cflags)) {
+            cflags += llvm_cflags
+
+        }
+
+        if (defined(llvm_ldflags)) {
+            ldflags += llvm_ldflags
+        }
+    }
+
+    _toolchain("${target_name}_llvm") {
+        cc      = "\"${llvm_path}/bin/clang\""
+        cxx     = "\"${llvm_path}/bin/clang++\""
+        ar      = "\"${gcc_path}/bin/${gcc_prefix}ar\""
+        if (strip_debug_info) {
+            strip   = "\"${gcc_path}/bin/${gcc_prefix}strip\""
+        }
+    }
+}

@@ -1,0 +1,8 @@
+{
+  "title": "IoT(Common) Device",
+  "description": "The IoT (or “Common”) profile of Tizen is aimed at IoT-based smart devices and embedded systems, supporting native (C/C++) and .NET applications rather than web-only solutions. This profile enables developers to build headless or embedded applications where constrained resources, low-power operation, sensor integration and device-to-device connectivity are key, making it ideal for appliances, industrial controllers and smart-home nodes.",
+  "thumbnail": "iot.webp",
+  "badge": ["Connectivity", "Intelligence", "Low-power"],
+  "link": "https://docs.tizen.org/platform/",
+  "version": "1.0.0"
+}

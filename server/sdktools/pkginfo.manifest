@@ -1,0 +1,8 @@
+Package : certificate-generator
+Version : 0.1.4
+OS : windows-64
+Build-host-os : ubuntu-64
+Maintainer : JungHak Kim <kjh5@samsung.com >
+Source : certificate-generator
+Uncompressed-size : 5093138
+Description : Certificate manager

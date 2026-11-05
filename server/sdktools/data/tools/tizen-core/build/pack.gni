@@ -1,0 +1,202 @@
+template("sign_and_pack_native"){
+    forward_variables_from(invoker, [ "package_file", "sign_pack_deps", "projects", "resources", "profile_args", "sign_dir", "base_dir" ])    
+    
+    # collecting projects label for metadata
+    tpk_contents_deps =[]
+    if (defined(projects) && projects != []){
+        foreach(proj, projects) {
+            tpk_contents_deps += ["//${proj}:all"]
+        }
+    }
+    # generate file list of the final tpk
+    tpk_content_label = target_name + "_tpk_content_list"
+    generated_file(tpk_content_label) {
+      output_conversion = "json"
+      outputs = [ "$base_dir/tpk_contents" ]
+      data_keys = ["built_files", "res_files"]
+      deps = tpk_contents_deps
+    }  
+
+    manifest_path = "${base_dir}/$native_out_dir/tizen-manifest.xml"
+    srcs = []
+    if (defined(resources)){
+        srcs += resources
+    }
+    action(target_name) {
+        command = "$tizen_core/tz"
+        description = "SIGN package files"
+        sources = srcs + ["$base_dir/tpk_contents"]
+        args = [
+            "sign-pack","native",
+            "--out-dir", rebase_path(sign_dir, root_out_dir), #outdir for signature files
+            "--out", rebase_path(package_file, root_out_dir), #output packagefile name
+            "-h",
+            "--list-path",rebase_path("$base_dir/tpk_contents", root_out_dir),
+            "--manifest-path",rebase_path(manifest_path, root_out_dir),
+        ] + profile_args 
+
+        if(unity_pkg != ""){
+            args += ["-u", unity_pkg]
+        }
+
+        if(multi_build){
+            args += ["-M"]
+        }
+
+        if(arch_version){
+            args += ["-V"]
+        }
+
+        if(arch != ""){
+            args += ["-a", arch]
+        }
+
+        if(hyb_final_pkg_type == "native"){
+            args += ["-L", rebase_path(".")]
+        }
+
+        outputs = [
+            sign_dir + "/author-signature.xml",
+            sign_dir + "/signature1.xml",
+            package_file,
+        ] 
+        
+        if (distributor2_cert != "") {
+            outputs += [
+                sign_dir + "/signature2.xml",
+            ]
+        }
+        deps = sign_pack_deps + [":${tpk_content_label}"]
+    }
+}
+
+template("sign_and_pack_web"){
+    forward_variables_from(invoker, [ "package_file", "sign_pack_deps", "profile_args", "sign_dir", "main_web_project","dep_web_widgets", "dep_web_projects", "base_dir"])
+    
+    action(target_name) {
+        command = "$tizen_core/tz"
+        description = "SIGN package files"
+        main_proj_arg = ["-m", main_web_project]
+        sources = [ "//config.xml" ]
+        
+        dep_widget_arg = []
+        if (defined(dep_web_widgets) && dep_web_widgets != []){
+            foreach(web_wid, dep_web_widgets) {
+                sources += [ web_wid + "/config.xml" ]
+            }
+            dep_widget_arg = ["-w", string_join(",",dep_web_widgets)]
+        }
+
+        dep_proj_arg = []
+        if (defined(dep_web_projects) && dep_web_projects != []){
+            foreach(web_proj, dep_web_projects) {
+                sources += [ web_proj + "/config.xml" ]
+            }
+            dep_proj_arg = ["-p", string_join(",",dep_web_projects)]
+        }
+
+        args = [
+            "sign-pack","web",
+            "-W", rebase_path(base_dir, root_out_dir), 
+            "--out", rebase_path(package_file, root_out_dir), #output packagefile name
+            "-h", "-b", rebase_path("."), 
+        ] + profile_args + main_proj_arg + dep_widget_arg + dep_proj_arg
+
+        outputs = [
+            sign_dir + "/author-signature.xml",
+            sign_dir + "/signature1.xml",
+            package_file,
+        ] 
+        
+        if (distributor2_cert != "") {
+            outputs += [
+                sign_dir + "/signature2.xml",
+            ]
+        }
+
+        deps = sign_pack_deps
+    }
+}
+
+template("sign_and_pack_resource"){
+    forward_variables_from(invoker, [ "package_file", "sign_dir", "sign_pack_deps", "profile_args" ,"projects", "base_dir"])
+    
+    action(target_name) {
+        command = "$tizen_core/tz"
+        description = "SIGN package files"
+
+        main_proj_arg = ["-m", get_path_info(rebase_path(projects[0]), "dir")]
+        sources = [ "//tizen-manifest.xml" ]
+
+        args = [
+            "sign-pack","resource",
+            "-R", rebase_path(base_dir), 
+            "--out", rebase_path(package_file, root_out_dir), #output packagefile name
+            "-h", "-b", rebase_path("."), 
+        ] + profile_args + main_proj_arg
+
+        outputs = [
+            sign_dir + "/author-signature.xml",
+            sign_dir + "/signature1.xml",
+            package_file,
+        ] 
+        
+        if (distributor2_cert != "") {
+            outputs += [
+                sign_dir + "/signature2.xml",
+            ]
+        }
+
+        deps = sign_pack_deps
+    }
+}
+
+template("sign_and_pack"){
+    forward_variables_from(invoker, [ "package_file", "sign_pack_deps", "projects", "resources", "main_web_project","dep_web_widgets", "dep_web_projects", "package_type" ])    
+    not_needed (["projects", "resources","main_web_project","dep_web_widgets", "dep_web_projects"]) #variable not needed in web sign/pack
+    profile_args =[]    
+    if (default_signing_profile == "false") {
+        # default profile is not used for signing
+        profile_args += ["--author-key", author_cert, "--author-attr", author_pass_attr,
+            "--dist-key", distributor_cert, "--dist-attr", distributor_pass_attr]
+            
+        if (distributor2_cert != ""){
+            profile_args += ["--dist2-key", distributor2_cert, "--dist2-attr", distributor2_pass_attr]
+        }        
+    }else {
+        profile_args += ["-D"]
+    }
+  
+    if (package_type == "native"){
+        if (deps_type == "hybrid" ){
+            base_dir = "${root_out_dir}/native_build"
+        } else if (deps_type == "multi-arch") {
+            base_dir = "${root_out_dir}/${arch}"
+        } else {
+            base_dir = "${root_out_dir}"
+        }
+    } else if(package_type == "web") {
+        if (deps_type == "hybrid" ){
+            base_dir = "${root_out_dir}/web_build"
+        } else {
+            base_dir = "${root_out_dir}"
+        }
+    } else if (package_type == "resource")  {
+        if (deps_type == "hybrid" ){
+            base_dir = "${root_out_dir}/resource_build"
+        } else {
+            base_dir = "${root_out_dir}"
+        }
+    }
+
+    if (package_type == "native"){
+        sign_dir = "${base_dir}/.${native_out_dir}"
+        sign_and_pack_native(target_name){}
+    } else if (package_type == "web"){
+        sign_dir = "${base_dir}/.${web_out_dir}"
+        sign_and_pack_web(target_name){}
+    } else if (package_type == "resource"){
+        sign_dir = "${base_dir}/.${resource_out_dir}"
+        sign_and_pack_resource(target_name){}
+    }
+}

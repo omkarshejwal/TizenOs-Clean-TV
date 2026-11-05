@@ -1,0 +1,28 @@
+
+template("_toolchain") {
+    forward_variables_from(invoker, "*", [])
+
+    uutils = "$tizen_core/uutils"
+
+    toolchain("${target_name}") {
+        tool("stamp") {
+            command = "$uutils touch {{output}}"
+            description = "STAMP {{output}}"
+        }
+
+        tool("copy") {
+            command = "($uutils rm -rf {{output}} && $uutils cp {{source}} {{output}})"
+            description = "COPY {{output}}"
+
+            if (host_os == "win") {
+                command = "cmd /c \" ($uutils rm -rf {{output}} && $uutils cp {{source}} {{output}}) \""
+            }
+        }
+    }
+}
+
+template("tizen_toolchain") {
+    forward_variables_from(invoker, "*", [])
+    _toolchain("web_builder") {
+    }
+}

@@ -1,0 +1,43 @@
+<!--
+***********************************************************************************************
+<{{project_name}}.targets>
+WARNING:  DO NOT MODIFY this file. Incorrect changes to this file will make it
+          impossible to load or build your projects from the IDE.
+
+***********************************************************************************************
+-->
+
+<Project>
+<Target Name="Clean" >
+        <Message Text="Tizen Native project Clean starts here ------------" Importance="high"/>
+        <Message Text="$(MSBuildProjectDirectory)" Importance="high"/>
+        <PropertyGroup>
+            <WorkspaceFolder>$([System.IO.Path]::GetDirectoryName($(MSBuildProjectDirectory)))</WorkspaceFolder>
+        </PropertyGroup>
+        <Message Text="Workspace: '$(ProjectDir)'"  Importance="high" />
+
+        <Exec Command="{{path_to_tz}} clean -S $(ProjectDir)"> </Exec>
+    </Target>
+	<Target Name="ReBuild" >
+        <Message Text="Tizen Native project Build starts here ------------" Importance="high"/>
+        <Message Text="$(MSBuildProjectDirectory)" Importance="high"/>
+        <PropertyGroup>
+            <WorkspaceFolder>$([System.IO.Path]::GetDirectoryName($(MSBuildProjectDirectory)))</WorkspaceFolder>
+        </PropertyGroup>
+        <Message Text="Workspace: '$(ProjectDir)'"  Importance="high" />
+        
+        <Exec Command="{{path_to_tz}} pack-chain -S $(ProjectDir) $(ProjectDir)"> </Exec>
+    </Target>
+	
+<Target Name="Build" >
+        <Message Text="Tizen Native project Build starts here ------------" Importance="high"/>
+        <Message Text="$(MSBuildProjectDirectory)" Importance="high"/>
+        <PropertyGroup>
+            <WorkspaceFolder>$([System.IO.Path]::GetDirectoryName($(MSBuildProjectDirectory)))</WorkspaceFolder>
+        </PropertyGroup>
+        <Message Text="Workspace: '$(ProjectDir)'"  Importance="high" />
+        
+        <Exec Command="{{path_to_tz}} pack-chain -S $(ProjectDir) $(ProjectDir)"> </Exec>
+    </Target>
+       
+</Project>

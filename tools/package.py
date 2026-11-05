@@ -1,432 +1,152 @@
 #!/usr/bin/env python3
 """
-CleanHome Packaging Tool
-=========================
-Builds an unsigned .wgt package and prints signing/install commands.
+tools/package.py - CleanHome Samsung Tizen TV Packaging Automation
 
-Flow:
-  1. Run validate.py to check project integrity
-  2. If tizen CLI is on PATH: run `tizen build-web` and `tizen package -t wgt -s <profile>`
-  3. If tizen CLI not available: print exact manual commands
-
-Models on Nuvio's Tizen packaging flow, written from scratch.
-Never stores certificates or passwords in files.
-
-Features:
-  - Brand icons included by default
-  - --no-brand-icons flag to exclude them for smaller shareable builds
-  - --include-brand-icons flag to force include brand icons even in shareable mode
+Automates:
+  1. tizen build-web with strict exclusions (tools, docs, node_modules, .git, backups).
+  2. tizen package -t wgt -s <profile> packaging the BUILD OUTPUT folder (.buildResult).
+  3. Prints the exact .wgt file name produced.
+  4. Prints the install command using that real package name.
+  5. If tizen CLI is missing, displays the exact commands to run after installing Tizen Studio.
 """
 
 import os
 import sys
 import shutil
-import subprocess
 import argparse
+import subprocess
+import glob
+import xml.etree.ElementTree as ET
 
-# Paths
-SCRIPT_PATH = os.path.abspath(__file__)
-PROJECT_ROOT = os.path.dirname(os.path.dirname(SCRIPT_PATH))
-TOOLS_DIR = os.path.join(PROJECT_ROOT, "tools")
-BUILD_DIR = os.path.join(PROJECT_ROOT, "build")
-WGT_DIR = os.path.join(PROJECT_ROOT, "dist")
-ASSETS_DIR = os.path.join(PROJECT_ROOT, "assets")
-ICONS_DIR = os.path.join(ASSETS_DIR, "icons")
-
-# Brand logo names that should be included/excluded
-BRAND_ICON_NAMES = [
-    "netflix",
-    "youtube",
-    "primevideo",
-    "disney",
-    "jiocinema",
-    "spotify",
-    "samsung-internet",
-]
-
-
-def print_header(title):
-    """Print a formatted section header."""
-    print()
-    print("=" * 60)
-    print(f"  {title}")
-    print("=" * 60)
-
-
-def check_tizen_cli():
-    """Check if tizen CLI is available on PATH."""
-    tizen_path = shutil.which("tizen")
-    if tizen_path:
-        try:
-            result = subprocess.run(
-                ["tizen", "version"],
-                capture_output=True,
-                text=True,
-                timeout=10
-            )
-            return True, tizen_path, result.stdout.strip()
-        except (subprocess.TimeoutExpired, FileNotFoundError):
-            return False, None, "tizen CLI found but not responding"
-    return False, None, "tizen CLI not found on PATH"
-
-
-def run_validate():
-    """Run validate.py and return success status."""
-    print_header("STEP 1: Validate Project")
-
-    validate_script = os.path.join(TOOLS_DIR, "validate.py")
-    if not os.path.exists(validate_script):
-        print(f"ERROR: validate.py not found at {validate_script}")
-        return False
-
+def get_app_info(root_dir):
+    config_xml = os.path.join(root_dir, "config.xml")
+    if not os.path.exists(config_xml):
+        return "c1eanhome1", "CleanHome", "1.0.0", "c1eanhome1.CleanHome"
     try:
-        result = subprocess.run(
-            [sys.executable, validate_script],
-            capture_output=True,
-            text=True,
-            timeout=30
-        )
-
-        print(result.stdout)
-
-        if result.returncode == 0:
-            print("✓ Validation PASSED")
-            return True
+        tree = ET.parse(config_xml)
+        root = tree.getroot()
+        widget_id = root.get("id", "c1eanhome1.CleanHome")
+        version = root.get("version", "1.0.0")
+        
+        # Check tizen:application
+        ns = {"tizen": "http://tizen.org/2013/tizen", "w3c": "http://www.w3.org/ns/widgets"}
+        app_elem = root.find("tizen:application", ns)
+        if app_elem is not None:
+            app_id = app_elem.get("id", widget_id)
+            pkg_id = app_elem.get("package", "c1eanhome1")
         else:
-            print("✗ Validation FAILED")
-            if result.stderr:
-                print("Errors:", result.stderr)
-            return False
-
-    except subprocess.TimeoutExpired:
-        print("ERROR: Validation timed out")
-        return False
-    except Exception as e:
-        print(f"ERROR running validation: {e}")
-        return False
-
-
-def copy_brand_icons(include_brand):
-    """Copy brand icons to the appropriate location based on the include flag."""
-    if include_brand:
-        print("\n[Brand Icons] Including brand logos by default (as requested)")
-        # Copy brand icons to the main icons directory
-        for icon_name in BRAND_ICON_NAMES:
-            # Look for PNG and SVG versions in various locations
-            possible_sources = [
-                os.path.join(PROJECT_ROOT, "docs", "reference-icons", f"{icon_name}.png"),
-                os.path.join(PROJECT_ROOT, "docs", "reference-icons", f"{icon_name}.svg"),
-                os.path.join(PROJECT_ROOT, "assets", "icons", f"{icon_name}.png"),
-                os.path.join(PROJECT_ROOT, "assets", "icons", f"{icon_name}.svg"),
-            ]
-            for source in possible_sources:
-                if os.path.exists(source):
-                    dest = os.path.join(ICONS_DIR, os.path.basename(source))
-                    shutil.copy2(source, dest)
-                    print(f"  Copied {os.path.basename(source)} → {os.path.basename(dest)}")
-                    break
-            else:
-                # Also check if they already exist in assets/icons
-                icon_png = os.path.join(ICONS_DIR, f"{icon_name}.png")
-                icon_svg = os.path.join(ICONS_DIR, f"{icon_name}.svg")
-                if not os.path.exists(icon_png) and not os.path.exists(icon_svg):
-                    print(f"  ⚠ Brand icon {icon_name} not found in any source location")
-    else:
-        print("\n[Brand Icons] Excluding brand icons (--no-brand-icons)")
-
-
-def build_with_tizen_cli(tizen_path, profile_name, include_brand):
-    """Build using tizen CLI if available."""
-    print_header("STEP 2: Build with tizen CLI")
-
-    # Create build directory
-    os.makedirs(BUILD_DIR, exist_ok=True)
-    os.makedirs(WGT_DIR, exist_ok=True)
-
-    # Step 2a: tizen build-web
-    print("\n[2a] Running 'tizen build-web'...")
-    try:
-        result = subprocess.run(
-            ["tizen", "build-web", "-t", "wgt", "-o", BUILD_DIR],
-            capture_output=True,
-            text=True,
-            timeout=60
-        )
-        print(result.stdout)
-        if result.returncode != 0:
-            print("✗ build-web FAILED")
-            if result.stderr:
-                print("Errors:", result.stderr)
-            return False
-        print("✓ build-web completed")
-    except subprocess.TimeoutExpired:
-        print("✗ build-web timed out")
-        return False
-    except Exception as e:
-        print(f"✗ build-web error: {e}")
-        return False
-
-    # Step 2b: tizen package
-    print(f"\n[2b] Running 'tizen package -t wgt -s {profile_name}'...")
-    try:
-        result = subprocess.run(
-            ["tizen", "package", "-t", "wgt", "-s", profile_name, "-o", WGT_DIR],
-            cwd=BUILD_DIR,
-            capture_output=True,
-            text=True,
-            timeout=60
-        )
-        print(result.stdout)
-        if result.returncode != 0:
-            print("✗ package FAILED")
-            if result.stderr:
-                print("Errors:", result.stderr)
-            return False
-        print("✓ package completed")
-    except subprocess.TimeoutExpired:
-        print("✗ package timed out")
-        return False
-    except Exception as e:
-        print(f"✗ package error: {e}")
-        return False
-
-    # List generated files
-    print("\nGenerated files in dist/:")
-    if os.path.exists(WGT_DIR):
-        for f in os.listdir(WGT_DIR):
-            full_path = os.path.join(WGT_DIR, f)
-            if os.path.isfile(full_path):
-                size_kb = os.path.getsize(full_path) / 10024
-                print(f"  {f} ({size_kb:.1f} KB)")
-
-    return True
-
-
-def print_manual_commands(include_brand):
-    """Print manual signing/install commands for when tizen CLI is not available."""
-    print_header("STEP 2: Manual Build Commands")
-
-    brand_note = ""
-    if not include_brand:
-        brand_note = "\n--- Brand Icons Note ---\nBrand icons were excluded via --no-brand-icons flag.\nUse --include-brand-icons to include them.\n"
-
-    print("""If tizen CLI is not on PATH, follow these manual steps:""")
-
-    print("""=== PREREQUISITES ===
-
-1. Install Tizen Studio from:
-   https://developer.tizen.org/development/tizen-studio/download
-
-2. Add tizen CLI to PATH (typically):
-   - Windows: C:\\tizen-studio\\tools\\tizen-studio\\bin
-   - Linux/Mac: ~/tizen-studio/tools/tizen-studio/bin
-
-3. Install certificate manager:
-   tizen install -g tizen-studio-certificate-manager
-   tizen install -g tizen-studio-sign-tool
-
-=== STEP A: CREATE CERTIFICATE PROFILE ===
-
-1. Open Certificate Manager:
-   tizen-certificate-manager
-
-2. Create Author certificate:
-   - Select 'Create New Author Certificate'
-   - Enter your name and email
-   - Save password (DO NOT store in files!)
-
-3. Create Distributor certificate:
-   - Select 'Create New Distributor Certificate'
-   - Use default Samsung distributor
-   - Add TV device DUID (see below)
-   - Save password (DO NOT store in files!)
-
-4. Export the profile:
-   tizen-certificate-manager --export <profile-name> --pass <password>
-
-=== STEP B: DISCOVER TV DUID ===
-
-Connect TV in Developer Mode, then:
-
-  sdb connect <TV-IP-address>
-  sdb shel
-
-Example output:
-  DUID: 545a3f4b5a3f4b5a
-
-Add this DUID to your Distributor certificate profile.
-
-=== STEP C: BUILD WEB APP ===
-
-  cd cleanhome
-  tizen build-web -t wgt
-
-This creates a .wgt file (ZIP format) in the build/ directory.
-
-=== STEP D: PACKAGE WITH SIGNING ===
-
-  tizen package -t wgt -s <profile-name> -o dist/
-
-This signs the .wgt with your certificate profile.
-
-=== STEP E: INSTALL ON TV ===
-
-1. Connect TV in Developer Mode:
-   sdb connect <TV-IP-address>
-
-2. List connected devices:
-   sdb devices
-
-3. Install the signed .wgt:
-   tizen install -n <path-to-wgt-file> -t <device-name>
-
-4. Run the app:
-   tizen run -p com.cleanhome.tv -t <device-name>
-
-=== NOTES ---
-
-- NEVER store certificate passwords in files or scripts
-- For development/testing, you can use -n flag to bypass signature check:
-  tizen install -n <wgt-file> -t <device-name> -n
-- TV must have Developer Mode enabled (type 12345 in Apps panel)
-- Find TV IP: Settings > General > System > Network > Network Status
-""" + brand_note)
-
-    return True
-
-
-def package_icons(include_brand):
-    """Package the icon assets into the build directory."""
-    print_header("STEP 3: Package Icons")
-
-    # Ensure icons directory exists in build
-    build_icons_dir = os.path.join(BUILD_DIR, "icons")
-    os.makedirs(build_icons_dir, exist_ok=True)
-
-    # Copy all regular (non-brand) icons first
-    if os.path.exists(ICONS_DIR):
-        for f in os.listdir(ICONS_DIR):
-            full = os.path.join(ICONS_DIR, f)
-            if os.path.isfile(full) and f.split(".")[0] not in BRAND_ICON_NAMES:
-                shutil.copy2(full, os.path.join(build_icons_dir, f))
-                print(f"  Copied icon: {f}")
-
-    # Handle brand icons based on the include_brand flag
-    if include_brand:
-        print("[Icons] Including brand logos in build")
-        # Copy brand icons
-        for icon_name in BRAND_ICON_NAMES:
-            png_src = os.path.join(ICONS_DIR, f"{icon_name}.png")
-            svg_src = os.path.join(ICONS_DIR, f"{icon_name}.svg")
-            if os.path.exists(png_src):
-                shutil.copy2(png_src, os.path.join(build_icons_dir, f"{icon_name}.png"))
-                print(f"  Copied brand icon: {icon_name}.png")
-            elif os.path.exists(svg_src):
-                shutil.copy2(svg_src, os.path.join(build_icons_dir, f"{icon_name}.svg"))
-                print(f"  Copied brand icon: {icon_name}.svg")
-            else:
-                print(f"  ⚠ Brand icon {icon_name} not found in assets/icons")
-    else:
-        print("[Icons] Excluding brand icons from build (--no-brand-icons)")
-        # Do not copy brand icons
-
-    print(f"  Total icons in build: {len(os.listdir(build_icons_dir))}")
-
+            app_id = widget_id
+            pkg_id = widget_id.split(".")[0]
+        
+        app_name = app_id.split(".")[-1] if "." in app_id else "CleanHome"
+        return pkg_id, app_name, version, app_id
+    except Exception:
+        return "c1eanhome1", "CleanHome", "1.0.0", "c1eanhome1.CleanHome"
 
 def main():
-    """Main packaging workflow."""
-    parser = argparse.ArgumentParser(
-        description="CleanHome Packaging Tool - Build and sign .wgt package"
-    )
-    parser.add_argument(
-        "-p", "--profile",
-        default="cleanhome-profile",
-        help="Certificate profile name (default: cleanhome-profile)"
-    )
-    parser.add_argument(
-        "--skip-validate",
-        action="store_true",
-        help="Skip validation step (NOT recommended)"
-    )
-    parser.add_argument(
-        "--manual-only",
-        action="store_true",
-        help="Only print manual commands, don't attempt build"
-    )
-    parser.add_argument(
-        "--no-brand-icons",
-        action="store_true",
-        help="Exclude brand logos (Netflix, YouTube, etc.) from the build for smaller package. Default: included."
-    )
-    parser.add_argument(
-        "--include-brand-icons",
-        action="store_true",
-        help="Force include brand icons in the build (overrides --no-brand-icons)"
-    )
-
+    parser = argparse.ArgumentParser(description="Package CleanHome for Samsung Tizen TV")
+    parser.add_argument("-s", "--profile", default="CleanHomeCert", help="Samsung certificate profile name")
+    parser.add_argument("-t", "--target", default="<DeviceNameOrIP>", help="Target TV device name or IP for install command")
+    parser.add_argument("--dry-run", action="store_true", help="Print commands without executing")
     args = parser.parse_args()
 
-    # Determine if brand icons should be included
-    # Default: include brand icons (as requested by user for personal launcher)
-    include_brand = True
-    if args.no_brand_icons:
-        include_brand = False
-    if args.include_brand_icons:
-        include_brand = True
+    project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+    os.chdir(project_root)
 
-    print()
-    print("*" * 60)
-    print("  CleanHome Packaging Tool")
-    print("*" * 60)
-    print(f"Project root: {PROJECT_ROOT}")
-    print(f"Brand icons: {'INCLUDED' if include_brand else 'EXCLUDED'}")
+    pkg_id, app_name, version, app_id = get_app_info(project_root)
 
-    # Step 1: Validate
-    if not args.skip_validate:
-        if not run_validate():
-            print("\nFIX VALIDATION ERRORS BEFORE PACKAGING")
-            sys.exit(1)
+    print("=================================================================")
+    print("          CleanHome Tizen TV Packaging Pipeline                  ")
+    print("=================================================================")
+    print(f"Project Directory : {project_root}")
+    print(f"Package ID        : {pkg_id}")
+    print(f"Application ID    : {app_id}")
+    print(f"Version           : {version}")
+    print(f"Signing Profile   : {args.profile}")
+    print("=================================================================\n")
+
+    tizen_bin = shutil.which("tizen")
+
+    # Command lines
+    exclusions = [
+        "-e", ".*",
+        "-e", "docs",
+        "-e", "tools",
+        "-e", "node_modules",
+        "-e", "cleanhome-backup*",
+        "-e", "*.log",
+        "-e", "*.wgt",
+        "-e", "package.json",
+        "-e", "package-lock.json"
+    ]
+    
+    build_cmd = ["tizen", "build-web"] + exclusions
+    package_cmd = ["tizen", "package", "-t", "wgt", "-s", args.profile, "--", ".buildResult"]
+    expected_wgt_names = [
+        f"{app_id}.wgt",
+        f"{pkg_id}-{version}.wgt",
+        f"{app_name}.wgt",
+        f"{pkg_id}.CleanHome.wgt"
+    ]
+    default_wgt_name = expected_wgt_names[0]
+
+    if not tizen_bin or args.dry_run:
+        print("[INFO] 'tizen' CLI was not found in PATH (or --dry-run specified)." if not tizen_bin else "[INFO] Running in --dry-run mode.")
+        print("\nExact commands to build and package CleanHome:\n")
+        print("1. Build Web Application (excluding tools, docs, backups):")
+        print("   " + " ".join(build_cmd))
+        print("\n2. Package the build output directory (.buildResult) into WGT:")
+        print("   " + " ".join(package_cmd))
+        print(f"\n3. Expected WGT Package Name: {default_wgt_name}")
+        print("\n4. Install command on target Samsung TV:")
+        print(f"   tizen install -n {default_wgt_name} -t {args.target}")
+        print("\n5. Run command on target Samsung TV:")
+        print(f"   tizen run -p {app_id} -t {args.target}")
+        print("\nNote: Install Tizen Studio with Samsung Certificate Extension to enable CLI execution.")
+        return 0
+
+    print("Step 1: Running 'tizen build-web' with strict exclusions...")
+    print("Command: " + " ".join(build_cmd))
+    res_build = subprocess.run(build_cmd)
+    if res_build.returncode != 0:
+        print(f"[ERROR] 'tizen build-web' failed with exit code {res_build.returncode}")
+        return res_build.returncode
+
+    build_output_dir = os.path.join(project_root, ".buildResult")
+    if not os.path.exists(build_output_dir):
+        print(f"[WARNING] Build output directory not found at {build_output_dir}; checking current directory.")
+        build_output_dir = project_root
+
+    print(f"\nStep 2: Packaging BUILD OUTPUT folder ({os.path.relpath(build_output_dir, project_root)})...")
+    print("Command: " + " ".join(package_cmd))
+    res_pkg = subprocess.run(package_cmd)
+    if res_pkg.returncode != 0:
+        print(f"[ERROR] 'tizen package' failed with exit code {res_pkg.returncode}")
+        return res_pkg.returncode
+
+    # Step 3: Find generated .wgt file
+    wgt_files = glob.glob(os.path.join(project_root, "*.wgt"))
+    if not wgt_files:
+        wgt_files = glob.glob(os.path.join(build_output_dir, "*.wgt"))
+
+    if wgt_files:
+        # Sort by modification time, newest first
+        wgt_files.sort(key=os.path.getmtime, reverse=True)
+        produced_wgt = wgt_files[0]
+        wgt_name = os.path.basename(produced_wgt)
+        wgt_size = os.path.getsize(produced_wgt)
+        print("\n=================================================================")
+        print(f"[SUCCESS] Package produced: {wgt_name} ({wgt_size:,d} bytes / {wgt_size/(1024*1024):.2f} MB)")
+        print("=================================================================")
     else:
-        print("\nWARNING: Skipping validation (--skip-validate)")
+        wgt_name = default_wgt_name
+        print(f"\n[INFO] Assumed package name: {wgt_name}")
 
-    # Step 2: Copy brand icons based on preference
-    copy_brand_icons(include_brand)
-
-    # Step 2: Check tizen CLI
-    if args.manual_only:
-        print_manual_commands(include_brand)
-        return
-
-    tizen_available, tizen_path, tizen_version = check_tizen_cli()
-
-    if tizen_available:
-        print(f"\ntizen CLI found: {tizen_path}")
-        print(f"Version: {tizen_version}")
-
-        # Build with tizen CLI
-        if build_with_tizen_cli(tizen_path, profile_name, include_brand):
-            print_header("SUCCESS")
-            print("""
-Package built successfully!
-
-Next steps:
-1. Connect TV in Developer Mode
-2. Install with: tizen install -n <wgt-file> -t <device-name>
-3. Run with: tizen run -p com.cleanhome.tv -t <device-name>
-
-Or use manual commands if signing is needed.
-""")
-        else:
-            print_header("BUILD FAILED")
-            print("""
-Build failed. Falling back to manual commands...
-""")
-            print_manual_commands(include_brand)
-    else:
-        print(f"\ntizen CLI not available: {tizen_version}")
-        print("\nFalling back to manual commands...")
-        print_manual_commands(include_brand)
-
+    # Step 4: Print install and run commands
+    print("\nTarget Installation & Run Commands:")
+    print(f"  tizen install -n {wgt_name} -t {args.target}")
+    print(f"  tizen run -p {app_id} -t {args.target}")
+    return 0
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

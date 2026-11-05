@@ -1,0 +1,39 @@
+import("$tizen_core/build/resource/resource.gni")
+
+template("copy_files") {
+    forward_variables_from(invoker, [ "proj_deps" ])
+    copy(target_name) {
+        sources = [ target_name ]
+        outputs = [
+            "${root_out_dir}/$resource_out_dir/{{source_target_relative}}",
+        ]
+        deps = proj_deps
+    }
+}
+
+template("resource_project") {
+    forward_variables_from(invoker, "*", [])
+
+    proj_deps = []
+    if (defined(deps) && deps != []) {
+        foreach(proj, deps) {
+            proj_deps += [ "//${proj}:all"]
+        }
+        deps = []
+    }
+    projName = target_name
+    if (deps_type == "hybrid") {
+        resource_build_path = "${root_out_dir}/resource_build"
+    } else {
+        resource_build_path = "${root_out_dir}"
+    }
+    
+    build_resource(target_name + ".build_resource"){
+        build_deps = proj_deps
+    }            
+    proj_deps += [":$target_name" + ".build_resource"]
+
+    hash_deps = []
+    group("all") { deps = proj_deps }
+    group("hash") { deps = hash_deps }
+}

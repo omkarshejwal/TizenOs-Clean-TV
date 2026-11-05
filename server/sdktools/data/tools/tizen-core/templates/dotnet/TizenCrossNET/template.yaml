@@ -1,0 +1,15 @@
+name: BlankApp
+type: dotnet_app
+description: "A multiproject template for building XAML apps with Xamarin.Forms"
+icon: ""
+shampshot: ""
+is-multi: true
+
+sub-project-template:
+  base: BlankApp/template.yaml
+  common: BlankApp.Common/template.yaml
+  mobile: BlankApp.Mobile/template.yaml
+  wearable: BlankApp.Wearable/template.yaml
+  tv: BlankApp.TV/template.yaml
+
+  

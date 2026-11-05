@@ -1,0 +1,4 @@
+import("${tizen_core}/web/toolchains/toolchain.gni")
+
+tizen_toolchain("web") {
+}

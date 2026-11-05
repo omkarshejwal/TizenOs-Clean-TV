@@ -1,0 +1,18 @@
+name: TizenNUITemplate
+type: dotnet_app
+description: "A single project template for building Tizen apps with Tizen NUI"
+icon: ""
+shampshot: ""
+
+templates:
+  TizenNUITemplate.csproj: {{project_name}}.csproj
+  TizenNUITemplate.cs: {{project_name}}.cs
+  tizen-manifest.xml: tizen-manifest.xml
+  tizen_dotnet_project.yaml: tizen_dotnet_project.yaml
+
+files:
+  shared/res/TizenNUITemplate.png: shared/res/{{project_name}}.png
+  
+folders:
+  - res
+  - lib

@@ -1,0 +1,40 @@
+import("$tizen_core/build/web/minify.gni")
+import("$tizen_core/build/web/web.gni")
+
+template("copy_files") {
+    forward_variables_from(invoker, [ "proj_deps" ])
+    copy(target_name) {
+        sources = [ target_name ]
+        outputs = [
+            "${root_out_dir}/$web_out_dir/{{source_target_relative}}",
+        ]
+        deps = proj_deps
+    }
+}
+
+template("web_project") {
+    forward_variables_from(invoker, "*", [])
+
+    proj_deps = []
+    if (defined(deps) && deps != []) {
+        foreach(proj, deps) {
+            proj_deps += [ "//${proj}:all"]
+        }
+        deps = []
+    }
+    projName = target_name        
+    if (deps_type == "single") {
+        web_build_path = "${root_out_dir}"
+    } else if (deps_type == "hybrid") {
+        web_build_path = "${root_out_dir}/web_build"
+    }
+    
+    build_web(target_name + ".build_web"){
+        build_deps = proj_deps
+    }            
+    proj_deps += [":$target_name" + ".build_web"]  
+
+    hash_deps = []
+    group("all") { deps = proj_deps }
+    group("hash") { deps = hash_deps }
+}

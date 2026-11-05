@@ -1,27 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <widget xmlns="http://www.w3.org/ns/widgets"
-      xmlns:tizen="http://tizen.org/2013/tizen"
-      xmlns:samsung="http://schemas.samsung.com/2013/tizen/widgets"
-      version="1.0.0"
-      id="org.cleanhome.Launcher"
-      orient="landscape">
-  <tizen:application id="org.cleanhome.Launcher" requiredPrivileges="http://tizen.org/privilege/tv.inputdevice,http://tizen.org/privilege/application.info">
-    <icon src="assets/icon.png"/>
+        xmlns:tizen="http://tizen.org/ns/widgets"
+        id="http://cleanhome.tv/CleanHome"
+        version="1.0.0"
+        viewmodes="maximized">
+    <tizen:application id="c1eanhome1.CleanHome"
+                       package="c1eanhome1"
+                       required_version="4.0"/>
     <content src="index.html"/>
-    <privilege name="http://tizen.org/privilege/tv.inputdevice"/>
-    <privilege name="http://tizen.org/privilege/application.info"/>
-  </tizen:application>
+    <icon src="icon.png"/>
+    <name>CleanHome</name>
+    <description>Clean, ad-free TV launcher for Samsung Tizen TV</description>
 
-  <name>CleanHome</name>
-  <description>Clean, ad-free Apple TV style launcher for Samsung Tizen TV</description>
+    <tizen:privilege name="http://tizen.org/privilege/application.launch"/>
+    <tizen:privilege name="http://tizen.org/privilege/application.info"/>
+    <tizen:privilege name="http://tizen.org/privilege/tv.inputdevice"/>
 
-  <author href="https://github.com/cleanhome-tv">
-    <name>CleanHome Project</name>
-  </author>
-
-  <content src="index.html"/>
-  <tizen:setting pointing-device-support="disable"/>
-  <tizen:metadata http://samsung.com/tv/metadata/use.network="true"/>
-  <icon src="assets/icon.png"/>
+    <tizen:profile name="tv"/>
+    <tizen:setting screen-orientation="landscape"/>
 </widget>
-

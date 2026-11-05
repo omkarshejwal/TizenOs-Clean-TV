@@ -1,0 +1,242 @@
+# Project type [native_app, shared_lib, static_lib, test_runner]
+project_type: {{.Type}}
+
+# Default profile, Tizen API version
+profile: {{.ProfileID}}
+api_version: "{{.APIVersion}}"
+
+# Output name for compiled binary/ lib
+output_name: {{.OutputName}}
+
+# Output path for build
+output_path: "{{.OutputPath}}"
+
+# Build type [Debug/ Release/ Test]
+build_type: {{.BuildType}}
+
+# Rootstrap for compiling native app
+rootstrap: {{.Rootstrap}}
+
+# Default compiler for native app compilation
+compiler: {{.Compiler}}
+
+# Supported architectures for building:
+# For profile version ≤ 9.0: [x86, x86_64, arm, aarch64]
+# For profile version ≥ 10.0: [x86_64, arm, aarch64, riscv64]
+arch: {{.Arch}}
+
+# Signing profile to be used for Tizen package signing
+# If value is empty: "", active signing profile will be used
+# Else If value is ".", default signing profile will be used
+signing_profile: "{{.SigningProfile}}"
+
+# list of source files (.c, .cpp, .asm, .S etc}} and headers
+{{- if .Sources }}
+sources:
+  {{- range unique .Sources}}
+  - {{to_slash .}}
+  {{- end}}
+{{- else}}
+sources: []
+{{- end}}
+
+# preprocessor defines, passed to the C/C++ compiler with -D options
+{{- if .Defines }}
+defines:
+  {{- range unique .Defines}}
+  - {{.}}
+  {{- end}}
+{{- else}}
+defines: []
+{{- end}}
+
+# header include directories, passed to the C/C++ compiler with -I option
+{{- if .IncludeDirs }}
+include_dirs:
+  {{- range unique .IncludeDirs}}
+  - {{to_slash .}}
+  {{- end}}
+{{- else}}
+include_dirs: []
+{{- end}}
+
+# common compilation flags, passed to both C/C++ compiler
+{{- if .Cflags }}
+cflags:
+  {{- range .Cflags}}
+  - {{.}}
+  {{- end}}
+{{- else}}
+cflags: []
+{{- end}}
+
+# c compilation flags, passed to only C compiler
+{{- if .CflagsC }}
+cflags_c:
+  {{- range .CflagsC}}
+  - {{.}}
+  {{- end}}
+{{- else}}
+cflags_c: []
+{{- end}}
+
+# cpp compilation flags, passed to only C++ compiler
+{{- if .CflagsCc }}
+cflags_cc:
+  {{- range .CflagsCc}}
+  - {{.}}
+  {{- end}}
+{{- else}}
+cflags_cc: []
+{{- end}}
+
+# assembler flags, passed to any invocation of a tool that takes an .asm or .S file as input
+{{- if .Asmflags }}
+asmflags:
+  {{- range .Asmflags}}
+  - {{.}}
+  {{- end}}
+{{- else}}
+asmflags: []
+{{- end}}
+
+# list of library names or library paths to link with target
+# values containing '/' will be passed directly other wise passed with -l option
+{{- if .Libs }}
+libs:
+  {{- range unique .Libs}}
+  - {{to_slash .}}
+  {{- end}}
+{{- else}}
+libs: []
+{{- end}}
+
+# list of library dirs, to be passed to linker with -L option
+{{- if .LibDirs }}
+lib_dirs:
+  {{- range unique .LibDirs}}
+  - {{to_slash .}}
+  {{- end}}
+{{- else}}
+lib_dirs: []
+{{- end}}
+
+# list of library files, to be passed to linker as input
+{{- if .LibFiles }}
+lib_files:
+  {{- range unique .LibFiles}}
+  - {{to_slash .}}
+  {{- end}}
+{{- else}}
+lib_files: []
+{{- end}}
+
+# additional linker flags for the target
+{{- if .Ldflags }}
+ldflags:
+  {{- range .Ldflags}}
+  - {{.}}
+  {{- end}}
+{{- else}}
+ldflags: []
+{{- end}}
+
+# list of edc files
+{{- if .EdcFiles }}
+edc_files:
+  {{- range unique .EdcFiles}}
+  - {{to_slash .}}
+  {{- end}}
+{{- else}}
+edc_files: []
+{{- end}}
+
+# list of directories containing images, passed to edje_cc with -id option
+{{- if .EdcImagesDirs }}
+edc_images_dirs:
+  {{- range unique .EdcImagesDirs}}
+  - {{to_slash .}}
+  {{- end}}
+{{- else}}
+edc_images_dirs: []
+{{- end}}
+
+# list of directories containing sound files, passed to edje_cc with -sd option
+{{- if .EdcSoundDirs }}
+edc_sound_dirs:
+  {{- range unique .EdcSoundDirs}}
+  - {{to_slash .}}
+  {{- end}}
+{{- else}}
+edc_sound_dirs: []
+{{- end}}
+
+# list of directories containing font files, passed to edje_cc with -fd option
+{{- if .EdcFontDirs }}
+edc_font_dirs:
+  {{- range unique .EdcFontDirs}}
+  - {{to_slash .}}
+  {{- end}}
+{{- else}}
+edc_font_dirs: []
+{{- end}}
+
+# list of po files
+{{- if .PoFiles }}
+po_files:
+  {{- range unique .PoFiles}}
+  - {{to_slash .}}
+  {{- end}}
+{{- else}}
+po_files: []
+{{- end}}
+
+# list of resource files, to be packed in tpk
+{{- if .Resources }}
+resources:
+  {{- range unique .Resources}}
+  - {{to_slash .}}
+  {{- end}}
+{{- else}}
+resources: []
+{{- end}}
+
+# list of certs in native project (.trust-anchor)
+{{- if .TrustAnchor }}
+trust_anchor:
+  {{- range unique .TrustAnchor}}
+  - {{to_slash .}}
+  {{- end}}
+{{- else}}
+trust_anchor: []
+{{- end}}
+
+# project dependencies
+{{- if .Deps }}
+deps:
+  {{- range unique .Deps}}
+  - {{to_slash .}}
+  {{- end}}
+{{- else}}
+deps: []
+{{- end}}
+
+# Source files matching these pattern will always be excluded from build
+{{- if .SrcFilters }}
+src_file_patterns:
+{{- range .SrcFilters}}
+- "{{to_slash .}}"
+{{- end}}
+{{- else}}
+src_file_patterns: []
+{{- end}}
+
+# Source files matching these patterns will only be included while building in test mode
+{{- if .TestFilters }}
+test_file_patterns:
+{{- range .TestFilters}}
+- "{{to_slash .}}"
+{{- end}}
+{{- else}}
+test_file_patterns: []
+{{- end}}

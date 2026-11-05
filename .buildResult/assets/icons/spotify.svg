@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <!-- Spotify green circle -->
+  <circle cx="128" cy="128" r="100" fill="#1DB954" />
+  <!-- 3 Curved black sound waves -->
+  <path d="M72,98 Q128,80 184,106" fill="none" stroke="#121212" stroke-width="15" stroke-linecap="round" />
+  <path d="M78,128 Q128,112 178,136" fill="none" stroke="#121212" stroke-width="13" stroke-linecap="round" />
+  <path d="M84,158 Q128,144 172,164" fill="none" stroke="#121212" stroke-width="11" stroke-linecap="round" />
+</svg>

@@ -1,0 +1,63 @@
+{
+  "tiles": [
+    {
+      "name": "Netflix",
+      "icon": "netflix",
+      "appId": "org.netflix.tv",
+      "fallbackUrl": "https://www.netflix.com"
+    },
+    {
+      "name": "YouTube",
+      "icon": "youtube",
+      "appId": "com.google.youtube.tv",
+      "fallbackUrl": "https://www.youtube.com"
+    },
+    {
+      "name": "Prime Video",
+      "icon": "primevideo",
+      "appId": "amazon.amazonvideo.amazonvideo",
+      "fallbackUrl": "https://www.primevideo.com"
+    },
+    {
+      "name": "Disney+ Hotstar",
+      "icon": "disney",
+      "appId": "disney.hotstar",
+      "fallbackUrl": "https://www.disneyplushotstar.com"
+    },
+    {
+      "name": "JioCinema",
+      "icon": "jiocinema",
+      "appId": "jiocinema.jio",
+      "fallbackUrl": "https://www.jio.com/jocinema"
+    },
+    {
+      "name": "Spotify",
+      "icon": "spotify",
+      "appId": "com.spotify.tv",
+      "fallbackUrl": "https://open.spotify.com"
+    },
+    {
+      "name": "Samsung Internet",
+      "icon": "samsung-internet",
+      "appId": "com.sec.android.app.sbrowser",
+      "fallbackUrl": "https://www.samsung.com/internet"
+    },
+    {
+      "name": "Inputs",
+      "icon": "inputs",
+      "appId": "",
+      "fallbackUrl": ""
+    }
+  ],
+  "description": "CleanHome tile configuration matching CleanYourTV dock layout.",
+  "brand-colors": {
+    "netflix": "#E50914",
+    "youtube": "#FF0000",
+    "primevideo": "#00A8E1",
+    "disney": "#113CCF",
+    "jiocinema": "#D8005A",
+    "spotify": "#1DB954",
+    "samsung-internet": "#2C2684",
+    "inputs": "#666666"
+  }
+}

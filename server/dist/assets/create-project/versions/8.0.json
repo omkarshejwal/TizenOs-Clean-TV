@@ -1,0 +1,8 @@
+{
+  "title": "Tizen OS 8.0",
+  "description": "Tizen 8.0 enhances system resource and device/sensor management by restoring process-control features (such as CPU affinity and OOM_FIXED_APPS) and improving multi-user service latency and boot callbacks, adds input device on/off, display white-balance/rotation, and power suspension/resume callbacks, upgrades core OS components (e.g., libdrm, libusb, cryptsetup) and open-source toolchains (e.g., cmake, automake, diffutils), introduces major framework improvements including multi-window support, Wayland 1.21 with the wtz-screen/shell protocols, expanded 3D graphics and scene support, enhanced machine-learning APIs (supporting TensorFlow Lite v2.11 and NNStreamer 2.3.0) and web engine advances (Chromium 108 base, service-worker caching, ES2022 support) — all while applying security patches and many bug-fixes across the platform.",
+  "thumbnail": "8.0.webp",
+  "badge": ["System Boost", "Web Revamp", "AI & Compat"],
+  "link": "https://samsungtizenos.com/release-notes/tizen-8-0-public-m1",
+  "version": "1.0.0"
+}

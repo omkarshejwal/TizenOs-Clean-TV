@@ -1,0 +1,20 @@
+name: TizenXamlApp/TizenXamlApp.TV
+type: dotnet_app
+description: "A Tv project template for building XAML apps with Xamarin.Forms"
+icon: ""
+shampshot: ""
+
+templates: 
+  TizenXamlApp.TV/TizenXamlApp.TV.csproj: {{project_name}}.TV/{{project_name}}.TV.csproj
+  TizenXamlApp.TV/TizenXamlApp.TV.cs: {{project_name}}.TV/{{project_name}}.TV.cs
+  TizenXamlApp.TV/tizen-manifest.xml: {{project_name}}.TV/tizen-manifest.xml
+  TizenXamlApp.TV/tizen_dotnet_project.yaml: {{project_name}}.TV/tizen_dotnet_project.yaml 
+
+files:
+  TizenXamlApp.TV/shared/res/TizenXamlApp.TV.png: {{project_name}}.TV/shared/res/{{project_name}}.TV.png
+  
+folders:
+  - {{project_name}}.TV/res
+  - {{project_name}}.TV/lib
+
+deps: [ {{project_name}}/{{project_name}} ]

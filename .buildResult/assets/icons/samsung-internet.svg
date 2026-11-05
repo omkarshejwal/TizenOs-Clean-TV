@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <!-- Deep space/purple disc -->
+  <circle cx="128" cy="128" r="96" fill="#1C1844" />
+  <!-- Globe gradient sphere -->
+  <circle cx="128" cy="128" r="76" fill="#2C2684" />
+  <!-- Orbital ring -->
+  <ellipse cx="128" cy="128" rx="98" ry="34" fill="none" stroke="#1B99F4" stroke-width="8" transform="rotate(-30, 128, 128)" />
+  <circle cx="70" cy="162" r="12" fill="#1B99F4" />
+</svg>

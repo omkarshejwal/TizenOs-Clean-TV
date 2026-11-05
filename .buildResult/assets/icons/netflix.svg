@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <!-- Netflix ribbon N -->
+  <g transform="translate(48, 20) scale(0.625)">
+    <!-- Left vertical bar (darker red) -->
+    <path d="M0,0 L60,0 L60,340 L0,340 Z" fill="#B1060F" />
+    <!-- Right vertical bar (darker red) -->
+    <path d="M196,0 L256,0 L256,340 L196,340 Z" fill="#B1060F" />
+    <!-- Diagonal bar with drop shadow and vibrant red -->
+    <path d="M0,0 L70,0 L256,340 L186,340 Z" fill="#E50914" />
+  </g>
+</svg>

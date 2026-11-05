@@ -1,0 +1,135 @@
+import("$tizen_core/build/native/native.gni")
+import("$tizen_core/build/native/lib.gni")
+import("$tizen_core/build/native/edc.gni")
+import("$tizen_core/build/native/po.gni")
+
+template("native_project") {
+    forward_variables_from(invoker, "*", [])
+
+    if (!defined(lib_files)) { lib_files = [] }
+    if (!defined(edc_files)) { edc_files = [] }
+    if (!defined(po_files)) { po_files = [] }
+    if (!defined(resourcespaths)) { resourcespaths = [] }
+    if (!defined(libs)) { libs = [] }
+    if (!defined(lib_dirs)) { lib_dirs = [] }
+
+    proj_deps = []
+    out_files = []
+    precompiled_libs = []
+
+    if (deps_type == "hybrid") {
+        native_build_path = "${root_out_dir}/native_build"
+    } else if (deps_type == "single") {
+        native_build_path = "${root_out_dir}"
+    } else {
+        native_build_path = "${root_out_dir}/${arch}"
+    }
+
+    if (defined(deps)) {
+        foreach(proj, deps) {
+            proj_deps += [ "//${proj}:out"]
+        }   
+
+        if (deps != [] || lib_files != []) {
+            lib_dirs += ["${native_build_path}/${native_out_dir}/lib"]
+        }   
+        deps = []
+    }      
+
+    # copy precompiled libs
+    static_libs = filter_include(lib_files, [ "//lib/$profile/$arch/*.a", "//lib/${arch}/*.a", "//lib/${arch}/*.a.*" ])
+    if (static_libs == []) {
+        static_libs = filter_include(lib_files, [ "//lib/*.a", "//lib/*.a.*" ])
+    }
+    libs += static_libs
+
+    shared_libs = filter_include(lib_files, [ "//lib/$profile/$arch/*.so", "//lib/${arch}/*.so", "//lib/${arch}/*.so.*" ])
+    if (shared_libs == []) {
+        shared_libs = filter_include(lib_files, [ "//lib/*.so", "//lib/*.so.*" ])
+    }
+    libs += shared_libs
+
+    precompiled_libs += shared_libs + static_libs
+    if (precompiled_libs != []){
+        copy_lib("copy_libs"){}
+        out_files += get_target_outputs(":copy_libs")    
+        proj_deps += [":copy_libs"]
+    }
+    
+
+    # compile native code to binary or library
+    build_native(output_name) {
+        sources = src_files
+        deps = proj_deps
+    }
+    proj_deps += [ ":$output_name" ]
+
+    if (!test_build) {
+        if (project_type == "native_app") {
+            out_files += [ "$native_build_path/$native_out_dir/bin/$output_name" ]
+        } else if (project_type == "shared_lib") {
+            out_files += [ "$native_build_path/$native_out_dir/lib/lib$output_name.so" ]
+        }
+    } else {
+        if (project_type == "test_runner") {
+            out_files += [ "$native_build_path/$native_out_dir/bin/$output_name" ]
+        }
+    }
+
+    # compile edc files
+    if (edc_files != []){
+        build_edc(output_name+ "_edc_files") {}
+        out_files += get_target_outputs(":${output_name}_edc_files")
+        proj_deps += [ ":${output_name}_edc_files" ]
+    }
+
+    # compile po files   
+    if (po_files != []){        
+        build_po(output_name+ "_po_files"){}
+        out_files += get_target_outputs(":${output_name}_po_files")
+        proj_deps += [":${output_name}_po_files"]
+    }
+
+    # built files => path in temp folder
+    built_files_path = []
+    foreach(out_file, out_files){
+        built_files_path += [ rebase_path(out_file, root_out_dir) + " || " + rebase_path("${native_build_path}/.${native_out_dir}/" + rebase_path(out_file, native_build_path + "/${native_out_dir}"), root_out_dir)]
+    }
+
+    # resources => path in temp folder
+    res_files_path = []
+    foreach(res, resourcespaths){
+        paths = []
+        paths = string_split(res, " || ")
+        res_files_path += [ rebase_path(paths[0], root_out_dir) + " || " + rebase_path("${native_build_path}/.${native_out_dir}/" + paths[1], root_out_dir)]
+    }
+
+    # hashes will be computed in sign&pack step
+    hash_deps = []
+    lib_deps = []    
+    bin_deps = []
+    if (!test_build) {
+        if (project_type == "shared_lib") {
+            lib_deps += [":$output_name"]
+        } else {
+            bin_deps += [":$output_name"]
+        }
+    } else {
+        bin_deps += [":$output_name"]
+    }
+
+
+    group("out") { 
+        deps = bin_deps
+        data_deps = lib_deps
+    }
+    group("all") { 
+        deps = proj_deps 
+        # gather list of out_files in the final tpk
+        metadata = {
+            built_files = built_files_path
+            res_files = res_files_path
+        }
+    }    
+    group("hash") { deps = hash_deps }
+}

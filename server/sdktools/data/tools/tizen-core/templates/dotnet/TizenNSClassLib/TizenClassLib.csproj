@@ -1,0 +1,16 @@
+﻿<Project Sdk="{{tizen_net_sdk_version}}">
+
+  <!-- Property Group for Tizen Project -->
+  <PropertyGroup>
+    <TargetFramework>{{target_framework}}</TargetFramework>
+    <TizenCreateTpkOnBuild>false</TizenCreateTpkOnBuild>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>None</DebugType>
+  </PropertyGroup>
+
+</Project>

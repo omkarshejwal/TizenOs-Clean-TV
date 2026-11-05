@@ -1,0 +1,33 @@
+# Default Tizen profile for the build
+profile = "{{.ProfileID}}"
+
+# Default Tizen version for the build
+api_version = "{{.APIVersion}}"
+
+# Default Build type [Debug/ Release/ Test]
+build_type = "{{.BuildType}}"
+
+# Build with debug info
+debug_build = {{.DebugBuild}}
+
+# Build with tests
+test_build = {{eq .BuildType "test"}}
+
+{{- if or .Native .NativeTests}}
+
+# Default rootstrap to use for build [llvm/ gcc]
+rootstrap = "{{Rootstrap}}"
+
+# Default compiler to use for build [llvm/ gcc]
+compiler = "{{Compiler}}"
+
+# default architecture to build for [x86/ x86_64/ arm/ aarch64/ riscv64]
+arch = "{{Arch}}"
+
+# Pass verbose option to tools
+verbose_build = false
+
+# Strip debug info from final binary
+strip_debug_info = false
+
+{{- end}}

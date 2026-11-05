@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <!-- Include Nuget Package for Xamarin building -->
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Forms" Version="{{tizen_xamarin_forms_version}}" />
+  </ItemGroup>
+
+</Project>

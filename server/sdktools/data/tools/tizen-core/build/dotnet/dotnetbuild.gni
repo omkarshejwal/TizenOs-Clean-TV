@@ -1,0 +1,121 @@
+template("check_status") {
+    # checks if the expected output tpk/dll is already present in the outpath
+    forward_variables_from(invoker, [ "csprojpath", "projName", "pack_as_rpk", "files", "dotnet_build_path"])
+    status_file = "${dotnet_build_path}/status/$target_name"
+
+    # pass the working_folder arg only if specified
+    working_folder_args = []
+    if(working_folder != ""){
+        # set working_folder_args only if working_folder is .csproj 
+        wf_file = [ working_folder ]
+        wf_check = filter_include(wf_file, [ "*.csproj" ])
+        if (wf_check != []){
+            working_folder_args = ["--working-folder", rebase_path(working_folder)] 
+        }
+    }
+
+    # if the list of files to be monitored is empty,
+    #   force touch/create the status file
+    if (files == []){
+        working_folder_args += ["-t"]
+    }
+
+    if (defined(pack_as_rpk) && pack_as_rpk) {
+        working_folder_args += ["-r"]
+    }
+
+    action(target_name) {
+        command = "$tizen_core/tz"
+        description = "Check outputfiles status of $projName"
+        args = [
+            "dotnet-build", "check",
+            "--csproj-path", "$csprojpath", "--configuration" , build_type,
+            "--status-file",rebase_path(status_file),
+            "--name",projName
+        ] + working_folder_args
+
+        if(build_type != "") {
+            args += ["--build-type", build_type]
+        }
+
+        outputs = [ status_file, "${dotnet_build_path}/status/${target_name}_trigger" ]
+    }
+}
+
+template("csproj_build") {
+    # executes tz subcommand to run the dotnet/msbuild build command
+    forward_variables_from(invoker, [ "csprojpath" , "csprojBuild_deps", "projName", "pack_as_rpk", "files", "dotnet_build_path"])
+    build_tool = dotnet_cli_path
+
+    if(host_os == "win" && dotnet_build_tool != "dotnet-cli"){
+        build_tool = "$msbuild_path"
+    }
+    status_file = "${dotnet_build_path}/status/$target_name"
+
+    build_args = []
+    if (skip_dotnet_build){
+        build_args += ["-S"]
+    }
+    if (defined(pack_as_rpk) && pack_as_rpk) {
+        build_args += ["-r", "-R", rebase_path("${root_out_dir}/resource_build/projects/${projName}")]
+    }
+
+    if(working_folder != "" ){
+        # update csproj path only if working_folder is .csproj 
+        wf_file = [ working_folder ]
+        wf_check = filter_include(wf_file, [ "*.csproj" ])
+        if (wf_check != []){
+            csprojpath = working_folder
+        }  
+    }
+
+
+    profile_args =[]    
+    if (default_signing_profile == "false") {
+        # default profile is not used for signing
+        profile_args += ["--author-key", author_cert, "--author-attr", author_pass_attr,
+            "--dist-key", distributor_cert, "--dist-attr", distributor_pass_attr]
+            
+        if (distributor2_cert != ""){
+            profile_args += ["--dist2-key", distributor2_cert, "--dist2-attr", distributor2_pass_attr]
+        }        
+    }else {
+        profile_args += ["-D"]
+    }
+   
+
+    action(target_name) {
+        command = "$tizen_core/tz"
+        description = "build csproj \"$csprojpath\" using \"$build_tool\" : can be modified in tizen_dotnet_project.yaml"
+        sources = ["${dotnet_build_path}/status/${projName}_status_check"] + files
+        args = [
+            "dotnet-build", "build",
+            "--build-tool" ,"$build_tool",
+            "--configuration" , build_type, "-t" , "$dotnet_build_tool",
+            "--status-file",rebase_path(status_file)
+        ] + profile_args + build_args
+
+        if (sln_path != "") {
+            args += ["--target-path", rebase_path(sln_path)]
+        } else {
+            args += ["--target-path", rebase_path(csprojpath)]
+        }
+
+        outputs = [ status_file ]
+        deps = csprojBuild_deps
+    }
+}
+
+template("monitor_src_files"){
+    forward_variables_from(invoker, [ "proj_deps", "files", "projName", "dotnet_build_path"])
+    status_file = "${dotnet_build_path}/status/$target_name"
+    
+    action(target_name) {
+        command = "$tizen_core/uutils"
+        description = "Changes in source files of dep dotnet-project : $projName"
+        sources = files
+        args = ["touch",  rebase_path("${status_file}")]
+        outputs = [ "${status_file}" ]
+        deps = proj_deps
+    }
+}

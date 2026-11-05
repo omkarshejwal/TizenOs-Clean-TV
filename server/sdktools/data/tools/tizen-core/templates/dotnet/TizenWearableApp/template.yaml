@@ -1,0 +1,19 @@
+name: TizenWearableApp
+type: dotnet_app
+description: "A Tizen Wearable App project template for building Tizen Wearable Application"
+icon: ""
+shampshot: ""
+
+templates:
+  TizenWearableApp.csproj: {{project_name}}.csproj
+  TizenWearableApp.cs: {{project_name}}.cs
+  App.cs: App.cs
+  tizen-manifest.xml: tizen-manifest.xml
+  tizen_dotnet_project.yaml: tizen_dotnet_project.yaml
+
+files:
+  shared/res/TizenWearableApp.png: shared/res/{{project_name}}.png
+  
+folders:
+  - res
+  - lib

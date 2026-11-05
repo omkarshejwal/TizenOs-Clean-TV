@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<View x:Class="{{project_name}}.XamlPage"
+  xmlns="http://tizen.org/Tizen.NUI/2018/XAML"
+  xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+  PositionUsesPivotPoint="True"
+  ParentOrigin="Center"
+  PivotPoint="Center">
+
+    <TextLabel x:Name="text"
+               Text="Hello, NUI XAML APP!"
+               PositionUsesPivotPoint="True"
+               ParentOrigin="Center"
+               PivotPoint="Center"
+               Size="700,300,0"
+               PointSize="17"
+               TextColor="Black"/>
+               
+</View>

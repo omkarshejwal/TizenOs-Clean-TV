@@ -1,0 +1,18 @@
+@echo off
+
+set SDB_PATH=%INSTALLED_PATH%\tools
+
+"%SDB_PATH%\sdb.exe" kill-server
+del "%SDB_PATH%\sdb.exe"
+del "%SDB_PATH%\ansicon.exe"
+del "%SDB_PATH%\ANSI32.dll"
+
+::echo "removing sdb path..."
+
+::set replace=
+::set search=%SDB_PATH%
+::set subject=%PATH%
+:: update path
+::call set subject=%%subject:%search%=%replace%%%
+::setx -m PATH "%subject%"
+exit 0

@@ -1,0 +1,16 @@
+name: TizenNUIGadget_inhouse
+type: dotnet_app
+description: "A single project template for building Tizen gadgets with Tizen NUI Gadget"
+icon: ""
+shampshot: ""
+
+templates:
+  TizenNUIGadget.csproj: {{project_name}}.csproj
+  TizenNUIGadget.cs: {{project_name}}.cs
+  tizen-manifest.xml: tizen-manifest.xml
+  tizen_dotnet_project.yaml: tizen_dotnet_project.yaml
+
+folders:
+  - res
+  - res/allowed
+  - res/global

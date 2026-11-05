@@ -1,0 +1,35 @@
+import("$tizen_core/build/web/minify.gni")
+import("$tizen_core/build/pack.gni")
+
+template("build_web"){
+    forward_variables_from(invoker, [ "build_deps", "files", "opt_files", "projName", "web_build_path", "project_path"])
+
+    status_file = "${web_build_path}/status/$target_name"
+    source_files = files
+    projPath = project_path
+    opt_arg = []
+    if (opt){
+        source_files += opt_files
+        opt_arg += ["-m"]
+    }
+
+    outputPath = rebase_path("${web_build_path}/projects/${projName}")
+    # convert the source files to their final output paths, 
+    abs_file_paths = rebase_path(source_files )
+    output_paths = []
+    foreach(file_path, abs_file_paths) {
+        output_paths += [string_replace(file_path, projPath , "${web_build_path}/projects/${projName}")]
+    }
+        
+    action(target_name) {
+        command = "$tizen_core/tz"
+        description = "Build web-project : $projName"
+        sources = source_files
+        args = [
+            "web-build", "-o", outputPath , "-p", "$projPath",
+            "-s", rebase_path(status_file)
+        ] + opt_arg
+        outputs = [ "${status_file}" ] + output_paths
+        deps = build_deps
+    }
+}

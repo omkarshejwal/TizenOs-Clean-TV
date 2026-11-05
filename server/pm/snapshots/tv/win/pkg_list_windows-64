@@ -1,0 +1,403 @@
+
+
+Package : tv-samsung-websimulator-core
+Version : 10.0.6
+OS : windows-64
+Build-host-os : ubuntu-64
+Maintainer : Jingjing Geng <jingjin.geng@samsung.com>
+Install-dependency : base-ide-product [ windows-64 ]
+Source : simulator
+Path : /binary/tv-samsung-websimulator-core_10.0.6_windows-64.zip
+Origin : local
+SHA256 : f449e0f9707257b9b6d4004fc8c4caf34369bd3820817fce3016061dd404a1cd
+Size : 205974649
+Uncompressed-size : 509673472
+Description : Samsung TV Web Simulator
+
+Package : TV-SAMSUNG-Extension-Resources
+Label : Web app. tools
+Version : 10.0.0
+OS : windows-64, ubuntu-32, ubuntu-64, windows-32, macos-64
+Build-host-os : ubuntu-64
+Maintainer : Juhyoung Lee <jh_on.lee@samsung.com>
+Attribute : root
+Install-dependency : tv-samsung-websimulator-core
+Source : meta-extension-components
+Path : /binary/TV-SAMSUNG-Extension-Resources_10.0.0_windows-64.zip
+Origin : local
+SHA256 : 3d40b357f2d2fa3bd0a4b7890c4d66b87c6600fa65003e24042a6dadcf6e9e88
+Size : 1561
+Uncompressed-size : 8192
+Description : Tizen TV Extensions common components consist of tv web simulator.
+
+Package : TV-SAMSUNG-Extension-Tools
+Label : TV Extensions Tools
+Version : 10.0.0
+OS : windows-64, ubuntu-32, ubuntu-64, windows-32, macos-64
+Build-host-os : ubuntu-64
+Maintainer : Juhyoung Lee <jh_on.lee@samsung.com>
+Attribute : root
+Install-dependency : TV-SAMSUNG-Extension-Resources
+Source : meta-extension-components
+Path : /binary/TV-SAMSUNG-Extension-Tools_10.0.0_windows-64.zip
+Origin : local
+SHA256 : 63e38e710a1e2134a5e88b0c7ce23bb1f05e7417cd812956b7c6b91233dba2cd
+Size : 1530
+Uncompressed-size : 8192
+Description : Tizen TV Extensions common components
+
+
+
+Package : tv-samsung-emulator-resources
+Version : 10.0.0
+OS : windows-64, ubuntu-32, ubuntu-64, windows-32, macos-64
+Build-host-os : ubuntu-64
+Maintainer : SeokYeon Hwang <syeon.hwang@samsung.com>
+Source : emulator-resources
+Path : /binary/tv-samsung-emulator-resources_10.0.0_windows-64.zip
+Origin : local
+SHA256 : 94307dad3ae7d8ef3882b9a279ab28f3977e4fcfed7509b51cfa8a82c77965b4
+Size : 2433019
+Uncompressed-size : 2754968
+Description : resources for emulator
+
+Package : tv-samsung-libav
+Version : 10.8.0
+OS : windows-64
+Build-host-os : ubuntu-64
+Maintainer : Kyoungwon Park <kw0712.park@samsung.com>
+Build-dependency : 10.0-libav [ windows-64 ]
+Source : libav
+Path : /binary/tv-samsung-libav_10.8.0_windows-64.zip
+Origin : local
+SHA256 : f24131a3642ae30f0babf0c1345323d5c747edaf0877563cfb5889c4662db941
+Size : 6639738
+Uncompressed-size : 22328776
+Description : libav binaries for Tizen Emulator
+
+Package : tv-samsung-emulator-kernel-x86
+Version : 4.4.35.24
+OS : windows-64, ubuntu-32, ubuntu-64, windows-32, macos-64
+Build-host-os : ubuntu-64
+Maintainer : Yeonseok Choi <yeonsuk.choi@samsung.com>
+Source : emulator-kernel
+Path : /binary/tv-samsung-emulator-kernel-x86_4.4.35.24_windows-64.zip
+Origin : local
+SHA256 : 8f7663c637b1d3fe80fca8b03cbeebbd783d8aff3c837584df0b57692f476757
+Size : 13624881
+Uncompressed-size : 13957616
+Description : Tizen x86 Emulator Kernel
+
+Package : TV-SAMSUNG-Emulator-Utils
+Version : 10.0.0
+OS : windows-64, windows-32, macos-64
+Build-host-os : ubuntu-64
+Maintainer : Juhyoung Lee <jh_on.lee@samsung.com>
+Install-dependency : intelhaxm
+Source : meta-extension-components
+Path : /binary/TV-SAMSUNG-Emulator-Utils_10.0.0_windows-64.zip
+Origin : local
+SHA256 : ed69b6141fbaea46b89ebe615a6314c27b249824dfbb60a5b4c45591018977e8
+Size : 1510
+Uncompressed-size : 8192
+Description : Tizen emulator utils such as intelhaxm
+
+Package : tv-samsung-emulator-manager-resources
+Version : 10.0.0
+OS : windows-64
+Build-host-os : windows-64
+Maintainer : MinKee Lee <minkee.lee@samsung.com>
+Install-dependency : tv-samsung-emulator-resources [ windows-64 ]
+Build-dependency : emulator-manager [ windows-64 ]
+Source : tv-samsung-emulator-manager-resources
+Path : /binary/tv-samsung-emulator-manager-resources_10.0.0_windows-64.zip
+Origin : local
+SHA256 : a1cd350432f76adb3630805e8dd1ca57594a134412088582b5929f5161eaf863
+Size : 27275
+Uncompressed-size : 33677
+Description : Emulator Manager Platform Resources
+
+
+
+
+
+Package : tv-samsung-log-server
+Version : 5.5.0
+OS : windows-64
+Build-host-os : ubuntu-64
+Maintainer : Joungsun Beak<jounsun.beak@samsung.com>
+Path : /binary/tv-samsung-log-server_5.5.0_windows-64.zip
+Origin : local
+SHA256 : c634fb4d0180ab5d63d5362345f687d903cdb93fe6ad141343e2ea7751d54eab
+Size : 850
+Uncompressed-size : 12318
+Description : Tizen Web IDE add-ons for tv
+
+Package : tv-samsung-emulator-control-panel-devices
+Version : 10.0.1
+OS : windows-64, ubuntu-32, ubuntu-64, windows-32, macos-64
+Build-host-os : ubuntu-64
+Maintainer : Jinhyung Choi <jinh0.choi@samsung.com>
+Build-dependency : emulator-control-panel-common, emulator-common-lib-dev
+Source : emulator-control-panel-devices
+Path : /binary/tv-samsung-emulator-control-panel-devices_10.0.1_windows-64.zip
+Origin : local
+SHA256 : e093f7d8e9bb72bdedcf3a562d35e195cb54db029c8a998dd5b500d71af21741
+Size : 196283
+Uncompressed-size : 272856
+Description : Tizen TV Emulator Control Panel Devices
+
+Package : tv-samsung-emulator-lib
+Version : 1.12.0
+OS : windows-64
+Build-host-os : ubuntu-64
+Maintainer : Minkee Lee <minkee.lee@samsung.com>
+Build-dependency : 10.0-emulator-lib [ windows-64 ]
+Source : emulator
+Path : /binary/tv-samsung-emulator-lib_1.12.0_windows-64.zip
+Origin : local
+SHA256 : ba98c7744d8ab23a7e2924e258101d1772eb1c369388076f8a6fba7471df6dff
+Size : 28599820
+Uncompressed-size : 63771693
+Description : SWT and ECP libraries, and other runtime libraries for Tizen Emulator.
+
+Package : tv-samsung-emulator-still-image
+Version : 10.0.0
+OS : windows-64
+Build-host-os : ubuntu-64
+Maintainer : Joungsun Beak<jounsun.beak@samsung.com>
+Path : /binary/tv-samsung-emulator-still-image_10.0.0_windows-64.zip
+Origin : local
+SHA256 : 663feeb14d5860a6363432115ac941713b20bf0cb109bcb89fa870bf373dc803
+Size : 592085
+Uncompressed-size : 86390272
+Description : Tizen TV Emulator Still Image
+
+Package : tv-samsung-emulator-qemu-x86
+Version : 2.8.0.38
+OS : windows-64
+Build-host-os : ubuntu-64
+Maintainer : Jingjing geng <jingjin.geng@samsung.com>
+Install-dependency : tv-samsung-emulator-kernel-x86 [ windows-64 ], tv-samsung-libav [ windows-64 ]
+Build-dependency : tv-samsung-emulator-lib-dev [ windows-64 ], tv-samsung-libav-dev [ windows-64 ]
+Source : emulator
+Path : /binary/tv-samsung-emulator-qemu-x86_2.8.0.38_windows-64.zip
+Origin : local
+SHA256 : 79f9e1caf90de248cf41308806621f7c987b9eb95e15757eb902cea56855ac78
+Size : 36561774
+Uncompressed-size : 125931464
+Description : Tizen x86 Emulator
+
+Package : tv-samsung-emulator-qemu-common
+Version : 2.8.0.38
+OS : windows-64, windows-32
+Build-host-os : ubuntu-64
+Maintainer : Jingjing geng <jingjin.geng@samsung.com>
+Source : emulator
+Path : /binary/tv-samsung-emulator-qemu-common_2.8.0.38_windows-64.zip
+Origin : local
+SHA256 : beab8a8f5c53bc1343e35903043dd109bed6cb4fc666d2bbec8dc6591d7bcc92
+Size : 11111
+Uncompressed-size : 20480
+Description : Common binaries for Tizen Emulator
+
+Package : tv-samsung-public-emulator-image-x86-64
+Version : 10.0.6
+OS : windows-64, ubuntu-32, ubuntu-64, macos-64, windows-32
+Build-host-os : ubuntu-64
+Maintainer : yeonsuk.choi <yeonsuk.choi@samsung.com>
+Install-dependency : tv-samsung-emulator-manager-resources, TV-SAMSUNG-Emulator-Utils
+Source : emulator-img
+Path : /binary/tv-samsung-public-emulator-image-x86-64_10.0.6_windows-64.zip
+Origin : local
+SHA256 : bc76f40e6809a0c6006318eed7e0cbc8963a3a0a32701de0166def8491dbab1a
+Size : 916928696
+Uncompressed-size : 936296448
+C-license-text : SAMSUNG TV App SDK LICENSE AND TERMS OF USE
+ SAMSUNG ELECTRONICS CO., LTD. (referred to here as "SAMSUNG") makes available its application programming interface, code samples and related software tools (collectively, the "SAMSUNG TV App SDK") and any technical documentation or other specifications SAMSUNG releases for exploitation of the SAMSUNG TV App SDK (the "Documentation") subject to this License and Terms of Use agreement (the "SDK Terms"). SAMSUNG may update, amend or modify these SDK Terms from time to time. By clicking the "I Accept" button below, and accessing and continuing to use the SAMSUNG TV App SDK, You agree and acknowledge that such shall signify Your binding acceptance of these SDK Terms (as updated from time to time), and You represent that You have the authority to form a binding contract. If You disagree with any of these SDK Terms, please click the "I Do Not Accept" button, and SAMSUNG consequently does not grant You a license to use the SAMSUNG TV App SDK.
+ .
+ These SDK Terms are in addition to and supplement the SAMSUNG App Developer Terms of Service Agreement ("Developer Terms Agreement"), as provided to You through either from the SAMSUNG App Web Site, or as part of a separate developer service agreement. The terms and conditions of the Developer Terms Agreement shall fully apply to these SDK Terms, save for the exceptions that are explicitly stated in these SDK Terms.
+ Occasionally SAMSUNG will notify You of any changes or updates to the SDK Terms, the Developer Terms Agreement, or any other applicable legal documents and You will be given an opportunity to review such changes or updates prior to Your acceptance. In the event that You cannot agree to any changes or updates in any applicable legal document, You will immediately cease any and all use of the SAMSUNG TV App SDK and, where applicable, any and all use of the SAMSUNG TV App SDK.
+ SAMSUNG intends to make all versions of the SAMSUNG TV App SDK available for use, giving You flexibility to choose and allowing you to select the version of Your choice. Such selection should be made wisely based on technical and engineering comparability of Your service and the specifications of the SAMSUNG devices, and it is Your obligation to make sure that Your application and/or service is compatible with the relevant SAMSUNG devices.
+ YOU SHALL CAUSE AND ENSURE THAT YOU AND YOUR EMPLOYER WILL USE THE SAMSUNG TV App SDK ONLY IN ACCORDANCE WITH THE TERMS OF THESE SDK TERMS.
+ .
+ 1. GRANT OF LICENSED USES
+ .
+ 1.1	As an exception to the Developer Terms Agreement, and subject to Your compliance with the SDK Terms and all other terms of the Developer Terms Agreement, SAMSUNG grants to You a limited, non-exclusive, non-assignable, non-sublicensable, non-transferable license to (i) use the SAMSUNG TV App SDK for the sole purpose of developing App software applications that can interface and communicate with the SAMSUNG Devices, which applications shall only operate within and not outside of the SAMSUNG Devices for the purpose delivering Your service through SAMSUNG App System, SMART TV ("SMART TV Service"); and (ii) make a limited number of copies of the Documentation for your internal use only and solely for the purpose of developing applications with the SAMSUNG TV App SDK.
+ .
+ 1.2	As a part of the SAMSUNG TV App SDK, SAMSUNG may provide mobile APIs for Android and/or iOS for the purposes of communicating and operating with the application in the SAMSUNG APP System, SMART TV. Samsung grants to You a limited, non-exclusive, non-assignable, non-sublicensable, non-transferable license to (i) use the mobile APIs for the sole purpose of making mobile App software applications communicate and operate with the relevant application in the SAMSUNG APP System, SMART TV; and (ii) make a limited number of copies of the Documentation for your internal use solely for the purpose mentioned in this clause 1.2.
+ .
+ 2. RESTRICTIONS
+ .
+ Without exceptions, You (and Your employees) shall not, directly or indirectly, violate any applicable laws, the rights of others, or the operational and security mechanisms of any third party by use of the SAMSUNG TV App SDK, by use of the Apps You developed or through Your service. Such prohibited conducts shall include, but are not limited to, directly or indirectly:
+ - Using the SAMSUNG TV App SDK for any application that promotes, conducts, or contributes to fraudulent, obscene, pornographic and/or illegal activities, including deceptive impersonation or activities involving the exploitation of children.
+ - Using the SAMSUNG TV App SDK for any application to violate anyone's privacy rights (e.g. distributing unwanted commercial solicitations, such as, but not limited to, spyware and adware), to infringe on intellectual property rights (including copyrights and trademark rights), to harass or defame others, or to promote hatred towards any group of people.
+ - Using the SAMSUNG TV App SDK in a manner that disrupts, circumvents, or interferes with any third party software and/or the services.
+ - Using the SAMSUNG TV App SDK for any application that causes increased demand on the servers operating in conjunction with and/or supporting Your services.
+ - Altering, modifying, deleting, or otherwise interfering with or in any manner compromising any content, programming, advertising, services and/or features contained in provided through SMART TV Service, including, without limitation advertising and/or content delivery and display functionality.
+ - Using the SAMSUNG TV App SDK for any application that replicates or attempts to replace the essential Developer Terms experience of the Software and/or the Services.
+ - Using the SAMSUNG TV App SDK for any application that adversely impacts the behavior of other applications using the SAMSUNG TV App SDK.
+ - Using the SAMSUNG TV App SDK for any application that constitutes, promotes or is used in connection with or installs spyware, adware, or other malicious programs or code.
+ - Using the SAMSUNG TV App SDK for any application that constitutes, promotes or is used in connection with or installs any type of bot, virus, worm, trojan-horse routing, trap door, time bomb or any other codes or instructions that are designed to monitor, distort, delete, damage SMART TV Service.
+ - Using the SAMSUNG TV App SDK for any application to act as a generic image hosting service for banner advertisements, graphics, etc.
+ - Selling, leasing, or sublicensing the SAMSUNG TV App SDK or access thereto.
+ - Distributing, decompiling, disassembling, or reverse engineering or attempting to distribute, decompile, disassemble, or reverse engineer the SAMSUNG TV App SDK and/or the Documentation, without SAMSUNG prior written approval or - Modifying or attempting to modify other software, the operating systems, configuration settings or contents of other third party services directly or indirectly without a party's and SAMSUNG's express and informed permission.
+ .
+ Further, You agree that You shall not:
+ - Create an App and use the App to promote or deal in, or are used primarily for the purpose of promoting or dealing in any products, services, or materials that constitute or deem to constitute: spyware, adware, or other malicious programs or code, counterfeit goods, items subject to embargo or regulations, racially, politically, or religiously discriminative or offensive materials, hate materials, or materials urging, demonstrating, illustrating or showing acts of terrorism or violence, goods made from protected animal/plant species, recalled goods, hacking/surveillance/interception/descrambling equipment, cigarettes, illegal drugs and paraphernalia, unlicensed sale of prescription drugs, unlicensed or unauthorized medical, legal, tax or other professional devices, obscene materials, pornography, prostitution, body parts and bodily fluids, stolen products and items used for theft, fireworks, explosives, and hazardous materials, government IDs, police items, unlicensed trade or dealing in stocks and securities, gambling items, professional services regulated by governmental licensing regimes, non-transferable items such as airline tickets or event tickets, non-packaged food items, weapons and accessories;
+ - Create an App and use the App to violate any law or regulation, any right of any person, including but not limited to intellectual property rights, rights of privacy, or rights of personality, or in any manner inconsistent with the Developer Terms Agreement;
+ - Create an App and use the App to operate nuclear facilities, life support, or other mission critical application where human life or property may be at stake. You understand that SMART TV Service App is not designed for such purposes and that failure of applications running on the SMART TV Service App engine in such cases could lead to death, personal injury, or severe property or environmental damage for which Samsung is not responsible; - Create Apps which exceed reasonable request volume, constituting excessive or abusive usage, or obtain unauthorized access to the Samsung networks.
+ .
+ 3. OWNERSHIP AND RELATIONSHIP OF PARTIES
+ .
+ The SAMSUNG TV App SDK is protected under and by copyrights, trademarks, service marks, international treaties, and/or other proprietary rights and laws of the Republic of Korea, and other countries. SAMSUNG's rights apply to the SAMSUNG TV App SDK and all output and executables of the SAMSUNG TV App SDK, excluding any software components developed by You which do not themselves incorporate the SAMSUNG TV App SDK or any output or executables of the SAMSUNG TV App SDK. You agree to abide by all applicable proprietary rights laws and other laws, as well as any additional copyright notices or restrictions contained in these terms. SAMSUNG owns all rights, title, and interest in and to the SAMSUNG TV App SDK. These terms grant You no right, title, or interest in any intellectual property owned or licensed by SAMSUNG, including (but not limited to) the SAMSUNG TV App SDK and SAMSUNG trademarks. You acknowledge and agree that SAMSUNG and other SAMSUNG TV App SDK developers (users) may independently develop other applications through their use of the SAMSUNG TV App SDK or otherwise which are identical or similar to Your application in function, code or other characteristics. You agree that You will have no ownership or intellectual property rights in such applications. You further acknowledge and agree that any application developed by SAMSUNG and using the SAMSUNG TV App SDK which may be identical or similar to Your application in function, code or other characteristics will not be deemed to violate in any manner any of your rights in Your application and/or service, and that any such characteristics are coincidental in nature. In this regard, you expressly grant to SAMSUNG a limited, non-exclusive license in and to any proprietary rights you may hold in any application or any usage log data with respect to such application developed by You using the SAMSUNG TV App SDK for purposes of developing, using and exploiting any application or service developed by SAMSUNG using the SAMSUNG TV App SDK.
+ .
+ 4. TERMINATION
+ .
+ Your license to the SAMSUNG TV App SDK under these SDK Terms continues until it is terminated by either party.
+ (a) Termination by You. You may terminate the licenses granted under these SDK Terms by discontinuing use of the SAMSUNG TV App SDK and ceasing publication of your published applications, if any. You may cease publishing your application by sending an email notice of termination to SAMSUNG at [EMAIL ADDRESS] which includes the name of your application and the corresponding Application Key.
+ (b) Termination by SAMSUNG. SAMSUNG may terminate the licenses granted under these SDK Terms at any time for any reason. SAMSUNG may also disable or remove from the Software any application developed by you under the SAMSUNG TV App SDK at any time for any reason. Without limiting the foregoing, Your rights to use the SAMSUNG TV App SDK terminate automatically if (i) You violate the letter or spirit of any of these SDK Terms, (ii) SAMSUNG publicly posts a written notice of termination on its website, (iii) SAMSUNG sends a written notice of termination to You, or (iv) SAMSUNG disables Your access to the SAMSUNG TV App SDK or disables or removes from the Software any application developed by you under the SAMSUNG TV App SDK.
+ (c) Effect of Termination. Immediately upon the termination of the licenses granted under these SDK Terms, You shall cease any and all publication, distribution, public display, advertising, marketing, promotion or making other public references to, your application.
+ (d) Survival. The following provisions pertaining to Section 2 (Restrictions), Section 3 (Ownership), Section 4 (d), Section 5 (Indemnity), Section 6 (Disclaimer of Warranties), Section 7 (Limitation of Liability), Section 8 (Release and Waiver), Section 9 (Third Party Software) and Section 10 (General Terms) shall survive the termination or other expiration of these SDK Terms.
+ .
+ 5. INDEMNITY
+ .
+ You agree to indemnify, hold harmless and defend SAMSUNG and its affiliates, parent companies, subsidiaries, officers, directors, employees, agents and network service providers at Your expense, against any and all damages, claims, actions, proceedings, and suits and all related liabilities, damages, settlements, penalties, fines, costs and expenses (including, without limitation, reasonable attorneys' fees and other dispute resolution expenses) incurred by SAMSUNG arising out of or relating to Your (i) violation or breach of any term of these SDK Terms, the Developer Terms Agreement, or any applicable law, regulation, policy or guideline, whether or not referenced herein, (ii) use or misuse of the SAMSUNG TV App SDK, or (iii) violation of any rights of any third party.
+ .
+ 6. DISCLAIMER OF WARRANTIES
+ .
+ THE SAMSUNG TV App SDK, DOCUMENTATION AND SERVICES, INCLUDING THE SITE AND THE SOFTWARE, ARE PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS. TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, SAMSUNG EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND, WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR PARTICULAR PURPOSE, TITLE AND NON-INFRINGEMENT, NOR ARE THERE ANY WARRANTIES CREATED BY COURSE OF DEALING, COURSE OF PERFORMANCE, OR TRADE USAGE. SAMSUNG MAKES NO WARRANTY THAT (I) THE SAMSUNG TV App SDK, DOCUMENTATION AND/OR SMART TV SERVICES WILL MEET YOUR REQUIREMENTS; (II) THE SAMSUNG TV App SDK AND/OR SMART TV SERVICES WILL BE UNINTERRUPTED, TIMELY, SECURE, OR ERROR-FREE; (III) THE RESULTS THAT MAY BE OBTAINED FROM THE USE OF THE SAMSUNG TV App SDK, DOCUMENTATION AND/OR SMART TV SERVICES WILL BE ACCURATE OR RELIABLE; (IV) ANY ERRORS IN THE SAMSUNG TV App SDK, DOCUMENTATION AND/OR SMART TV SERVICES WILL BE CORRECTED; (V) THE SAMSUNG TV App SDK AND/OR SMART TV SERVICES WILL INTEROPERATE WITH ANY THIRD PARTY SOFTWARE OR OPERATE IN ANY PARTICULAR HARDWARE, SOFTWARE, OPERATING SYSTEM OR ENVIRONMENT; (VI) ANY APPLICATIONS DEVELOPED USING THE SAMSUNG TV App SDK AND/OR FOR THE SMART TV SERVICES WILL BE THE SAME OR SIMILAR AND ACCURATE AS INTENDED BY YOU; OR (VII) THAT USE OF ANY APPLICATIONS DEVELOPED USING THE SAMSUNG TV App SDK AND/OR FOR THE SMART TV SERVICES WILL BE PERMITTED UNDER THE TERMS OF ANY THIRD PARTY SOFTWARE OR ANY HOSTING SERVICE.
+ .
+ 7. LIMITATION OF LIABILITY
+ .
+ TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL SAMSUNG, ITS AFFILIATES, PARENT COMPANIES, SUBSIDIARIES, OFFICERS, DIRECTORS, EMPLOYEES, AGENTS OR BUNDLED SOFTWARE PROVIDERS BE LIABLE WHETHER IN CONTRACT, WARRANTY, TORT (INCLUDING NEGLIGENCE (WHETHER ACTIVE, PASSIVE OR IMPUTED), PRODUCT LIABILITY OR STRICT LIABILITY OR OTHER THEORY), FOR ANY INDIRECT, INCIDENTAL, SPECIAL OR CONSEQUENTIAL DAMAGES (INCLUDING WITHOUT LIMITATION ANY LOSS OF DATA, SERVICE INTERRUPTION, COMPUTER FAILURE OR PECUNIARY LOSS) ARISING OUT OF THE USE OR INABILITY TO USE THE SAMSUNG TV App SDK, INCLUDING ANY DAMAGES RESULTING THEREFROM, EVEN IF SAMSUNG HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. IN NO EVENT SHALL SAMSUNG'S LIABILITY ARISING IN CONNECTION WITH OR UNDER THESE SDK TERMS EXCEED THE GREATER OF ANY FEES PAID UNDER THESE SDK TERMS OR $50.
+ .
+ 8. RELEASE AND WAIVER
+ .
+ To the maximum extent permitted by applicable law, You release, and waive all claims against SAMSUNG, and its subsidiaries, affiliates, officers, agents, licensors, co-branders or other partners, and employees from any and all liability for claims, damages (actual and/or consequential), costs and expenses (including litigation costs and attorneys' fees) of every kind and nature, arising from or in any way related to Your use of the SAMSUNG TV App SDK. You understand that any fact relating to any matter covered by this release may be found to be other than now believed to be true and You accept and assume the risk of such possible differences in fact. In addition, You expressly waive and relinquish any and all rights and benefits which You may have under any other state or federal statute or common law principle of similar effect, to the fullest extent permitted by law.
+ .
+ 9. THIRD PARTY SOFTWARE
+ .
+ From time to time, SAMSUNG may provide You with a third party software that is necessary for operating certain features or functions of the SMART TV Services. In that event, You will be given a separate and independent license agreement and terms of use for the software. Your acceptance of the license and the terms of use for the software and the use of the software are Your own freedom. However, the third party software bundled with the SAMSUNG TV App SDK is necessary for Your full and successful use of the App to be developed with the SAMSUNG TV App SDK in connection with the SMART TV Services. You agree and acknowledge that such third party software is 1) not the property of SAMSUNG, and 2) SAMSUNG is not responsible for such third party software with respect to functionality, quality and ownership, and Your use of the software shall be at Your own free will and risk. You agree to company and adhere to the license terms and terms of use for the software.
+ .
+ 10. GENERAL PROVISIONS
+ .
+ (a) Electronic Signatures. You acknowledge and agree that by clicking on the "I Accept" button (or similar buttons or links as may be designated by SAMSUNG to show your acceptance of this Agreement and/or your agreement to download and install the SAMSUNG TV App SDK), you are entering into a legally binding contract. You hereby agree to the use of electronic communication in order to enter into contracts, place orders and create other records and to the electronic delivery of notices, policies and records of transactions initiated or completed through the SAMSUNG TV App SDK. Furthermore, you hereby waive any rights or requirements under any laws or regulations in any jurisdiction which require an original (non-electronic) signature or delivery or retention of non-electronic records, to the extent permitted under applicable mandatory law.
+ (b) Reservation of Rights; Modification. SAMSUNG reserves all rights not expressly granted in these SDK Terms. SAMSUNG may modify these SDK Terms at any time by providing such revised SDK Terms to You or posting the revised SDK Terms on the Site. Your continued use of the SAMSUNG TV App SDK shall constitute Your acceptance to be bound by the terms and conditions of such revised terms.
+ (c) Severability. Should any term or provision of these SDK Terms be deemed invalid, void or unenforceable either in its entirety or in a particular application, the remainder of these SDK Terms shall remain in full force and legal effect. (d) Governing Law; Jurisdiction; Waiver of Claims. These SDK Terms shall be governed by and construed in accordance with the laws of the Republic of Korea, without regard to conflict of law rules thereof. The parties hereto expressly understand and agree that any action brought by You against SAMSUNG arising out of these SDK Terms shall be brought exclusively in the courts located in Seoul, Korea, and any action brought by SAMSUNG against You arising out of these SDK Terms shall, at the election of SAMSUNG, be brought in either the courts located in Seoul, Korea, or the applicable courts of the jurisdiction in which You reside. The parties hereby consent to, and irrevocably submit themselves to, the exclusive personal jurisdiction and venue of such courts as set forth in this section. The application of the United Nations Convention on Contracts for International Sale of Goods is expressly excluded.
+ (e) Miscellaneous Terms. You may not assign these SDK Terms without SAMSUNG's prior written consent. The waiver by SAMSUNG of any breach or default shall not be deemed to be a waiver of any other breach or default. The exercise or failure to exercise any remedy by SAMSUNG shall not preclude the exercise of that remedy at another time or of any other remedy at any time. If any provision of these SDK Terms is held to be invalid or unenforceable, that term shall be interpreted as closely as possible to its original intent as is consistent with its validity and enforceability, and the other provisions shall not be affected. The headings are used for the convenience of the parties only and shall not affect the construction or interpretation of these SDK Terms.
+ .
+ YOU EXPRESSLY ACKNOWLEDGE THAT YOU HAVE READ THESE SDK TERMS AND UNDERSTAND THE RIGHTS, OBLIGATIONS, TERMS AND CONDITIONS SET FORTH HEREIN. BY ACCESSING AND CONTINUING TO USE THE SAMSUNG TV App SDK, YOU EXPRESSLY CONSENT TO BE BOUND BY ITS TERMS AND CONDITIONS AND GRANT TO SAMSUNG THE RIGHTS SET FORTH HEREIN.
+Description : Tizen Emulator Image
+
+Package : TV-SAMSUNG-Public-Mandatory
+Version : 10.0.0
+OS : windows-64, ubuntu-32, ubuntu-64, windows-32, macos-64
+Build-host-os : ubuntu-64
+Maintainer : Juhyoung Lee <jh_on.lee@samsung.com>
+Install-dependency : COMMON-MANDATORY, 10.0-MANDATORY
+Source : meta-extension-components
+Path : /binary/TV-SAMSUNG-Public-Mandatory_10.0.0_windows-64.zip
+Origin : local
+SHA256 : 8a2a8bc91e0573a4e2d68f34b327a85598e9c59955f7c5522752ebf74d595627
+Size : 1522
+Uncompressed-size : 8192
+Description : Mandatory packages
+
+Package : TV-SAMSUNG-Public-Emulator
+Label : Emulator
+Version : 10.0.0
+OS : windows-64, ubuntu-32, ubuntu-64, windows-32, macos-64
+Build-host-os : ubuntu-64
+Maintainer : Juhyoung Lee <jh_on.lee@samsung.com>
+Attribute : root
+Install-dependency : TV-SAMSUNG-Public-Mandatory, tv-samsung-public-emulator-image-x86-64, tv-samsung-emulator-qemu-common, tv-samsung-emulator-qemu-x86, tv-samsung-emulator-kernel-x86, tv-samsung-emulator-still-image, tv-samsung-emulator-lib, tv-samsung-libav, tv-samsung-emulator-control-panel-devices, tv-samsung-log-server
+Source : meta-extension-components
+Path : /binary/TV-SAMSUNG-Public-Emulator_10.0.0_windows-64.zip
+Origin : local
+SHA256 : a4194a632a83bdc6bfeab853a69f588fe792f26a2fa0fa98781c32187cd95fe7
+Size : 1772
+Uncompressed-size : 8192
+C-SelectedGroup : Emulator
+C-ExtName : Samsung TV extesion for Tizen-10.0 Emulator
+C-Platform : 10.0
+C-Profile : TV
+C-ExtProfile : tv-samsung
+C-DevelopEnv : Emulator
+C-ExtPath : platforms/tizen-10.0/tv-samsung
+Description : Tizen emulator provides a virtual device containing the full stack of the Tizen platform for tv profile and you can test Tizen applications on your computer.
+
+
+
+
+
+Package : tv-samsung-public-web-add-ons
+Version : 10.0.0
+OS : windows-64
+Build-host-os : ubuntu-64
+Maintainer : Yeonguk Yu<yeonguk.yu@samsung.com>
+Path : /binary/tv-samsung-public-web-add-ons_10.0.0_windows-64.zip
+Origin : local
+SHA256 : d8e5f8b25b430057f4ce8d8a6fe1d818e8ce0a676a19adbe2926f2eac0e5d140
+Size : 12460917
+Uncompressed-size : 49963796
+Description : Tizen Web IDE add-ons for Samsung Tizen tv
+
+Package : tv-samsung-public-webapp-ext-eplugin
+Version : 10.0.1
+OS : windows-64
+Build-host-os : ubuntu-64
+Maintainer : Chen Liang <liang45.chen@samsung.com>, Huang Zhiyong <zhiy.huang@samsung.com>, Wei Wei <wei51.wei@samsung.com>
+Install-dependency : webapp-eplugin [ windows-64 ], base-ide-product [ windows-64 ], msys2 [ windows-64 ]
+Build-dependency : base-ide-product [ windows-64 ], pde-build [ windows-64 ], common-eplugin [ windows-64 ], webapp-eplugin [ windows-64 ], device-manager-product [ windows-64 ]
+Source : tv-samsung-public-webapp-ext-eplugin
+Path : /binary/tv-samsung-public-webapp-ext-eplugin_10.0.1_windows-64.zip
+Origin : local
+SHA256 : 09ac39ed38df5e821ba82a06d77a7b75ff480352e8353aca6971122cd9013ef8
+Size : 6350678
+Uncompressed-size : 6475776
+Description : Samsung Tizen TV SDK IDE
+
+Package : TV-SAMSUNG-Public-WebAppDevelopment
+Label : Web app. development
+Version : 10.0.0
+OS : windows-64, ubuntu-32, ubuntu-64, windows-32, macos-64
+Build-host-os : ubuntu-64
+Maintainer : Juhyoung Lee <jh_on.lee@samsung.com>
+Attribute : root
+Install-dependency : TV-SAMSUNG-Public-Mandatory, tv-samsung-public-webapp-ext-eplugin, tv-samsung-public-web-add-ons, tv-samsung-log-server
+Source : meta-extension-components
+Path : /binary/TV-SAMSUNG-Public-WebAppDevelopment_10.0.0_windows-64.zip
+Origin : local
+SHA256 : f7375d84becfa716371382474ea9dce16bf3c562dd06940735ad0f35e580e689
+Size : 1740
+Uncompressed-size : 8192
+C-SelectedGroup : WebIDE, WebCLI, TV-SAMSUNG-Extension-Resources
+C-ExtName : Samsung TV extension for Tizen-10.0 Web app. development
+C-Platform : 10.0
+C-Profile : TV
+C-ExtProfile : tv-samsung
+C-DevelopEnv : WebAppDevelopment
+C-ExtPath : platforms/tizen-10.0/tv-samsung
+Description : Tizen web application development components consist of various and rich tools to develop applications specifically designed for web.
+
+Package : TV-SAMSUNG-Public
+Label : TV Extensions-10.0
+Version : 10.0.0
+OS : windows-64, ubuntu-32, ubuntu-64, windows-32, macos-64
+Build-host-os : ubuntu-64
+Maintainer : Juhyoung Lee <jh_on.lee@samsung.com>
+Attribute : root
+Install-dependency : TV-SAMSUNG-Public-WebAppDevelopment, TV-SAMSUNG-Public-Emulator
+Source : meta-extension-components
+Path : /binary/TV-SAMSUNG-Public_10.0.0_windows-64.zip
+Origin : local
+SHA256 : 1296ff9a5773468b3ef5126b8dd496babb7fdfd50ae27e44f12b3a3f47dbd958
+Size : 1659
+Uncompressed-size : 8192
+C-order : 80
+C-ExtName : TV Extensions-10.0
+C-Platform : 10.0
+C-Profile : TV
+Description : Development tools for Tizen 10.0 TV profile applications. You can select one or more tools, from among IDE, CLI, Emulator and others, according to your purpose.
+

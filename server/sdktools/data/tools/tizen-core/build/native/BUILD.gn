@@ -1,0 +1,136 @@
+
+config("tizen_common") {
+    defines = []
+    cflags = []
+    ldflags = []
+
+    if (debug_build) {
+        defines += [
+            "_DEBUG",
+        ]
+
+        cflags += [
+            "-g3",
+            "-O0",
+        ]
+    } else {
+        cflags += [
+            "-O3",
+        ]
+    }
+    cflags += [
+        "-Wall",
+    ]
+    if (verbose_build) {
+        cflags += ["-v"]
+        ldflags += ["-v"]
+    }
+
+    if(test_build) {
+        defines += [
+            "TEST_BUILD",
+        ]
+
+        if(compiler == "gcc") {
+            cflags += [
+                "-fprofile-arcs",
+                "-ftest-coverage",
+                "--coverage",
+            ]
+            ldflags += [
+                "-fprofile-arcs",
+                "-ftest-coverage",
+                "--coverage",
+            ]
+        } else {
+            cflags += [
+                "-fprofile-instr-generate",
+                "-fcoverage-mapping",
+            ]
+            ldflags += [
+                "-fprofile-instr-generate",
+                "-fcoverage-mapping",
+            ]
+        }
+    }
+}
+
+config("executable_config") {
+    cflags = [
+        "-fmessage-length=0",
+        "-fPIE",
+        "-Werror-implicit-function-declaration",
+    ]
+
+    ldflags = [
+        "-pie",
+        "-pthread",
+        "-Wl,--version-script=" + rebase_path("//Build/.exportmap", root_build_dir),
+        "-Wl,--as-needed",
+    ]
+
+    configs = [
+        ":tizen_common",
+    ]
+}
+
+config("sharedlib_config") {
+    cflags = [
+        "-fmessage-length=0",
+        "-fPIC",
+        "-fvisibility=hidden",
+    ]
+
+    ldflags = [
+        "-pthread",
+        "-Wl,--as-needed",
+    ]
+
+    configs = [
+        ":tizen_common",
+    ]
+}
+
+config("staticlib_config") {
+    cflags = [
+        "-fmessage-length=0",
+        "-fPIE",
+        "-fvisibility=hidden",
+    ]
+
+    ldflags = [
+        "-pthread",
+        "-Wl,--as-needed",
+    ]
+
+    configs = [
+        ":tizen_common",
+    ]
+}
+
+config("test_config") {
+    include_dirs = test_incs
+
+    cflags = [
+        "-fmessage-length=0",
+        "-fPIE",
+    ]
+
+    ldflags = [
+        "-pie",
+        "-pthread",
+        "-Wl,--version-script=" + rebase_path("//Build/.exportmap", root_build_dir),
+        "-Wl,--as-needed",
+    ]
+
+    configs = [
+        ":tizen_common",
+    ]
+}
+
+config("profile_config") {
+    configs = [
+        "//Build:${arch}_${compiler}_config",
+        "${tizen_core}/native/rootstraps/${profile}-${api_version}/$rootstrap/$arch:rootstrap_config",
+    ]
+}

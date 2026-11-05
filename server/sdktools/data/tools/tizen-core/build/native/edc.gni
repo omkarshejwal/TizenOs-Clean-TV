@@ -1,0 +1,46 @@
+template("build_edc") {
+    forward_variables_from(invoker, [ "image_dirs", "sound_dirs", "font_dirs", "edc_files", "native_build_path" ])
+
+    edje_cc_opts = []
+    if (defined(image_dirs)) {
+        foreach(i, image_dirs) {
+            edje_cc_opts += ["-id", rebase_path(i, root_out_dir)]
+        }
+    }
+
+    if (defined(sound_dirs)) {
+        foreach(s, sound_dirs) {
+            edje_cc_opts += ["-sd", rebase_path(s, root_out_dir)]
+        }
+    }
+
+    if (defined(font_dirs)) {
+        foreach(s, font_dirs) {
+            edje_cc_opts += ["-fd", rebase_path(s, root_out_dir)]
+        }
+    }
+
+    enventor_dir = rebase_path("${tizen_studio}/tools/edc-editor/share/enventor")
+    edje_cc_opts += ["-id", "${enventor_dir}/images"]
+    edje_cc_opts += ["-sd", "${enventor_dir}/sounds"]
+    edje_cc_opts += ["-fd", "${enventor_dir}/fonts"]
+
+    if (api_version == "2.3" || api_version == "2.3.1" || api_version == "2.3.2" || api_version == "2.4") {
+        edje_cc_dir = rebase_path("${tizen_studio}/tools/efl-tool/efl-tools")
+    } else {
+        edje_cc_dir = rebase_path("${tizen_studio}/platforms/tizen-$api_version/common/efl-tool/efl-tools")
+    }
+    edje_cc = "LD_LIBRARY_PATH=${edje_cc_dir}/lib ${edje_cc_dir}/bin/edje_cc"
+    if (host_os == "win") {
+        edje_cc = "\"${edje_cc_dir}/bin/edje_cc\""
+    }
+
+    action_foreach(target_name) {
+        command = "$edje_cc " + string_join(" ", edje_cc_opts) + " {{source}} {{output}}"
+        description = "EDC {{output}}"
+        sources = edc_files
+        outputs = [
+            "${native_build_path}/$native_out_dir/res/edje/{{source_name_part}}.edj",
+        ]
+    }
+}

@@ -1,0 +1,8 @@
+{
+  "title": "Tizen OS 9.0",
+  "description": "Tizen 9 introduces major enhancements: the PenWave engine delivers an infinite canvas and real-time drawing for creative workflows; the AI Avatar Framework enables the creation of virtual agents with lip-syncing, multilingual support and modular AI integration; the unified Memory Profiler tracks native and managed memory in real time for deep diagnostics; Android apps can now run natively on Tizen via a container to broaden compatibility; the Lightweight Web Engine cuts memory use dramatically while supporting full web standards; and full support for the RISC-V architecture prepares the platform for tomorrow’s hardware.",
+  "thumbnail": "9.0.webp",
+  "badge": ["NUI", "Lightweight", "AI-Avatar"],
+  "link": "https://samsungtizenos.com/blog/sdc24-whats-new-in-tizen/",
+  "version": "1.0.0"
+}

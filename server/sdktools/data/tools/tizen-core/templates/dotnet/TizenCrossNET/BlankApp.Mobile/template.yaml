@@ -1,0 +1,21 @@
+name: BlankApp/BlankApp.Mobile
+type: dotnet_app
+description: "A mobile project template for building XAML apps with Xamarin.Forms"
+icon: ""
+shampshot: ""
+
+templates:
+  BlankApp.Mobile/BlankApp.Mobile.csproj: {{project_name}}.Mobile/{{project_name}}.Mobile.csproj
+  BlankApp.Mobile/BlankApp.Mobile.cs: {{project_name}}.Mobile/{{project_name}}.Mobile.cs
+  BlankApp.Mobile/tizen-manifest.xml: {{project_name}}.Mobile/tizen-manifest.xml
+  BlankApp.Mobile/tizen_dotnet_project.yaml: {{project_name}}.Mobile/tizen_dotnet_project.yaml
+ 
+
+files:
+  BlankApp.Mobile/shared/res/BlankApp.Mobile.png: {{project_name}}.Mobile/shared/res/{{project_name}}.Mobile.png
+  
+folders:
+  - {{project_name}}.Mobile/res
+  - {{project_name}}.Mobile/lib
+
+deps: [ {{project_name}}/{{project_name}} ]

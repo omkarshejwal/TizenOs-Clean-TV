@@ -1,0 +1,215 @@
+import("$tizen_core/build/workspace.gni")
+
+tizen_workspace("${hyb_final_pkg_id}") {
+
+    package_file = "$root_out_dir/${hyb_final_pkg}"
+
+    
+    projects = []
+    manifests = []
+    
+    {{- if not .Resource}}
+    executables = []
+    {{- end}}
+
+    {{- if .Web}}
+    projects += [
+        {{- range .Web}}
+        "//{{.Path}}",
+        {{- end}}
+    ]
+
+    if (!test_build) {      
+        #  there can be only one main project
+        {{- range .Web}}
+        {{- if eq .ProjectDepType "main_application" }}
+        main_web_project = "{{.Name}}"
+        {{- end}}
+        {{- end}}
+
+        dep_web_widgets = [
+            {{- range .Web}}
+            {{- if eq .ProjectDepType "dep_widget" }}
+            "//{{.RelPath}}",
+            {{- end}}
+            {{- end}}
+        ]
+
+        dep_web_projects = [
+            {{- range .Web}}
+            {{- if eq .ProjectDepType "dep_project" }}
+            "//{{.RelPath}}",
+            {{- end}}
+            {{- end}}
+        ]
+
+        executables += [
+            {{- range .Web}}
+            {{- if eq .Type "web_app" }}
+            "{{.OutputName}}",
+            {{- end}}
+            {{- end}}
+        ]
+    }
+    {{- end}}
+    
+    {{- if .Native}}
+
+    projects += [
+        {{- range .Native}}
+        "//{{.Path}}",
+        {{- end}}
+    ]
+
+    resourcespaths = []
+    resourcespaths += [
+        {{- range $path:= .ResourcesPaths}}
+        "{{$path}}",
+        {{- end}}
+    ]
+
+    if (!test_build) {
+        manifests = [
+            {{- range .Native}}
+            {{- if eq .Type "native_app" }}
+            {{- if eq .RelPath "."}}
+            "//tizen-manifest.xml",
+            {{- else}}
+            "//{{.RelPath}}/tizen-manifest.xml",
+            {{- end}}
+            {{- end}}
+            {{- end}}
+        ]
+        executables += [
+            {{- range .Native}}
+            {{- if eq .Type "native_app" }}
+            "{{.OutputName}}",
+            {{- end}}
+            {{- end}}
+        ]
+    }
+
+    {{- end}}    
+
+    {{- if .Dotnet}}
+        projects += [
+            {{- range .Dotnet}}
+            "//{{.Path}}",
+            {{- end}}
+        ]
+        
+        # fill executables with the package_names of the tpk paths, for launch cmd
+        executables += [
+            {{- range .Dotnet}}
+            {{- range $key, $value := .TpkPaths}}
+            "{{$value.PkgID}}",
+            {{- end}}
+            {{- end}}
+        ]
+
+    {{- end}}
+
+    {{- if .Resource}}
+        projects += [
+            {{- range .Resource}}
+            "//{{.Path}}",
+            {{- end}}
+        ]
+
+    {{- end}}
+
+    if (test_build) {
+
+        {{- if .NativeTests}}
+        projects += [
+            {{- range .NativeTests}}
+            "//{{.Path}}",
+            {{- end}}
+        ]
+        manifests = [
+            {{- range .NativeTests}}
+            "//tizen-manifest.xml",
+            {{- end}}
+        ]
+        executables += [
+            {{- range .NativeTests}}
+            "{{.OutputName}}",
+            {{- end}}
+        ]
+
+        resourcespaths = []
+        resourcespaths += [
+            {{- range $path:= .ResourcesPaths}}
+            "{{$path}}",
+            {{- end}}
+        ]
+
+        {{- end}}
+
+        {{- if .WebTests}}
+        projects += [
+            {{- range .WebTests}}
+            "//{{.Path}}",
+            {{- end}}
+        ]
+        executables += [
+            {{- range .WebTests}}
+            "{{.OutputName}}",
+            {{- end}}
+        ]
+
+        {{- end}}
+    }
+   
+}
+
+{{- if or .Native .NativeTests }}
+import("${tizen_core}/native/toolchains/toolchain.gni")
+tizen_toolchain("{{Arch}}") {
+    gcc_prefix = "{{.ToolchainFlags.GccPrefix}}"
+    gcc_path = "{{.ToolchainFlags.GccPath}}"
+
+    llvm_path  = "{{.ToolchainFlags.LlvmPath}}"
+
+    {{- if .ToolchainFlags.GccCFlags}}
+    gcc_cflags = [
+        {{- range $value := .ToolchainFlags.GccCFlags}}                        
+            "{{$value}}",            
+        {{- end}}           
+    ]
+    {{- else}}
+    gcc_cflags = []
+    {{- end}}
+
+    {{- if .ToolchainFlags.GccLdFlags}}
+    gcc_ldflags = [
+        {{- range $value := .ToolchainFlags.GccLdFlags}}                        
+            "{{$value}}",            
+        {{- end}}           
+    ]
+    {{- else}}
+    gcc_ldflags = []
+    {{- end}}
+
+    {{- if .ToolchainFlags.LlvmCFlags}}
+    llvm_cflags = [
+        {{- range $value := .ToolchainFlags.LlvmCFlags}}                        
+            "{{$value}}",            
+        {{- end}}           
+    ]
+    {{- else}}
+    llvm_cflags =[]
+    {{- end}}
+    
+    {{- if .ToolchainFlags.LlvmLdFlags}}
+    llvm_ldflags = [
+        {{- range $value := .ToolchainFlags.LlvmLdFlags}}                        
+            "{{$value}}",            
+        {{- end}}           
+    ]
+    {{- else}}
+    llvm_ldflags = []
+    {{- end}}
+
+}
+{{- end}}

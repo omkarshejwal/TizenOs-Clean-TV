@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets" xmlns:tizen="http://tizen.org/ns/widgets" id="http://yourdomain/offlineClock" version="1.0.0" viewmodes="maximized">
+    <tizen:application id="ygqJ3dAZDK.offlineClock" package="ygqJ3dAZDK" required_version="{{api_version}}"/>
+    <content src="index.html"/>
+	<feature name="http://tizen.org/feature/screen.size.normal.1080.1920"/>
+    <icon src="icon.png"/>
+    <name>offlineClock</name>
+	<tizen:setting screen-orientation="landscape" context-menu="enable" background-support="disable" encryption="disable" install-location="auto" hwkey-event="enable"/>
+</widget>

@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns="http://tizen.org/ns/packages" api-version="{{manifest_api_version}}"
+  package="org.tizen.example.{{project_name}}" version="1.0.0"
+  res-type="org.tizen.example.{{project_name}}" res-version="1.0.0" lib="true">
+  <label>{{project_name}}</label>
+  <icon>{{project_name}}.png</icon>
+  <allowed-package id="org.tizen.example.*"/>
+</manifest>

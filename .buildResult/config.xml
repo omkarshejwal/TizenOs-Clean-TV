@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets"
+        xmlns:tizen="http://tizen.org/ns/widgets"
+        id="http://cleanhome.tv/CleanHome"
+        version="1.0.0"
+        viewmodes="maximized">
+    <tizen:application id="c1eanhome1.CleanHome"
+                       package="c1eanhome1"
+                       required_version="4.0"/>
+    <content src="index.html"/>
+    <icon src="icon.png"/>
+    <name>CleanHome</name>
+    <description>Clean, ad-free TV launcher for Samsung Tizen TV</description>
+
+    <tizen:privilege name="http://tizen.org/privilege/application.launch"/>
+    <tizen:privilege name="http://tizen.org/privilege/application.info"/>
+    <tizen:privilege name="http://tizen.org/privilege/tv.inputdevice"/>
+
+    <tizen:profile name="tv"/>
+    <tizen:setting screen-orientation="landscape"/>
+</widget>

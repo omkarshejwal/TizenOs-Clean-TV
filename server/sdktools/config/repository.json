@@ -1,0 +1,14 @@
+{
+  "tizen": {
+    "currentUrl": "https://singapore.sdk-dl.tizen.org/sdk/tizenstudio/official/",
+    "defaultUrl": "https://download.tizen.org/sdk/tizenstudio/official/"
+  },
+  "tv": {
+    "currentUrl": "https://download.tizen.org/sdk/extensions/tv_extensions/",
+    "defaultUrl": "https://download.tizen.org/sdk/extensions/tv_extensions/"
+  },
+  "iot": {
+    "currentUrl": "https://download.tizen.org/sdk/extensions/Tizen_IoT_Headed/",
+    "defaultUrl": "https://download.tizen.org/sdk/extensions/Tizen_IoT_Headed/"
+  }
+}

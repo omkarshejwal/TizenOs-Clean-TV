@@ -1,0 +1,59 @@
+{
+    "appTypes": [
+        {
+            "name": "Web",
+            "samples": [
+                {
+                    "categoryList": [
+                        "Default"
+                    ],
+                    "commitID": "46da879a23d3563d86392746e469cdb5ae643f34",
+                    "defUrl": "",
+                    "description": "\n   AnalogWatch \n  ",
+                    "hasOption": "False",
+                    "identification": "",
+                    "platformList": [
+                        {
+                            "profileName": "tv-samsung",
+                            "requiredVersion": "4.0"
+                        }
+                    ],
+                    "previewList": [
+                        ""
+                    ],
+                    "projectSize": "5945627",
+                    "projectType": "Tizen",
+                    "sampleLevel": "3",
+                    "sampleName": "AnalogWatch",
+                    "sampleVersion": "1.0.9",
+                    "zipUrl": ""
+                },
+                {
+                    "categoryList": [
+                        "Default"
+                    ],
+                    "commitID": "46da879a23d3563d86392746e469cdb5ae643f34",
+                    "defUrl": "",
+                    "description": "\n   OfflineClockImage \n  ",
+                    "hasOption": "False",
+                    "identification": "",
+                    "platformList": [
+                        {
+                            "profileName": "tv-samsung",
+                            "requiredVersion": "4.0"
+                        }
+                    ],
+                    "previewList": [
+                        ""
+                    ],
+                    "projectSize": "5945627",
+                    "projectType": "Tizen",
+                    "sampleLevel": "3",
+                    "sampleName": "OfflineClockImage",
+                    "sampleVersion": "1.0.9",
+                    "zipUrl": ""
+                }
+           ]
+        }
+    ]
+}

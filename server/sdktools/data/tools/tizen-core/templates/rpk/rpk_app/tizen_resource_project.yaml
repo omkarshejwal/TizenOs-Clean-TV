@@ -1,0 +1,16 @@
+# Project type [resource_app]
+project_type: resource_app
+
+# Default profile, Tizen API version
+profile: {{ProfileID}}
+api_version: "{{APIVersion}}"
+
+# Signing profile to be used for Tizen package signing
+# If value is empty: "", active signing profile will be used
+# Else If value is ".", default signing profile will be used
+signing_profile: {{SigningProfile}}
+
+# list of resource files, to be packed in rpk
+resources:
+  - shared/res/{{app_name}}.png
+  - res

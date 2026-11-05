@@ -1,0 +1,17 @@
+name: TizenXamlApp/TizenXamlApp
+type: dotnet_app
+description: "A base project  template for building XAML apps with Xamarin.Forms"
+icon: ""
+shampshot: ""
+
+templates:
+  TizenXamlApp/App.xaml: {{project_name}}/App.xaml
+  TizenXamlApp/App.xaml.cs: {{project_name}}/App.xaml.cs
+  TizenXamlApp/MainPage.xaml: {{project_name}}/MainPage.xaml
+  TizenXamlApp/MainPage.xaml.cs: {{project_name}}/MainPage.xaml.cs
+  TizenXamlApp/TizenXamlApp.csproj: {{project_name}}/{{project_name}}.csproj
+  TizenXamlApp/tizen_dotnet_project.yaml: {{project_name}}/tizen_dotnet_project.yaml
+  
+folders:
+  - {{project_name}}/res
+  - {{project_name}}/lib

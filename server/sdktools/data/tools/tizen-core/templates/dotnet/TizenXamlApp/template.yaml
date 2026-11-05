@@ -1,0 +1,13 @@
+name: TizenXamlApp
+type: dotnet_app
+description: "A multiproject template for building XAML apps with Xamarin.Forms"
+icon: ""
+shampshot: ""
+is-multi: true
+
+sub-project-template:
+  base: TizenXamlApp/template.yaml
+  common: TizenXamlApp.Common/template.yaml
+  mobile: TizenXamlApp.Mobile/template.yaml
+  wearable: TizenXamlApp.Wearable/template.yaml
+  tv: TizenXamlApp.TV/template.yaml
