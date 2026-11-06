@@ -219,15 +219,21 @@ async function main() {
 
   await takeScreenshot(path.join(DOCS_DIR, "shot-home-lite.png"));
 
-  // Verify Lite mode DOM optimizations
+  // Verify Lite mode DOM optimizations & Redesigned Layout
   const liteChecks = await evaluate(`({
     isTvLiteClass: document.body.classList.contains("tv-lite"),
-    ambientGlowDisplay: window.getComputedStyle(document.getElementById("ambient-glow")).display,
-    wallpaperBlurDisplay: window.getComputedStyle(document.getElementById("wallpaper-blur")).display,
-    dockTilesCount: document.getElementById("app-row").children.length,
+    bgLayer0Active: document.getElementById("bg-layer-0").classList.contains("active"),
+    bgLayer1Exists: !!document.getElementById("bg-layer-1"),
+    dockBarExists: !!document.getElementById("dock-bar"),
+    dockTilesCount: document.querySelectorAll("#dock-track .tile-wrapper").length,
+    groupSeparatorsCount: document.querySelectorAll("#dock-track .group-separator").length,
+    groupLabelsCount: document.querySelectorAll("#group-labels-row .group-label").length,
+    heroLabelText: document.getElementById("hero-label") ? document.getElementById("hero-label").textContent : "",
+    heroTitleText: document.getElementById("hero-title") ? document.getElementById("hero-title").textContent : "",
+    topPillAvatarText: document.getElementById("pill-avatar") ? document.getElementById("pill-avatar").textContent : "",
     focusedTileIndex: window.CleanHome.getState().currentTileIndex
   })`);
-  console.log("  Lite Mode DOM checks:", JSON.stringify(liteChecks));
+  console.log("  Redesigned Layout & DOM checks:", JSON.stringify(liteChecks, null, 2));
 
   // 6. Navigation: Right x10, Left x5
   console.log("\n6. Testing Remote Navigation: Right x10, Left x5...");
@@ -241,7 +247,7 @@ async function main() {
   }
 
   const currentIdx = await evaluate(`window.CleanHome.getState().currentTileIndex`);
-  console.log(`  [OK] Tile index after Right x10, Left x5: ${currentIdx} (expected 5: JioCinema/Spotify)`);
+  console.log(`  [OK] Tile index after Right x10, Left x5: ${currentIdx} (expected 5: ZEE5)`);
 
   // 7. Red key test: Debug line & rolling FPS counter
   console.log("\n7. Testing Red key (Debug Line & rolling FPS counter)...");
@@ -257,8 +263,8 @@ async function main() {
 
   // 8. Settings Screen Test
   console.log("\n8. Navigating to Settings tile & opening Settings screen...");
-  // Settings tile is index 7 (the 8th tile)
-  await evaluate(`window.CleanHome.getState().currentTileIndex = 7; window.CleanHome.openSettingsDialog();`);
+  // Settings tile is index 8 (the 9th tile)
+  await evaluate(`window.CleanHome.getState().currentTileIndex = 8; window.CleanHome.openSettingsDialog();`);
   await sleep(500);
 
   const settingsState = await evaluate(`({

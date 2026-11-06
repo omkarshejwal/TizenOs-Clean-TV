@@ -1,13 +1,14 @@
-/* js/app.js - CleanHome Main Application & Motion Engine
- * tvOS / CleanYourTV layout and motion mechanics for Samsung Tizen TV.
+/* js/app.js - CleanHome Main Controller
+ * 100% compliant with Samsung Tizen 4 / 5.5 (Chromium 56/69 baseline).
  *
- * 100% compliant with Tizen 4 / 5.5 (Chromium 56/69 baseline):
- * - No optional chaining (?.), no nullish coalescing (??)
- * - Animate transform and opacity ONLY
- * - No box-shadow/filter/width/height/top/left animations
- * - TV Lite mode default on Tizen TV (weak GPU optimization)
- * - Zero layout reads in key handlers (no getBoundingClientRect or offset* during nav)
- * - Full-screen 100vw x 100vh scaling for 1920x1080 and 1280x720
+ * STRICT TIZEN COMPATIBILITY:
+ * - NO optional chaining (?.)
+ * - NO nullish coalescing (??)
+ * - NO flex/grid gap (margins used)
+ * - NO CSS inset (top/bottom/left/right used)
+ * - NO aspect-ratio, :is(), :where(), :focus-visible
+ * - NO linear() easing
+ * - will-change only on focused tile, dock track, and background layers
  */
 
 "use strict";
@@ -15,264 +16,300 @@
 (function() {
   window.CleanHome = window.CleanHome || {};
 
-  // Default app tiles configuration matching CleanYourTV dock with Settings at end
-  var DEFAULT_TILES = [
-    { name: "Netflix", icon: "netflix", appId: "org.netflix.tv" },
-    { name: "YouTube", icon: "youtube", appId: "com.google.youtube.tv" },
-    { name: "Prime Video", icon: "primevideo", appId: "amazon.amazonvideo.amazonvideo" },
-    { name: "Disney+ Hotstar", icon: "disney", appId: "disney.hotstar" },
-    { name: "JioCinema", icon: "jiocinema", appId: "jiocinema.jio" },
-    { name: "Spotify", icon: "spotify", appId: "com.spotify.tv" },
-    { name: "Samsung Internet", icon: "samsung-internet", appId: "com.sec.android.app.sbrowser" },
-    { name: "Settings", icon: "settings", appId: "" }
-  ];
-
-  var BRAND_COLORS = {
-    netflix: "#E50914",
-    youtube: "#FF0000",
-    primevideo: "#00A8E1",
-    disney: "#113CCF",
-    jiocinema: "#D8005A",
-    spotify: "#1DB954",
-    "samsung-internet": "#2C2684",
-    settings: "#8E8E93"
-  };
-
-  // State variables
+  // --------------------------------------------------------------------------
+  // Application State
+  // --------------------------------------------------------------------------
   var state = {
     isTV: (typeof navigator !== "undefined" && navigator.userAgent && navigator.userAgent.indexOf("Tizen") !== -1),
-    currentScreen: "dock", // "dock", "settings", "app-library", "wallpapers", "screensaver"
+    currentScreen: "dock", // "dock", "settings", "app-library", "wallpapers", "screensaver", "top-pill"
     currentTileIndex: 0,
     currentSettingsIndex: 0,
     currentLibraryIndex: 0,
     currentWallpaperIndex: 0,
-    tiles: DEFAULT_TILES,
-    wallpapers: [],
+    tiles: [],
     installedApps: [],
-    reducedMotion: false,
-    settings: {
-      clockFormat: "12h",
-      reducedMotion: false,
-      richEffects: true,
-      wallpaper: "assets/wallpapers/gradient1.jpg"
-    },
+    wallpapers: [],
+    heroConfig: {},
+    brandColors: {},
+    activeBgLayer: 0,
+    currentBgPath: "",
+    debugVisible: false,
+    frameTimestamps: [],
+    fpsRafId: null,
     idleTimer: null,
     screensaverDriftTimer: null,
-    debugVisible: false,
-    fpsRafId: null,
-    frameTimestamps: [],
-    lastClockFormatted: "",
-    lastDateFormatted: ""
+    settings: {
+      reducedMotion: false,
+      clockFormat: "12h",
+      wallpaper: "assets/hero_backgrounds/netflix.jpg",
+      richEffects: true,
+      profileName: "C",
+      showWeather: false
+    }
   };
 
-  // Cached DOM elements
+  // --------------------------------------------------------------------------
+  // Cached DOM Elements
+  // --------------------------------------------------------------------------
   var dom = {};
 
-  // --------------------------------------------------------------------------
-  // Error Panel & Diagnostics (Rate-limited, displayed on TV if build fails)
-  // --------------------------------------------------------------------------
-  var lastErrorTime = 0;
-  function showError(msg) {
-    var now = Date.now();
-    if (now - lastErrorTime < 1500) return;
-    lastErrorTime = now;
-    console.error("CleanHome error: " + msg);
-
-    var panel = dom.errorPanel || document.getElementById("error-panel");
-    if (!panel) {
-      panel = document.createElement("div");
-      panel.id = "error-panel";
-      panel.className = "error-panel";
-      document.body.appendChild(panel);
-      dom.errorPanel = panel;
-    }
-    panel.textContent = "CleanHome: " + msg;
-    panel.classList.remove("hidden");
-
-    setTimeout(function() {
-      if (panel) panel.classList.add("hidden");
-    }, 4500);
-  }
-
-  window.onerror = function(msg, url, line) {
-    showError(msg + " (" + (url ? url.split("/").pop() : "") + ":" + line + ")");
-    return false;
-  };
-
-  // --------------------------------------------------------------------------
-  // Initialization & TV Environment Setup
-  // --------------------------------------------------------------------------
-  document.addEventListener("DOMContentLoaded", function() {
-    try {
-      if (state.isTV) {
-        document.documentElement.dataset.tv = "1";
-      }
-
-      cacheElements();
-      loadSettings();
-      detectReducedMotion();
-      loadWallpapersList();
-      renderTiles();
-      initClock();
-      setupIdleTimer();
-
-      // Scale UI stage to fill current viewport without scrollbars or black bars
-      updateStageScaling();
-      window.addEventListener("resize", function() {
-        updateStageScaling();
-      });
-
-      // Initial focus
-      setTileFocus(0, false);
-
-    } catch (e) {
-      showError("Init error: " + e.message);
-    }
-  });
-
-  function cacheElements() {
-    dom.app = document.getElementById("app");
+  function initDom() {
     dom.stage = document.getElementById("stage");
-    dom.wallpaper = document.getElementById("wallpaper");
-    dom.wallpaperBlur = document.getElementById("wallpaper-blur");
-    dom.ambientGlow = document.getElementById("ambient-glow");
+    dom.bgLayers = [
+      document.getElementById("bg-layer-0"),
+      document.getElementById("bg-layer-1")
+    ];
     dom.topBar = document.getElementById("top-bar");
     dom.greeting = document.getElementById("greeting");
     dom.clock = document.getElementById("clock");
     dom.ampm = document.getElementById("ampm");
     dom.date = document.getElementById("date");
-    dom.heroShelf = document.getElementById("hero-shelf");
-    dom.heroName = document.getElementById("hero-name");
+    dom.topPill = document.getElementById("top-pill");
+    dom.pillWifi = document.getElementById("pill-wifi");
+    dom.pillWeather = document.getElementById("pill-weather");
+    dom.pillAvatar = document.getElementById("pill-avatar");
+    dom.heroContainer = document.getElementById("hero-container");
+    dom.heroBlock = document.getElementById("hero-block");
+    dom.heroLabel = document.getElementById("hero-label");
+    dom.heroTitle = document.getElementById("hero-title");
+    dom.heroSubtitle = document.getElementById("hero-subtitle");
+    dom.heroPosterContainer = document.getElementById("hero-poster-container");
+    dom.heroPosterImg = document.getElementById("hero-poster-img");
     dom.dockContainer = document.getElementById("dock-container");
-    dom.appRow = document.getElementById("app-row");
+    dom.dockBar = document.getElementById("dock-bar");
+    dom.dockTrack = document.getElementById("dock-track");
+    dom.groupLabelsRow = document.getElementById("group-labels-row");
     dom.settingsDialog = document.getElementById("settings-dialog");
     dom.settingsList = document.getElementById("settings-list");
     dom.appLibraryDialog = document.getElementById("app-library-dialog");
-    dom.libraryCount = document.getElementById("library-count");
     dom.libraryCardsTrack = document.getElementById("library-cards-track");
+    dom.libraryCount = document.getElementById("library-count");
+    dom.libraryHint = document.getElementById("library-hint");
     dom.wallpapersDialog = document.getElementById("wallpapers-dialog");
     dom.wallpapersGrid = document.getElementById("wallpapers-grid");
     dom.screensaver = document.getElementById("screensaver");
+    dom.screensaverContent = document.getElementById("screensaver-content");
     dom.screensaverClock = document.getElementById("screensaver-clock");
     dom.screensaverDate = document.getElementById("screensaver-date");
-    dom.screensaverContent = document.getElementById("screensaver-content");
     dom.errorPanel = document.getElementById("error-panel");
     dom.debugLine = document.getElementById("debug-line");
-  }
-
-  function updateStageScaling() {
-    if (!dom.stage) return;
-    var vw = window.innerWidth || 1920;
-    var scale = vw / 1920;
-    dom.stage.style.transform = "scale(" + scale + ")";
+    dom.toastContainer = document.getElementById("toast-container");
   }
 
   // --------------------------------------------------------------------------
-  // Settings & Storage (Strictly NO auto-saved reducedMotion)
+  // Global Error Display Panel (Requirement: never a silent blank screen)
+  // --------------------------------------------------------------------------
+  function showError(message) {
+    console.error("[CleanHome Error]", message);
+    if (!dom.errorPanel) dom.errorPanel = document.getElementById("error-panel");
+    if (dom.errorPanel) {
+      dom.errorPanel.textContent = message;
+      dom.errorPanel.classList.remove("hidden");
+      setTimeout(function() {
+        if (dom.errorPanel) dom.errorPanel.classList.add("hidden");
+      }, 7000);
+    }
+  }
+
+  // --------------------------------------------------------------------------
+  // Viewport Scaling (Scales proportional 1920x1080 stage to fill viewport)
+  // --------------------------------------------------------------------------
+  function updateViewportScale() {
+    try {
+      if (!dom.stage) return;
+      var vw = window.innerWidth;
+      var vh = window.innerHeight;
+      var scaleX = vw / 1920;
+      var scaleY = vh / 1080;
+      dom.stage.style.transform = "scale(" + scaleX + ", " + scaleY + ")";
+    } catch (e) {
+      showError("Viewport scaling error: " + e.message);
+    }
+  }
+
+  // --------------------------------------------------------------------------
+  // Load Settings from LocalStorage
   // --------------------------------------------------------------------------
   function loadSettings() {
     try {
-      var stored = localStorage.getItem("cleanhome-settings");
-      if (stored) {
-        var parsed = JSON.parse(stored);
-        if (parsed.clockFormat) state.settings.clockFormat = parsed.clockFormat;
-        if (parsed.wallpaper) state.settings.wallpaper = parsed.wallpaper;
+      var saved = localStorage.getItem("cleanhome_settings");
+      if (saved) {
+        var parsed = JSON.parse(saved);
         if (typeof parsed.reducedMotion === "boolean") state.settings.reducedMotion = parsed.reducedMotion;
+        if (parsed.clockFormat === "12h" || parsed.clockFormat === "24h") state.settings.clockFormat = parsed.clockFormat;
         if (typeof parsed.richEffects === "boolean") state.settings.richEffects = parsed.richEffects;
+        if (parsed.profileName) state.settings.profileName = parsed.profileName;
+        if (typeof parsed.showWeather === "boolean") state.settings.showWeather = parsed.showWeather;
       } else {
-        // TV defaults to Lite Mode (richEffects: false); Desktop preview defaults to Rich Mode (true)
-        state.settings.richEffects = !state.isTV;
+        // Defaults: TV defaults to Lite mode (richEffects: false); Desktop defaults to Rich mode (richEffects: true)
+        if (state.isTV) {
+          state.settings.richEffects = false;
+        } else {
+          state.settings.richEffects = true;
+        }
       }
     } catch (e) {
-      console.warn("Could not read localStorage settings: " + e.message);
-      state.settings.richEffects = !state.isTV;
+      console.warn("Could not load settings from localStorage: " + e.message);
     }
-    applyWallpaper(state.settings.wallpaper);
+
+    applyReducedMotion();
     applyRichEffects();
+    updatePill();
   }
 
   function saveSettings() {
     try {
-      localStorage.setItem("cleanhome-settings", JSON.stringify(state.settings));
+      localStorage.setItem("cleanhome_settings", JSON.stringify(state.settings));
     } catch (e) {
-      console.warn("Could not write localStorage settings: " + e.message);
+      console.warn("Could not save settings to localStorage: " + e.message);
     }
   }
 
-  function applyRichEffects() {
-    if (state.settings.richEffects) {
-      document.body.classList.remove("tv-lite");
-      if (dom.ambientGlow) dom.ambientGlow.style.display = "";
-      if (dom.wallpaperBlur) dom.wallpaperBlur.style.display = "";
+  function applyReducedMotion() {
+    if (state.settings.reducedMotion) {
+      document.documentElement.setAttribute("data-reduced-motion", "true");
     } else {
-      document.body.classList.add("tv-lite");
-      if (dom.ambientGlow) dom.ambientGlow.style.display = "none";
-      if (dom.wallpaperBlur) dom.wallpaperBlur.style.display = "none";
+      document.documentElement.removeAttribute("data-reduced-motion");
     }
-  }
-
-  function detectReducedMotion() {
-    var osReduced = false;
-    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      osReduced = true;
-    }
-    state.reducedMotion = state.settings.reducedMotion || osReduced;
-    document.body.setAttribute("data-reduced-motion", state.reducedMotion ? "true" : "false");
   }
 
   function toggleReducedMotion() {
     state.settings.reducedMotion = !state.settings.reducedMotion;
     saveSettings();
-    detectReducedMotion();
+    applyReducedMotion();
     if (window.CleanHome.showToast) {
-      window.CleanHome.showToast("Reduced motion: " + (state.reducedMotion ? "ON" : "OFF"), false);
+      window.CleanHome.showToast("Reduced Motion: " + (state.settings.reducedMotion ? "ON" : "OFF"), false);
     }
     if (state.currentScreen === "settings") {
       renderSettingsList();
     }
   }
 
-  // --------------------------------------------------------------------------
-  // Wallpaper Handling
-  // --------------------------------------------------------------------------
-  function applyWallpaper(wpPath) {
-    if (dom.wallpaper) {
-      dom.wallpaper.style.backgroundImage = 'url("' + wpPath + '")';
-    }
-    if (dom.wallpaperBlur) {
-      var blurPath = wpPath.replace(".jpg", "_blur.jpg");
-      dom.wallpaperBlur.style.backgroundImage = 'url("' + blurPath + '")';
-    }
-    state.settings.wallpaper = wpPath;
-  }
-
-  function loadWallpapersList() {
-    state.wallpapers = [
-      { name: "gradient1", path: "assets/wallpapers/gradient1.jpg", title: "Sunset Glow" },
-      { name: "gradient2", path: "assets/wallpapers/gradient2.jpg", title: "Emerald Aurora" },
-      { name: "gradient3", path: "assets/wallpapers/gradient3.jpg", title: "Deep Indigo" },
-      { name: "nightsky", path: "assets/wallpapers/nightsky.jpg", title: "Night Sky" },
-      { name: "ocean", path: "assets/wallpapers/ocean.jpg", title: "Ocean Breeze" },
-      { name: "sunset", path: "assets/wallpapers/sunset.jpg", title: "Dusk Horizon" }
-    ];
-
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", "config/wallpapers.json", true);
-    xhr.onload = function() {
-      if (xhr.status === 200) {
-        try {
-          var data = JSON.parse(xhr.responseText);
-          if (Array.isArray(data) && data.length > 0) {
-            state.wallpapers = data;
-          }
-        } catch (e) {}
+  function applyRichEffects() {
+    if (state.settings.richEffects) {
+      document.body.classList.remove("tv-lite");
+      if (dom.dockBar) {
+        dom.dockBar.style.backdropFilter = "blur(24px)";
+        dom.dockBar.style.webkitBackdropFilter = "blur(24px)";
       }
-    };
-    xhr.send();
+    } else {
+      document.body.classList.add("tv-lite");
+      if (dom.dockBar) {
+        dom.dockBar.style.backdropFilter = "none";
+        dom.dockBar.style.webkitBackdropFilter = "none";
+      }
+    }
+    updateDebugLine();
   }
 
+  // --------------------------------------------------------------------------
+  // Top-Right Pill State (Wi-Fi, Weather, Profile Avatar)
+  // --------------------------------------------------------------------------
+  function updatePill() {
+    if (dom.pillWifi) {
+      var isOnline = (typeof navigator !== "undefined" && typeof navigator.onLine === "boolean") ? navigator.onLine : true;
+      if (isOnline) {
+        dom.pillWifi.classList.remove("offline");
+      } else {
+        dom.pillWifi.classList.add("offline");
+      }
+    }
+
+    if (dom.pillAvatar) {
+      var initial = (state.settings.profileName || "C").charAt(0).toUpperCase();
+      dom.pillAvatar.textContent = initial;
+    }
+
+    if (dom.pillWeather) {
+      if (state.settings.showWeather === true) {
+        dom.pillWeather.classList.remove("hidden");
+      } else {
+        dom.pillWeather.classList.add("hidden");
+      }
+    }
+  }
+
+  // --------------------------------------------------------------------------
+  // Pre-blurred Background Crossfade (Requirement 5)
+  // Opacity crossfade between exactly two layers (300-400 ms)
+  // --------------------------------------------------------------------------
+  function updateHeroBackground(tile) {
+    if (!tile) return;
+    try {
+      var appHero = state.heroConfig[tile.appId] || state.heroConfig[tile.icon] || {};
+      var targetBg = appHero.backgroundImage || ("assets/hero_backgrounds/" + tile.icon + ".jpg");
+
+      if (state.currentBgPath === targetBg) return;
+      state.currentBgPath = targetBg;
+
+      var currentActiveLayer = dom.bgLayers[state.activeBgLayer];
+      var nextLayerIdx = 1 - state.activeBgLayer;
+      var nextLayer = dom.bgLayers[nextLayerIdx];
+
+      if (!nextLayer) return;
+
+      // Set image on incoming layer
+      nextLayer.style.backgroundImage = 'url("' + targetBg + '")';
+
+      // Crossfade opacity
+      nextLayer.classList.add("active");
+      if (currentActiveLayer) {
+        currentActiveLayer.classList.remove("active");
+      }
+
+      state.activeBgLayer = nextLayerIdx;
+    } catch (e) {
+      showError("updateHeroBackground error: " + e.message);
+    }
+  }
+
+  // --------------------------------------------------------------------------
+  // Hero Text & Poster Block (Requirement 4: Honest Content Only)
+  // --------------------------------------------------------------------------
+  function updateHeroBlock(tile) {
+    if (!tile) return;
+    try {
+      var hero = state.heroConfig[tile.appId] || state.heroConfig[tile.icon] || {};
+
+      // Defaults when nothing configured: label "OPEN", title = app's name, no poster
+      var label = hero.label || "OPEN";
+      var title = hero.title || tile.name;
+      var subtitle = hero.subtitle || "";
+      var posterImage = hero.posterImage || null;
+
+      if (dom.heroLabel) dom.heroLabel.textContent = label;
+      if (dom.heroTitle) dom.heroTitle.textContent = title;
+
+      if (dom.heroSubtitle) {
+        if (subtitle) {
+          dom.heroSubtitle.textContent = subtitle;
+          dom.heroSubtitle.style.display = "block";
+        } else {
+          dom.heroSubtitle.textContent = "";
+          dom.heroSubtitle.style.display = "none";
+        }
+      }
+
+      // Show poster card ONLY if posterImage exists
+      if (dom.heroPosterContainer && dom.heroPosterImg) {
+        if (posterImage) {
+          dom.heroPosterImg.src = posterImage;
+          dom.heroPosterContainer.classList.remove("hidden");
+        } else {
+          dom.heroPosterContainer.classList.add("hidden");
+          dom.heroPosterImg.src = "";
+        }
+      }
+    } catch (e) {
+      showError("updateHeroBlock error: " + e.message);
+    }
+  }
+
+  // --------------------------------------------------------------------------
+  // Color Helpers
+  // --------------------------------------------------------------------------
   function hexToRgb(hex) {
-    var clean = hex.replace("#", "");
+    var clean = (hex || "#555555").replace("#", "");
     var num = parseInt(clean, 16);
     return {
       r: (num >> 16) & 255,
@@ -281,55 +318,54 @@
     };
   }
 
-  function getFocusRingColor(hex) {
-    var rgb = hexToRgb(hex);
-    var mixedR = Math.round(255 * 0.50 + rgb.r * 0.50);
-    var mixedG = Math.round(255 * 0.50 + rgb.g * 0.50);
-    var mixedB = Math.round(255 * 0.50 + rgb.b * 0.50);
-    return "rgba(" + mixedR + ", " + mixedG + ", " + mixedB + ", 0.55)";
-  }
-
   // --------------------------------------------------------------------------
-  // Tiles Rendering (Four-Layer Glass Focus System)
+  // Dock & Tiles Rendering (Requirement 1, 2, 3, 8)
   // --------------------------------------------------------------------------
-  function renderTiles() {
+  function renderDock() {
     try {
-      if (!dom.appRow) return;
-      dom.appRow.innerHTML = "";
+      if (!dom.dockTrack) return;
+      dom.dockTrack.innerHTML = "";
+      if (dom.groupLabelsRow) dom.groupLabelsRow.innerHTML = "";
+
+      var currentGroup = null;
+      var tileStep = 134; // 114px tile + 20px margin
+      var separatorWidth = 29; // 1px line + 28px margin
 
       for (var i = 0; i < state.tiles.length; i++) {
         var tile = state.tiles[i];
-        var wrapper = document.createElement("div");
-        wrapper.className = "tile-wrapper";
-        wrapper.setAttribute("role", "gridcell");
-        wrapper.setAttribute("aria-label", tile.name);
-        wrapper.dataset.index = i;
+        var tileGroup = tile.group || "";
 
+        // Check if group transition occurred
+        if (i > 0 && tileGroup !== currentGroup && tileGroup !== "") {
+          // Insert 1px group separator line (20% white)
+          var sep = document.createElement("div");
+          sep.className = "group-separator";
+          dom.dockTrack.appendChild(sep);
+        }
+
+        // Render Tile Wrapper
+        var wrapper = document.createElement("div");
+        wrapper.className = "tile-wrapper" + (i === state.currentTileIndex ? " focused" : "");
+        wrapper.setAttribute("role", "gridcell");
+        wrapper.setAttribute("tabindex", "0");
+        wrapper.dataset.index = i;
+        wrapper.dataset.name = tile.name;
+        if (tile.appId) wrapper.dataset.appId = tile.appId;
+        if (tileGroup) wrapper.dataset.group = tileGroup;
+
+        // 1. .glow: Outer soft halo using app's accent colour
+        var glow = document.createElement("div");
+        glow.className = "glow";
+        var accentHex = state.brandColors[tile.icon] || "#888888";
+        var rgb = hexToRgb(accentHex);
+        glow.style.background = "radial-gradient(circle, rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ", 0.55) 0%, rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ", 0) 70%)";
+        wrapper.appendChild(glow);
+
+        // 2. .card: Frosted rounded square
         var card = document.createElement("div");
         card.className = "card";
 
-        var brandColor = (BRAND_COLORS && BRAND_COLORS[tile.icon]) || "#FFFFFF";
-        var rgb = hexToRgb(brandColor);
-
-        // 1. .glow: OUTER soft halo
-        var glow = document.createElement("div");
-        glow.className = "glow";
-        glow.style.background = "radial-gradient(ellipse at 50% 50%, rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ",0.45) 0%, rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ",0.25) 42%, rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ",0.08) 65%, rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + ",0) 80%)";
-
-        // 2. .body: the glass surface (16px radius, overflow: hidden)
-        var body = document.createElement("div");
-        body.className = "body";
-        var ringColor = getFocusRingColor(brandColor);
-        body.style.setProperty("--focus-ring", ringColor);
-
-        // 3. .sheen & .shine-sweep inside .body's clipping (Rich mode only)
-        var sheen = document.createElement("div");
-        sheen.className = "sheen";
-
-        var shineSweep = document.createElement("div");
-        shineSweep.className = "shine-sweep";
-
-        // 4. .icon: the logo, always on top with async decoding
+        // 3. .icon: App logo with async decoding
         var iconImg = document.createElement("img");
         iconImg.className = "icon";
         iconImg.decoding = "async";
@@ -341,65 +377,119 @@
           };
         })(iconImg, tile.icon);
 
-        body.appendChild(sheen);
-        body.appendChild(shineSweep);
-        body.appendChild(iconImg);
-
-        card.appendChild(glow);
-        card.appendChild(body);
+        card.appendChild(iconImg);
         wrapper.appendChild(card);
 
-        (function(idx, t) {
+        // Click / Touch Listener
+        (function(idx, tileObj) {
           wrapper.addEventListener("click", function() {
-            setTileFocus(idx, true);
-            if (window.CleanHome.launchApp) {
-              window.CleanHome.launchApp(t);
+            setTileFocus(idx, false);
+            if (tileObj.name === "Settings") {
+              openSettingsDialog();
+            } else if (window.CleanHome.launchApp) {
+              window.CleanHome.launchApp(tileObj);
             }
           });
         })(i, tile);
 
-        dom.appRow.appendChild(wrapper);
+        dom.dockTrack.appendChild(wrapper);
+
+        // Group Label under first tile of each group
+        if (tileGroup && tileGroup !== currentGroup && dom.groupLabelsRow) {
+          currentGroup = tileGroup;
+          var labelEl = document.createElement("div");
+          labelEl.className = "group-label";
+          labelEl.textContent = tileGroup;
+          labelEl.dataset.group = tileGroup;
+          labelEl.dataset.firstTileIndex = i;
+          dom.groupLabelsRow.appendChild(labelEl);
+        } else if (!tileGroup) {
+          currentGroup = null;
+        }
       }
+
+      // Initial focus & background sync
+      setTileFocus(state.currentTileIndex, false);
+      updateGroupLabelPositions();
     } catch (e) {
-      showError("renderTiles error: " + e.message);
+      showError("renderDock error: " + e.message);
+    }
+  }
+
+  function updateGroupLabelPositions() {
+    if (!dom.groupLabelsRow || !dom.dockTrack) return;
+    var labels = dom.groupLabelsRow.children;
+    var tiles = dom.dockTrack.querySelectorAll(".tile-wrapper");
+
+    for (var k = 0; k < labels.length; k++) {
+      var label = labels[k];
+      var firstIdx = parseInt(label.dataset.firstTileIndex, 10);
+      if (tiles[firstIdx]) {
+        var tileLeft = tiles[firstIdx].offsetLeft;
+        label.style.left = (tileLeft + 16) + "px";
+      }
     }
   }
 
   // --------------------------------------------------------------------------
-  // Focus Handling & Row Scrolling (No layout reads during navigation)
+  // Tile Focus Management & Mathematical Scrolling
   // --------------------------------------------------------------------------
-  function setTileFocus(index, animate) {
-    if (index < 0) index = 0;
-    if (index >= state.tiles.length) index = state.tiles.length - 1;
+  function setTileFocus(index, userInitiated) {
+    if (index < 0 || index >= state.tiles.length) return;
     state.currentTileIndex = index;
     state.currentScreen = "dock";
 
-    var wrappers = dom.appRow ? dom.appRow.children : [];
+    var wrappers = dom.dockTrack ? dom.dockTrack.querySelectorAll(".tile-wrapper") : [];
     for (var i = 0; i < wrappers.length; i++) {
       if (i === index) wrappers[i].classList.add("focused");
       else wrappers[i].classList.remove("focused");
     }
 
     var focusedTile = state.tiles[index];
-
-    // Single source of truth for app name: Top Shelf Hero Title
-    if (dom.heroName && focusedTile) {
-      dom.heroName.textContent = focusedTile.name;
-      dom.heroName.style.opacity = "1";
+    if (focusedTile) {
+      updateHeroBlock(focusedTile);
+      updateHeroBackground(focusedTile);
     }
 
-    // Ambient glow in rich mode only
-    if (state.settings.richEffects && dom.ambientGlow) {
-      var brandColor = (focusedTile && BRAND_COLORS[focusedTile.icon]) || "#FFFFFF";
-      dom.ambientGlow.style.background = "radial-gradient(circle at 50% 60%, " + brandColor + " 0%, transparent 68%)";
-      dom.ambientGlow.style.opacity = "0.28";
-    }
+    // Scroll dock horizontally if needed using ONE translate3d calculation
+    scrollDockToTile(index, wrappers);
+    updateDebugLine();
+  }
 
-    // Row scrolling: ONE translate3d calculation without layout reads (width 180px + 24px margins = 204px step)
-    if (dom.appRow) {
-      var step = 204;
-      var scrollOffset = Math.max(0, (index - 2) * step);
-      dom.appRow.style.transform = "translate3d(-" + scrollOffset + "px, 0, 0)";
+  function scrollDockToTile(index, wrappers) {
+    if (!dom.dockTrack || !dom.dockBar) return;
+
+    var dockWidth = dom.dockBar.clientWidth || 1824;
+    var targetWrapper = wrappers && wrappers[index];
+
+    if (!targetWrapper) return;
+
+    var tileLeft = targetWrapper.offsetLeft;
+    var tileWidth = targetWrapper.offsetWidth || 114;
+    var tileCenter = tileLeft + (tileWidth / 2);
+
+    var targetScroll = tileCenter - (dockWidth / 2);
+    if (targetScroll < 0) targetScroll = 0;
+
+    var maxScroll = Math.max(0, dom.dockTrack.scrollWidth - dockWidth + 40);
+    if (targetScroll > maxScroll) targetScroll = maxScroll;
+
+    dom.dockTrack.style.transform = "translate3d(-" + targetScroll.toFixed(1) + "px, 0, 0)";
+    if (dom.groupLabelsRow) {
+      dom.groupLabelsRow.style.transform = "translate3d(-" + targetScroll.toFixed(1) + "px, 0, 0)";
+    }
+  }
+
+  // --------------------------------------------------------------------------
+  // Top-Pill Focus State
+  // --------------------------------------------------------------------------
+  function setTopPillFocus(focused) {
+    if (!dom.topPill) return;
+    if (focused) {
+      state.currentScreen = "top-pill";
+      dom.topPill.classList.add("focused");
+    } else {
+      dom.topPill.classList.remove("focused");
     }
   }
 
@@ -414,6 +504,8 @@
 
     if (state.currentScreen === "dock") {
       handleDockKeys(keyCode);
+    } else if (state.currentScreen === "top-pill") {
+      handleTopPillKeys(keyCode);
     } else if (state.currentScreen === "settings") {
       handleSettingsKeys(keyCode);
     } else if (state.currentScreen === "app-library") {
@@ -434,8 +526,8 @@
       var next = state.currentTileIndex + 1;
       if (next > maxIndex) next = 0;
       setTileFocus(next, true);
-    } else if (keyCode === 38) { // Up -> Quick panel removed, Up does nothing
-      return;
+    } else if (keyCode === 38) { // Up -> Focus Top-Right Pill
+      setTopPillFocus(true);
     } else if (keyCode === 40) { // Down -> does nothing
       return;
     } else if (keyCode === 13) { // Enter / OK -> Launch app or open Settings
@@ -449,6 +541,16 @@
           window.CleanHome.launchApp(currentTile);
         }
       }
+    }
+  }
+
+  function handleTopPillKeys(keyCode) {
+    if (keyCode === 40 || keyCode === 37 || keyCode === 39) { // Down, Left, Right -> Return to dock
+      setTopPillFocus(false);
+      setTileFocus(state.currentTileIndex, true);
+    } else if (keyCode === 13) { // OK / Enter -> Open Settings
+      setTopPillFocus(false);
+      openSettingsDialog();
     }
   }
 
@@ -616,18 +718,7 @@
         card.className = "library-card";
         card.dataset.index = i;
 
-        var iconName = "apps";
-        var lowName = app.name.toLowerCase().replace(/[^a-z0-9]/g, "");
-        if (lowName.indexOf("netflix") >= 0) iconName = "netflix";
-        else if (lowName.indexOf("youtube") >= 0) iconName = "youtube";
-        else if (lowName.indexOf("prime") >= 0) iconName = "primevideo";
-        else if (lowName.indexOf("disney") >= 0 || lowName.indexOf("hotstar") >= 0) iconName = "disney";
-        else if (lowName.indexOf("jio") >= 0) iconName = "jiocinema";
-        else if (lowName.indexOf("spotify") >= 0) iconName = "spotify";
-        else if (lowName.indexOf("internet") >= 0 || lowName.indexOf("samsung") >= 0) iconName = "samsung-internet";
-        else if (lowName.indexOf("store") >= 0) iconName = "store";
-        else if (lowName.indexOf("settings") >= 0) iconName = "settings";
-
+        var iconName = app.name.toLowerCase().replace(/[^a-z0-9]/g, "");
         var iconImg = document.createElement("img");
         iconImg.className = "lib-icon";
         iconImg.decoding = "async";
@@ -637,46 +728,43 @@
           return function() { imgEl.src = "assets/icons/" + key + ".svg"; };
         })(iconImg, iconName);
 
-        var nameEl = document.createElement("div");
-        nameEl.className = "lib-name";
-        nameEl.textContent = app.name;
+        var nameDiv = document.createElement("div");
+        nameDiv.className = "lib-name";
+        nameDiv.textContent = app.name;
 
-        var statusEl = document.createElement("div");
-        statusEl.className = "lib-status";
-        statusEl.textContent = "Available";
-
-        var libHighlight = document.createElement("div");
-        libHighlight.className = "lib-highlight";
-
-        card.appendChild(libHighlight);
         card.appendChild(iconImg);
-        card.appendChild(nameEl);
-        card.appendChild(statusEl);
+        card.appendChild(nameDiv);
+
+        (function(idx, appObj) {
+          card.addEventListener("click", function() {
+            closeAppLibrary();
+            if (window.CleanHome.launchApp) {
+              window.CleanHome.launchApp({ name: appObj.name, appId: appObj.id, icon: "apps" });
+            }
+          });
+        })(i, app);
 
         dom.libraryCardsTrack.appendChild(card);
       }
 
-      setTimeout(function() {
-        setLibraryCardFocus(0, false);
-      }, 30);
+      setLibraryCardFocus(0, false);
     } catch (e) {
       showError("renderLibraryCards error: " + e.message);
     }
   }
 
-  function setLibraryCardFocus(index, animate) {
-    var cards = dom.libraryCardsTrack ? dom.libraryCardsTrack.children : [];
-    if (cards.length === 0) return;
-    if (index < 0) index = 0;
-    if (index >= cards.length) index = cards.length - 1;
+  function setLibraryCardFocus(index, smooth) {
+    if (!dom.libraryCardsTrack) return;
     state.currentLibraryIndex = index;
-
+    var cards = dom.libraryCardsTrack.children;
     for (var i = 0; i < cards.length; i++) {
       if (i === index) cards[i].classList.add("focused");
       else cards[i].classList.remove("focused");
     }
 
     var targetCard = cards[index];
+    if (!targetCard) return;
+
     var offset = targetCard.offsetLeft - 10;
     dom.libraryCardsTrack.style.transform = "translate3d(-" + offset + "px, 0, 0)";
   }
@@ -695,7 +783,7 @@
       var app = state.installedApps[state.currentLibraryIndex];
       closeAppLibrary();
       if (app && window.CleanHome.launchApp) {
-        window.CleanHome.launchApp({ name: app.name, appId: app.id });
+        window.CleanHome.launchApp({ name: app.name, appId: app.id, icon: "apps" });
       }
     }
   }
@@ -730,7 +818,7 @@
       for (var i = 0; i < state.wallpapers.length; i++) {
         var wp = state.wallpapers[i];
         var card = document.createElement("div");
-        card.className = "wp-card" + (i === 0 ? " focused" : "");
+        card.className = "wp-card" + (i === state.currentWallpaperIndex ? " focused" : "");
         card.dataset.index = i;
 
         var thumb = document.createElement("img");
@@ -740,10 +828,18 @@
 
         var title = document.createElement("div");
         title.className = "wp-title";
-        title.textContent = wp.title || wp.name;
+        title.textContent = wp.title;
 
         card.appendChild(thumb);
         card.appendChild(title);
+
+        (function(idx, wpObj) {
+          card.addEventListener("click", function() {
+            selectWallpaper(wpObj);
+            closeWallpapersDialog();
+          });
+        })(i, wp);
+
         dom.wallpapersGrid.appendChild(card);
       }
     } catch (e) {
@@ -751,39 +847,44 @@
     }
   }
 
-  function handleWallpapersKeys(keyCode) {
-    var cards = dom.wallpapersGrid ? dom.wallpapersGrid.children : [];
-    if (cards.length === 0) return;
+  function setWallpaperCardFocus(index) {
+    if (!dom.wallpapersGrid) return;
+    state.currentWallpaperIndex = index;
+    var cards = dom.wallpapersGrid.children;
+    for (var i = 0; i < cards.length; i++) {
+      if (i === index) cards[i].classList.add("focused");
+      else cards[i].classList.remove("focused");
+    }
+  }
 
+  function handleWallpapersKeys(keyCode) {
+    var count = state.wallpapers.length;
     if (keyCode === 37) { // Left
-      state.currentWallpaperIndex = Math.max(0, state.currentWallpaperIndex - 1);
-      updateWpFocus(cards);
+      var prev = state.currentWallpaperIndex - 1;
+      if (prev < 0) prev = count - 1;
+      setWallpaperCardFocus(prev);
     } else if (keyCode === 39) { // Right
-      state.currentWallpaperIndex = Math.min(cards.length - 1, state.currentWallpaperIndex + 1);
-      updateWpFocus(cards);
-    } else if (keyCode === 38) { // Up
-      state.currentWallpaperIndex = Math.max(0, state.currentWallpaperIndex - 3);
-      updateWpFocus(cards);
-    } else if (keyCode === 40) { // Down
-      state.currentWallpaperIndex = Math.min(cards.length - 1, state.currentWallpaperIndex + 3);
-      updateWpFocus(cards);
+      var next = state.currentWallpaperIndex + 1;
+      if (next >= count) next = 0;
+      setWallpaperCardFocus(next);
     } else if (keyCode === 13) { // OK
-      var sel = state.wallpapers[state.currentWallpaperIndex];
-      if (sel) {
-        applyWallpaper(sel.path);
-        saveSettings();
+      var wp = state.wallpapers[state.currentWallpaperIndex];
+      if (wp) {
+        selectWallpaper(wp);
         closeWallpapersDialog();
-        if (window.CleanHome.showToast) {
-          window.CleanHome.showToast("Wallpaper: " + (sel.title || sel.name), false);
-        }
       }
     }
   }
 
-  function updateWpFocus(cards) {
-    for (var i = 0; i < cards.length; i++) {
-      if (i === state.currentWallpaperIndex) cards[i].classList.add("focused");
-      else cards[i].classList.remove("focused");
+  function selectWallpaper(wp) {
+    if (!wp) return;
+    state.settings.wallpaper = wp.path;
+    saveSettings();
+    if (dom.bgLayers[state.activeBgLayer]) {
+      dom.bgLayers[state.activeBgLayer].style.backgroundImage = 'url("' + wp.path + '")';
+    }
+    if (window.CleanHome.showToast) {
+      window.CleanHome.showToast("Wallpaper: " + wp.title, false);
     }
   }
 
@@ -793,6 +894,9 @@
   function handleBack() {
     if (state.currentScreen === "settings") {
       closeSettingsDialog();
+    } else if (state.currentScreen === "top-pill") {
+      setTopPillFocus(false);
+      setTileFocus(state.currentTileIndex, true);
     } else if (state.currentScreen === "app-library") {
       closeAppLibrary();
     } else if (state.currentScreen === "wallpapers") {
@@ -822,7 +926,7 @@
   }
 
   // --------------------------------------------------------------------------
-  // Debug Overlay & 60-Frame Rolling Average FPS Counter (Red key)
+  // Debug Line & 60-Frame Live Rolling FPS (Requirement 1 & Part 4)
   // --------------------------------------------------------------------------
   function toggleDebugLine() {
     state.debugVisible = !state.debugVisible;
@@ -891,13 +995,13 @@
   }
 
   // --------------------------------------------------------------------------
-  // Clock Screensaver & Idle Timer (60s idle)
+  // Idle Screensaver Management
   // --------------------------------------------------------------------------
   function setupIdleTimer() {
     if (state.idleTimer) clearTimeout(state.idleTimer);
     state.idleTimer = setTimeout(function() {
       enterScreensaver();
-    }, 60000);
+    }, 60000); // 60s idle threshold
   }
 
   function onUserActivity() {
@@ -940,7 +1044,7 @@
   }
 
   // --------------------------------------------------------------------------
-  // Clock: Aligned to minute boundary, textContent only on change
+  // Minute-Aligned Clock
   // --------------------------------------------------------------------------
   function initClock() {
     updateClock();
@@ -970,46 +1074,149 @@
       dom.greeting.textContent = greet;
     }
 
-    var is12 = state.settings.clockFormat === "12h";
-    var clockStr = "";
+    var timeStr = "";
     var ampmStr = "";
-
-    if (is12) {
-      ampmStr = hours >= 12 ? "PM" : "AM";
+    if (state.settings.clockFormat === "24h") {
+      var padH = hours < 10 ? "0" + hours : hours;
+      timeStr = padH + ":" + padM;
+      ampmStr = "";
+    } else {
       var h12 = hours % 12;
       if (h12 === 0) h12 = 12;
-      clockStr = h12 + ":" + padM;
-    } else {
-      var padH = hours < 10 ? "0" + hours : hours;
-      clockStr = padH + ":" + padM;
+      timeStr = h12 + ":" + padM;
+      ampmStr = hours >= 12 ? "PM" : "AM";
     }
 
-    if (dom.clock && dom.clock.textContent !== clockStr) {
-      dom.clock.textContent = clockStr;
+    if (dom.clock && dom.clock.textContent !== timeStr) {
+      dom.clock.textContent = timeStr;
     }
     if (dom.ampm) {
       if (dom.ampm.textContent !== ampmStr) dom.ampm.textContent = ampmStr;
-      dom.ampm.style.display = is12 ? "block" : "none";
+      dom.ampm.style.display = ampmStr ? "block" : "none";
     }
 
     var days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
     var months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
     var dateStr = days[now.getDay()] + ", " + now.getDate() + " " + months[now.getMonth()];
+
     if (dom.date && dom.date.textContent !== dateStr) {
       dom.date.textContent = dateStr;
     }
 
-    if (dom.screensaverClock) {
-      var scStr = clockStr + (is12 ? " " + ampmStr : "");
-      if (dom.screensaverClock.textContent !== scStr) dom.screensaverClock.textContent = scStr;
+    if (dom.screensaverClock && dom.screensaverClock.textContent !== timeStr) {
+      dom.screensaverClock.textContent = timeStr;
     }
     if (dom.screensaverDate && dom.screensaverDate.textContent !== dateStr) {
       dom.screensaverDate.textContent = dateStr;
     }
   }
 
-  // Public CleanHome API
-  window.CleanHome.setTileFocus = setTileFocus;
+  // --------------------------------------------------------------------------
+  // Config Loading
+  // --------------------------------------------------------------------------
+  function loadConfigs(callback) {
+    var loaded = 0;
+    var total = 3;
+
+    function checkDone() {
+      loaded++;
+      if (loaded >= total && callback) callback();
+    }
+
+    // 1. apps.json
+    var xhrApps = new XMLHttpRequest();
+    xhrApps.open("GET", "config/apps.json", true);
+    xhrApps.onload = function() {
+      if (xhrApps.status === 200) {
+        try {
+          var data = JSON.parse(xhrApps.responseText);
+          if (data.tiles) state.tiles = data.tiles;
+          if (data["brand-colors"]) state.brandColors = data["brand-colors"];
+        } catch (e) {
+          console.warn("Failed to parse apps.json: " + e.message);
+        }
+      }
+      checkDone();
+    };
+    xhrApps.onerror = checkDone;
+    xhrApps.send();
+
+    // 2. hero.json
+    var xhrHero = new XMLHttpRequest();
+    xhrHero.open("GET", "config/hero.json", true);
+    xhrHero.onload = function() {
+      if (xhrHero.status === 200) {
+        try {
+          state.heroConfig = JSON.parse(xhrHero.responseText);
+        } catch (e) {
+          console.warn("Failed to parse hero.json: " + e.message);
+        }
+      }
+      checkDone();
+    };
+    xhrHero.onerror = checkDone;
+    xhrHero.send();
+
+    // 3. wallpapers.json
+    var xhrWp = new XMLHttpRequest();
+    xhrWp.open("GET", "config/wallpapers.json", true);
+    xhrWp.onload = function() {
+      if (xhrWp.status === 200) {
+        try {
+          var dataWp = JSON.parse(xhrWp.responseText);
+          if (Array.isArray(dataWp)) state.wallpapers = dataWp;
+        } catch (e) {
+          console.warn("Failed to parse wallpapers.json: " + e.message);
+        }
+      }
+      checkDone();
+    };
+    xhrWp.onerror = checkDone;
+    xhrWp.send();
+  }
+
+  // --------------------------------------------------------------------------
+  // Application Bootstrap
+  // --------------------------------------------------------------------------
+  function init() {
+    try {
+      initDom();
+
+      if (state.isTV) {
+        document.documentElement.dataset.tv = "1";
+      }
+
+      loadSettings();
+      updateViewportScale();
+      window.addEventListener("resize", updateViewportScale);
+
+      // Network online/offline event listeners
+      window.addEventListener("online", updatePill);
+      window.addEventListener("offline", updatePill);
+
+      // Top pill click handler
+      if (dom.topPill) {
+        dom.topPill.addEventListener("click", function() {
+          openSettingsDialog();
+        });
+      }
+
+      initClock();
+      setupIdleTimer();
+
+      loadConfigs(function() {
+        renderDock();
+      });
+    } catch (e) {
+      showError("Initialization error: " + e.message);
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", init);
+
+  // --------------------------------------------------------------------------
+  // Global API Exposure
+  // --------------------------------------------------------------------------
   window.CleanHome.handleNavKey = handleNavKey;
   window.CleanHome.handleBack = handleBack;
   window.CleanHome.handleRemoteAction = handleRemoteAction;

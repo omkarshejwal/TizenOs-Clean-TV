@@ -1,0 +1,39 @@
+{
+  "org.netflix.tv": {
+    "label": "OPEN",
+    "title": "Netflix"
+  },
+  "com.google.youtube.tv": {
+    "label": "OPEN",
+    "title": "YouTube"
+  },
+  "amazon.amazonvideo.amazonvideo": {
+    "label": "OPEN",
+    "title": "Prime Video"
+  },
+  "disney.hotstar": {
+    "label": "OPEN",
+    "title": "Disney+ Hotstar"
+  },
+  "jiocinema.jio": {
+    "label": "OPEN",
+    "title": "JioCinema"
+  },
+  "com.zee5.tizen": {
+    "label": "OPEN",
+    "title": "ZEE5"
+  },
+  "com.sony.liv.tizen": {
+    "label": "OPEN",
+    "title": "SonyLIV"
+  },
+  "com.spotify.tv": {
+    "label": "OPEN",
+    "title": "Spotify"
+  },
+  "settings": {
+    "label": "PREFERENCES",
+    "title": "Settings"
+  }
+}
+

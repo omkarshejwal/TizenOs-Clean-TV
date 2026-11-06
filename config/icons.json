@@ -26,6 +26,16 @@
       "displayName": "JioCinema"
     },
     {
+      "name": "zee5",
+      "appId": "com.zee5.tizen",
+      "displayName": "ZEE5"
+    },
+    {
+      "name": "sonyliv",
+      "appId": "com.sony.liv.tizen",
+      "displayName": "SonyLIV"
+    },
+    {
       "name": "spotify",
       "appId": "com.spotify.tv",
       "displayName": "Spotify"

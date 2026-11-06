@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <linearGradient id="sonyliv-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#3B82F6" />
+      <stop offset="35%" stop-color="#EC4899" />
+      <stop offset="70%" stop-color="#F59E0B" />
+      <stop offset="100%" stop-color="#10B981" />
+    </linearGradient>
+  </defs>
+  <!-- Background rounded card -->
+  <rect x="6" y="6" width="108" height="108" rx="24" fill="#0C0D14" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" />
+  <!-- SONY wordmark -->
+  <text x="60" y="48" font-family="'Outfit', -apple-system, sans-serif" font-size="20" font-weight="700" fill="#FFFFFF" text-anchor="middle" letter-spacing="4">SONY</text>
+  <!-- liv with colorful underline -->
+  <text x="60" y="82" font-family="'Outfit', -apple-system, sans-serif" font-size="30" font-weight="800" fill="url(#sonyliv-grad)" text-anchor="middle" letter-spacing="1">liv</text>
+  <rect x="36" y="90" width="48" height="3" rx="1.5" fill="url(#sonyliv-grad)" />
+</svg>
+

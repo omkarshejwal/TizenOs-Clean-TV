@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <linearGradient id="zee5-grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF1361" />
+      <stop offset="50%" stop-color="#FFF800" />
+      <stop offset="100%" stop-color="#00E5FF" />
+    </linearGradient>
+    <linearGradient id="zee5-grad2" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#8E2DE2" />
+      <stop offset="100%" stop-color="#4A00E0" />
+    </linearGradient>
+  </defs>
+  <!-- Background circle -->
+  <circle cx="60" cy="60" r="56" fill="#1A1528" />
+  <!-- Vibrant outer circular arcs (ZEE5 signature) -->
+  <circle cx="60" cy="60" r="50" fill="none" stroke="url(#zee5-grad1)" stroke-width="4.5" stroke-dasharray="140 30 70 20" stroke-linecap="round" />
+  <circle cx="60" cy="60" r="42" fill="none" stroke="url(#zee5-grad2)" stroke-width="3.5" stroke-dasharray="80 40 100 20" stroke-linecap="round" />
+  <!-- Center ZEE5 text -->
+  <text x="60" y="68" font-family="'Outfit', -apple-system, sans-serif" font-size="24" font-weight="800" fill="#FFFFFF" text-anchor="middle" letter-spacing="1">ZEE5</text>
+</svg>
+

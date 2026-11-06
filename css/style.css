@@ -1,12 +1,14 @@
 /* css/style.css - CleanHome Launcher Stylesheet
+ * Measured from the 1920x1080 Reference Image.
  * 100% compliant with Samsung Tizen 4 / 5.5 (Chromium 56/69 baseline).
+ *
  * STRICT TIZEN RULES:
  * - Animate transform and opacity ONLY.
  * - No box-shadow/filter/width/height/top/left animations.
  * - No CSS gap property (use margin).
  * - No CSS inset property (use top/right/bottom/left).
  * - No linear() easing function.
- * - will-change only on focused tile and wallpaper.
+ * - will-change only on focused tile, dock track, and background layers.
  * - 100vw x 100vh root layout with zero black strips and no scrollbars.
  * - TV Lite mode default for Tizen TV weak GPU.
  */
@@ -20,13 +22,16 @@
 }
 
 :root {
+  --tv-safe-pad: 48px;
   --bg-color: #000000;
   --text-white: #FFFFFF;
   --text-dim: rgba(255, 255, 255, 0.70);
-  --text-muted: rgba(255, 255, 255, 0.55);
-  --dock-band-bg: rgba(20, 20, 22, 0.80);
-  --dock-band-border: 1px solid rgba(255, 255, 255, 0.12);
+  --text-muted: rgba(255, 255, 255, 0.60);
+  --font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'TizenSans', sans-serif;
+  --glass-dock-bg: rgba(255, 255, 255, 0.12);
+  --glass-dock-border: 1px solid rgba(255, 255, 255, 0.18);
   --tile-bg: rgba(255, 255, 255, 0.08);
+  --tile-border: 1px solid rgba(255, 255, 255, 0.14);
   --glass-panel-bg: linear-gradient(180deg, #2A2A2E 0%, #161618 100%);
   --glass-panel-border: 1px solid rgba(255, 255, 255, 0.20);
 }
@@ -37,6 +42,7 @@
   box-sizing: border-box;
   user-select: none;
   -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html, body {
@@ -46,7 +52,7 @@ html, body {
   padding: 0;
   overflow: hidden;
   background-color: #000000;
-  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "TizenSans";
+  font-family: var(--font-family);
   color: #FFFFFF;
 }
 
@@ -61,9 +67,10 @@ html, body {
 }
 
 /* --------------------------------------------------------------------------
-   Wallpaper Layers (Fake Glass support with pre-blurred copy, 100vw x 100vh)
+   Pre-blurred Hero Background Crossfade Layers (Requirement 5)
+   Opacity crossfade between exactly two layers (300-400 ms)
    -------------------------------------------------------------------------- */
-#wallpaper {
+.hero-bg-layer {
   position: absolute;
   top: 0;
   left: 0;
@@ -72,40 +79,18 @@ html, body {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  z-index: 1;
-  transition: opacity 300ms ease;
-  will-change: transform;
-}
-
-#wallpaper-blur {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  z-index: 2;
-  opacity: 0.35;
-  pointer-events: none;
-}
-
-/* Ambient Glow behind focused app (Rich Mode only) */
-#ambient-glow {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 3;
-  pointer-events: none;
   opacity: 0;
-  transition: opacity 220ms ease;
+  transition: opacity 350ms ease;
+  will-change: opacity;
+  z-index: 1;
+}
+
+.hero-bg-layer.active {
+  opacity: 1;
 }
 
 /* --------------------------------------------------------------------------
-   UI Stage (1920x1080 Design Coordinate Space with 48px TV-safe overscan margins)
+   UI Stage (1920x1080 Design Coordinate Space with 48px TV-safe margins)
    -------------------------------------------------------------------------- */
 #stage {
   position: absolute;
@@ -119,18 +104,18 @@ html, body {
 }
 
 /* --------------------------------------------------------------------------
-   Top Bar: Greeting, Clock, Date (Quick panel pills removed)
+   Top Bar: Greeting, Clock, Date (Left) & ONE Frosted Glass Pill (Right)
    -------------------------------------------------------------------------- */
 #top-bar {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 120px;
+  height: 130px;
   padding: 48px 48px 0 48px;
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: flex-start;
   z-index: 20;
   pointer-events: none;
@@ -145,7 +130,7 @@ html, body {
 .greeting {
   font-size: 24px;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.65);
+  color: rgba(255, 255, 255, 0.70);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   margin-left: 2px;
@@ -204,213 +189,336 @@ html, body {
   line-height: 1.2;
 }
 
+/* Top-Right Frosted Glass Pill */
+.top-bar-right {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  pointer-events: auto;
+}
+
+.top-pill {
+  height: 56px;
+  border-radius: 28px;
+  background: var(--glass-dock-bg);
+  border: var(--glass-dock-border);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0 8px 0 18px;
+  cursor: pointer;
+  outline: none;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+}
+
+.top-pill:focus,
+.top-pill.focused {
+  background: rgba(255, 255, 255, 0.22);
+  border-color: rgba(255, 255, 255, 0.50);
+  transform: scale(1.05);
+}
+
+.pill-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 14px;
+  color: #FFFFFF;
+}
+
+.pill-wifi {
+  opacity: 0.90;
+  transition: opacity 200ms ease;
+}
+
+.pill-wifi.offline {
+  opacity: 0.35;
+}
+
+.pill-weather {
+  margin-right: 14px;
+}
+
+.pill-weather.hidden {
+  display: none;
+}
+
+.pill-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.24);
+  border: 1px solid rgba(255, 255, 255, 0.30);
+  color: #FFFFFF;
+  font-size: 20px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
 /* --------------------------------------------------------------------------
-   Top Shelf (Hero Area above Dock - CleanYourTV reference)
+   Middle Area: Hero Text Block & Optional Poster Card
    -------------------------------------------------------------------------- */
-#hero-shelf {
+#hero-container {
   position: absolute;
   left: 48px;
-  bottom: 334px;
+  right: 48px;
+  bottom: 254px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
   z-index: 15;
   pointer-events: none;
 }
 
-#hero-name {
-  font-size: 48px;
+#hero-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 900px;
+}
+
+.hero-label {
+  font-size: 24px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.70);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+
+.hero-title {
+  font-size: 52px;
   font-weight: 300;
   color: #FFFFFF;
   letter-spacing: -0.02em;
   line-height: 1.1;
-  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.6);
-  opacity: 1;
-  transition: opacity 180ms ease;
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.7);
+}
+
+.hero-subtitle {
+  font-size: 24px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.75);
+  margin-top: 6px;
+  line-height: 1.2;
+}
+
+/* Optional Right Poster Card (shown only when posterImage exists) */
+.hero-poster-container {
+  width: 360px;
+  height: 500px;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(0, 0, 0, 0.4);
+  flex-shrink: 0;
+  margin-bottom: -30px;
+  position: relative;
+  z-index: 12;
+}
+
+.hero-poster-container.hidden {
+  display: none !important;
+}
+
+.hero-poster-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 /* --------------------------------------------------------------------------
-   Dock Band & Horizontal App Tiles Row
+   Bottom Frosted Glass Dock Bar & Grouped Tiles Row
    -------------------------------------------------------------------------- */
 #dock-container {
   position: absolute;
   left: 48px;
   right: 48px;
-  bottom: 96px;
+  bottom: 44px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  z-index: 10;
-  overflow: hidden;
+  z-index: 25;
   pointer-events: none;
 }
 
-/* Horizontal Tiles Row with integrated dock band styling */
-#app-row {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-  position: relative;
-  z-index: 5;
-  background: var(--dock-band-bg);
-  border: var(--dock-band-border);
-  border-radius: 26px;
-  padding: 14px 22px 14px 22px;
-  pointer-events: auto;
-  transition: transform 220ms cubic-bezier(0.2, 0, 0, 1);
-  will-change: transform;
-}
-
-.tile-wrapper {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-left: 12px;
-  margin-right: 12px;
-  outline: none;
-}
-
-/* 180x101 App Card - Translucent glass tile with local stacking context */
-.card {
-  width: 180px;
-  height: 101px;
-  border-radius: 16px;
-  background: transparent;
+.dock-bar {
+  height: 154px;
+  border-radius: 36px;
+  background: var(--glass-dock-bg);
+  border: var(--glass-dock-border);
   position: relative;
   overflow: visible;
-  isolation: isolate;
-  transform-origin: center center;
-  outline: none;
-  cursor: pointer;
-  transition: transform 220ms cubic-bezier(0, 0, 0.2, 1);
-  will-change: transform;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 16px;
+  width: -webkit-fit-content;
+  width: fit-content;
+  max-width: 100%;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.6);
+  pointer-events: auto;
 }
 
-/* 1. .glow: OUTER soft halo */
-.card .glow {
-  position: absolute;
-  top: -28px;
-  right: -28px;
-  bottom: -28px;
-  left: -28px;
-  border-radius: 28px;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 200ms ease;
-  will-change: opacity;
-  z-index: -1;
-  border: none;
-  box-shadow: none;
-  filter: none;
-}
-
-/* 2. .body: the glass surface */
-.card .body {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border-radius: 16px;
-  overflow: hidden;
-  background-color: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  box-sizing: border-box;
-  pointer-events: none;
-  transition: background-color 200ms ease, border-color 200ms ease;
-  z-index: 1;
-}
-
-/* 3. .sheen: top-edge highlight only (Rich mode) */
-.card .sheen {
+/* Faint top highlight gradient on dock bar */
+.dock-bar::before {
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   height: 45%;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0) 40%);
+  border-radius: 36px 36px 0 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0) 100%);
   pointer-events: none;
-  opacity: 0.35;
-  transition: opacity 200ms ease;
-  will-change: opacity;
-  z-index: 2;
 }
 
-/* Diagonal shine sweep inside .body's clipping (Rich mode) */
-.card .shine-sweep {
+.dock-track {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+  will-change: transform;
+  transition: transform 220ms cubic-bezier(0.2, 0.0, 0.0, 1.0);
+}
+
+/* --------------------------------------------------------------------------
+   App Tiles (Frosted rounded square with accent glow)
+   -------------------------------------------------------------------------- */
+.tile-wrapper {
+  position: relative;
+  width: 114px;
+  height: 114px;
+  margin-left: 10px;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* Outer Accent Glow Layer */
+.tile-wrapper .glow {
   position: absolute;
-  top: 0;
-  left: -100%;
-  width: 35%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.50), transparent);
-  transform: skewX(-20deg) translateX(0);
+  top: -36px;
+  bottom: -36px;
+  left: -36px;
+  right: -36px;
+  border-radius: 40px;
   pointer-events: none;
   opacity: 0;
-  will-change: transform, opacity;
-  z-index: 3;
-}
-
-/* 4. .icon: the logo, always on top */
-.card .icon {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 60px;
-  height: 60px;
-  transform: translate(-50%, -50%);
-  display: block;
-  pointer-events: none;
-  z-index: 10;
-}
-
-/* Focused Tile State */
-.tile-wrapper.focused .card {
-  transform: scale(1.12) translateY(-4px);
-  z-index: 10;
+  transition: opacity 160ms cubic-bezier(0.2, 0.8, 0.2, 1.0);
+  z-index: 0;
 }
 
 .tile-wrapper.focused .glow {
   opacity: 1;
 }
 
-.tile-wrapper.focused .body {
-  background-color: rgba(255, 255, 255, 0.14);
-  border: 2px solid var(--focus-ring, rgba(255, 255, 255, 0.55));
+/* Card Body */
+.tile-wrapper .card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 24px;
+  background: var(--tile-bg);
+  border: var(--tile-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  z-index: 2;
+  transition: transform 160ms cubic-bezier(0.2, 0.8, 0.2, 1.0), background 160ms ease, border-color 160ms ease;
 }
 
-.tile-wrapper.focused .sheen {
-  opacity: 0.85;
+/* Focused Tile Lift & Scale */
+.tile-wrapper.focused .card {
+  transform: translateY(-8px) scale(1.15);
+  background: rgba(255, 255, 255, 0.20);
+  border-color: rgba(255, 255, 255, 0.60);
 }
 
-.tile-wrapper:not(.focused) .body {
-  background-color: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+/* TV Lite Focused Tile Scale */
+body.tv-lite .tile-wrapper.focused .card {
+  transform: translateY(-8px) scale(1.08) translateZ(0);
 }
 
-.tile-wrapper:not(.focused) .sheen {
-  opacity: 0.35;
+body.tv-lite .tile-wrapper:not(.focused) .card {
+  transform: none;
 }
 
-.tile-wrapper:not(.focused) .shine-sweep {
-  opacity: 0;
-  animation: none;
+/* Icon Inside Tile */
+.tile-wrapper .icon {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  pointer-events: none;
+  transition: transform 160ms ease;
+}
+
+.tile-wrapper.focused .icon {
+  transform: scale(1.04);
 }
 
 /* --------------------------------------------------------------------------
-   Settings Modal Dialog (Dedicated view with focusable rows)
+   Group Separators (1px vertical lines at 20% white)
+   -------------------------------------------------------------------------- */
+.group-separator {
+  width: 1px;
+  height: 72px;
+  background: rgba(255, 255, 255, 0.20);
+  margin-left: 14px;
+  margin-right: 14px;
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------------------------
+   Group Labels Row (Under the Dock)
+   -------------------------------------------------------------------------- */
+.group-labels-row {
+  height: 36px;
+  margin-top: 10px;
+  position: relative;
+  width: 100%;
+  pointer-events: none;
+}
+
+.group-label {
+  position: absolute;
+  top: 0;
+  font-size: 24px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.60);
+  letter-spacing: 0.05em;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  transition: transform 220ms cubic-bezier(0.2, 0.0, 0.0, 1.0);
+}
+
+/* --------------------------------------------------------------------------
+   Settings Screen Modal Dialog
    -------------------------------------------------------------------------- */
 #settings-dialog {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.70);
-  z-index: 100;
+  background: rgba(0, 0, 0, 0.78);
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 100;
   opacity: 0;
   pointer-events: none;
   transition: opacity 180ms ease;
@@ -497,25 +605,20 @@ html, body {
   transform: scale(1.02);
 }
 
-.settings-row.focused .settings-row-label {
-  color: #FFFFFF;
-  font-weight: 500;
-}
-
 /* --------------------------------------------------------------------------
-   App Library Modal Dialog (AppLibraryDialog.java)
+   App Library Dialog (Yellow Key)
    -------------------------------------------------------------------------- */
 #app-library-dialog {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.55);
-  z-index: 100;
+  background: rgba(0, 0, 0, 0.78);
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 100;
   opacity: 0;
   pointer-events: none;
   transition: opacity 180ms ease;
@@ -527,13 +630,13 @@ html, body {
 }
 
 .library-panel {
-  width: 800px;
+  width: 860px;
   max-width: 90vw;
-  height: 280px;
-  border-radius: 20px;
+  height: 320px;
+  border-radius: 24px;
   background: var(--glass-panel-bg);
   border: var(--glass-panel-border);
-  padding: 12px 14px 14px 14px;
+  padding: 20px 24px;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -545,28 +648,25 @@ html, body {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  height: 36px;
-  padding-left: 6px;
-  padding-right: 6px;
+  height: 40px;
 }
 
 .library-title {
-  font-size: 22px;
+  font-size: 32px;
   font-weight: 500;
   color: #FFFFFF;
 }
 
 .library-count {
-  font-size: 13px;
+  font-size: 24px;
   color: rgba(255, 255, 255, 0.65);
 }
 
 .library-hint {
-  font-size: 13px;
+  font-size: 24px;
   color: rgba(255, 255, 255, 0.73);
-  padding-left: 6px;
-  margin-top: 2px;
-  margin-bottom: 8px;
+  margin-top: 4px;
+  margin-bottom: 12px;
 }
 
 .library-shelf {
@@ -591,14 +691,14 @@ html, body {
 }
 
 .library-card {
-  width: 132px;
-  height: 170px;
-  border-radius: 18px;
+  width: 140px;
+  height: 180px;
+  border-radius: 20px;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.10);
-  margin-left: 6px;
-  margin-right: 6px;
-  padding: 12px 8px;
+  margin-left: 8px;
+  margin-right: 8px;
+  padding: 14px 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -609,17 +709,17 @@ html, body {
 }
 
 .library-card .lib-icon {
-  width: 60px;
-  height: 60px;
+  width: 64px;
+  height: 64px;
   margin-top: 4px;
 }
 
 .library-card .lib-name {
-  font-size: 15px;
+  font-size: 24px;
   font-weight: 500;
   color: #FFFFFF;
   margin-top: 10px;
-  max-height: 44px;
+  max-height: 52px;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -627,57 +727,26 @@ html, body {
   -webkit-box-orient: vertical;
 }
 
-.library-card .lib-status {
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.73);
-  margin-top: auto;
-  margin-bottom: 4px;
-}
-
-.library-card.on-home .lib-status {
-  color: #70D9A0;
-}
-
-.library-card .lib-highlight {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border-radius: 18px;
-  overflow: hidden;
-  pointer-events: none;
-  border: 1.5px solid rgba(255, 255, 255, 0.85);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.24) 0%, rgba(255, 255, 255, 0.07) 100%);
-  box-shadow: 0 0 16px rgba(255, 255, 255, 0.25);
-  opacity: 0;
-  transition: opacity 160ms ease;
-  will-change: opacity;
-  z-index: 5;
-}
-
-.library-card.focused .lib-highlight {
-  opacity: 1;
-}
-
-.library-card:not(.focused) .lib-highlight {
-  opacity: 0;
+.library-card.focused {
+  background: rgba(255, 255, 255, 0.20) !important;
+  border-color: rgba(255, 255, 255, 0.60) !important;
+  transform: scale(1.05);
 }
 
 /* --------------------------------------------------------------------------
-   Wallpapers Dialog (Blue key)
+   Wallpapers Dialog (Blue Key)
    -------------------------------------------------------------------------- */
 #wallpapers-dialog {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.65);
-  z-index: 100;
+  background: rgba(0, 0, 0, 0.78);
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 100;
   opacity: 0;
   pointer-events: none;
   transition: opacity 180ms ease;
@@ -689,29 +758,25 @@ html, body {
 }
 
 .wallpapers-panel {
-  width: 1080px;
+  width: 900px;
   max-width: 90vw;
-  max-height: 85vh;
   border-radius: 24px;
   background: var(--glass-panel-bg);
   border: var(--glass-panel-border);
-  padding: 24px 32px 32px 32px;
+  padding: 28px 36px;
   display: flex;
   flex-direction: column;
   box-shadow: 0 24px 48px rgba(0, 0, 0, 0.85);
 }
 
 .wallpapers-header {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .wallpapers-header h2 {
-  font-size: 28px;
+  font-size: 32px;
   font-weight: 500;
+  color: #FFFFFF;
 }
 
 .wallpapers-grid {
@@ -722,23 +787,21 @@ html, body {
 }
 
 .wp-card {
-  width: 310px;
-  height: 174px;
+  width: 250px;
+  height: 150px;
   border-radius: 16px;
   overflow: hidden;
   position: relative;
+  border: 2px solid rgba(255, 255, 255, 0.15);
   margin-bottom: 20px;
   cursor: pointer;
   outline: none;
-  border: 2px solid transparent;
-  transition: transform 160ms ease;
 }
 
 .wp-card img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
 }
 
 .wp-card .wp-title {
@@ -748,13 +811,14 @@ html, body {
   right: 0;
   padding: 8px 12px;
   background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.8) 100%);
-  font-size: 14px;
+  font-size: 24px;
   font-weight: 500;
+  color: #FFFFFF;
 }
 
 .wp-card.focused {
-  border-color: #FFFFFF;
-  transform: scale(1.05);
+  border-color: #00FFCC !important;
+  transform: scale(1.04);
 }
 
 /* --------------------------------------------------------------------------
@@ -832,7 +896,7 @@ html, body {
 }
 
 .screensaver-date {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 400;
   letter-spacing: 0.12em;
   color: rgba(255, 255, 255, 0.70);
@@ -879,7 +943,7 @@ html, body {
   padding: 8px 18px;
   border-radius: 8px;
   font-family: Consolas, Menlo, Monaco, monospace;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
   z-index: 99998;
   pointer-events: none;
@@ -896,41 +960,8 @@ html, body {
 /* --------------------------------------------------------------------------
    TV Lite Mode (Optimized for Weak GPU / Default on TV)
    -------------------------------------------------------------------------- */
-body.tv-lite #ambient-glow,
-body.tv-lite #wallpaper-blur {
-  display: none !important;
-}
-
-body.tv-lite .card .sheen,
-body.tv-lite .card .shine-sweep {
-  display: none !important;
-}
-
-body.tv-lite .tile-wrapper.focused .card {
-  transform: scale(1.08) translateZ(0);
-}
-
-body.tv-lite .tile-wrapper:not(.focused) .card {
-  transform: none;
-}
-
-body.tv-lite .tile-wrapper.focused .glow {
-  opacity: 1;
-  transition: opacity 160ms ease;
-}
-
-body.tv-lite .tile-wrapper:not(.focused) .glow {
-  opacity: 0;
-  transition: opacity 160ms ease;
-}
-
-body.tv-lite #app-row {
+body.tv-lite .dock-track {
   will-change: transform;
-  transition: transform 220ms cubic-bezier(0.2, 0, 0, 1);
-}
-
-body.tv-lite #hero-name {
-  text-shadow: none;
 }
 
 /* --------------------------------------------------------------------------
@@ -939,8 +970,4 @@ body.tv-lite #hero-name {
 [data-reduced-motion="true"] * {
   transition-duration: 90ms !important;
   animation-duration: 90ms !important;
-}
-
-[data-reduced-motion="true"] .shine-sweep {
-  animation: none !important;
 }

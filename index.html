@@ -8,16 +8,13 @@
 </head>
 <body>
   <div id="app">
-    <!-- Wallpaper and fake glass blur companion layer (100vw x 100vh) -->
-    <div id="wallpaper"></div>
-    <div id="wallpaper-blur"></div>
-
-    <!-- Ambient glow in focused app's dominant colour -->
-    <div id="ambient-glow"></div>
+    <!-- Pre-blurred Hero Background Crossfade Layers (100vw x 100vh) -->
+    <div id="bg-layer-0" class="hero-bg-layer active"></div>
+    <div id="bg-layer-1" class="hero-bg-layer"></div>
 
     <!-- Scaled UI Stage (1920x1080 design space, scales proportionally to fill viewport) -->
     <div id="stage">
-      <!-- Top Bar: Greeting, Clock, Date (Quick panel pills removed) -->
+      <!-- Top Bar: Greeting, Clock, Date on left; ONE frosted pill on right -->
       <div id="top-bar" role="banner">
         <div class="top-bar-left">
           <div class="greeting" id="greeting">GOOD EVENING</div>
@@ -30,17 +27,47 @@
             </div>
           </div>
         </div>
+
+        <!-- Top-Right ONE frosted-glass pill (Wi-Fi, Weather, Profile Avatar) -->
+        <div class="top-bar-right">
+          <div id="top-pill" class="top-pill" role="button" aria-label="Quick Status and Settings" tabindex="0">
+            <div class="pill-icon pill-wifi" id="pill-wifi" title="Network status">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                <path d="M12 4C7.31 4 3.07 5.9 0 8.98L12 21 24 8.98C20.93 5.9 16.69 4 12 4zm0 3.5c3.78 0 7.23 1.48 9.8 3.91L12 18.2 2.2 11.41C4.77 8.98 8.22 7.5 12 7.5z"/>
+              </svg>
+            </div>
+            <div class="pill-icon pill-weather hidden" id="pill-weather" title="Weather">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/>
+              </svg>
+            </div>
+            <div class="pill-avatar" id="pill-avatar" title="Settings Profile">C</div>
+          </div>
+        </div>
       </div>
 
-      <!-- Top Shelf: large focused app name above dock (matched with CleanYourTV reference) -->
-      <div id="hero-shelf">
-        <div id="hero-name">Netflix</div>
+      <!-- Middle Area: Hero Text Block on left, Optional Poster on right -->
+      <div id="hero-container">
+        <div id="hero-block">
+          <div id="hero-label" class="hero-label">OPEN</div>
+          <div id="hero-title" class="hero-title">Netflix</div>
+          <div id="hero-subtitle" class="hero-subtitle"></div>
+        </div>
+
+        <div id="hero-poster-container" class="hero-poster-container hidden">
+          <img id="hero-poster-img" class="hero-poster-img" decoding="async" alt="App poster" />
+        </div>
       </div>
 
-      <!-- Dock Band & Horizontal Tiles Row -->
+      <!-- Bottom Frosted Dock Bar with Grouped Tiles -->
       <div id="dock-container">
-        <div id="app-row" role="grid" aria-label="Application Tiles">
-          <!-- App tiles dynamically populated by JS with child glow and glass highlight -->
+        <div id="dock-bar" class="dock-bar">
+          <div id="dock-track" class="dock-track" role="grid" aria-label="Application Tiles">
+            <!-- Dynamically populated with grouped app tiles, separators, and Settings -->
+          </div>
+        </div>
+        <div id="group-labels-row" class="group-labels-row">
+          <!-- Dynamically populated with group labels ("Apps", "Media", "Music") left-aligned under first tile -->
         </div>
       </div>
     </div>
@@ -56,7 +83,7 @@
           <!-- Rows populated dynamically by JS:
                1. Reduced motion: ON / OFF
                2. Clock format: 12h / 24h
-               3. Wallpapers: Open picker...
+               3. Wallpaper: Open picker...
                4. Rich effects: ON / OFF (default OFF on TV)
                5. Re-scan installed apps
           -->
@@ -85,7 +112,7 @@
       <div class="wallpapers-panel">
         <div class="wallpapers-header">
           <h2>Wallpapers</h2>
-          <span style="font-size: 14px; color: rgba(255,255,255,0.6);">Select with OK, Back to return</span>
+          <span style="font-size: 24px; color: rgba(255,255,255,0.6);">Select with OK, Back to return</span>
         </div>
         <div class="wallpapers-grid" id="wallpapers-grid">
           <!-- Populated dynamically by JS -->
@@ -93,7 +120,7 @@
       </div>
     </div>
 
-    <!-- Clock Screensaver (drifting clock during idle) -->
+    <!-- Clock Screensaver (drifting clock during idle in rich mode, static in lite mode) -->
     <div id="screensaver">
       <div class="screensaver-content" id="screensaver-content">
         <div class="screensaver-clock" id="screensaver-clock">12:00</div>

@@ -3,53 +3,68 @@
     {
       "name": "Netflix",
       "icon": "netflix",
-      "appId": "org.netflix.tv"
+      "appId": "org.netflix.tv",
+      "group": "Apps"
     },
     {
       "name": "YouTube",
       "icon": "youtube",
-      "appId": "com.google.youtube.tv"
+      "appId": "com.google.youtube.tv",
+      "group": "Apps"
     },
     {
       "name": "Prime Video",
       "icon": "primevideo",
-      "appId": "amazon.amazonvideo.amazonvideo"
+      "appId": "amazon.amazonvideo.amazonvideo",
+      "group": "Apps"
     },
     {
       "name": "Disney+ Hotstar",
       "icon": "disney",
-      "appId": "disney.hotstar"
+      "appId": "disney.hotstar",
+      "group": "Apps"
     },
     {
       "name": "JioCinema",
       "icon": "jiocinema",
-      "appId": "jiocinema.jio"
+      "appId": "jiocinema.jio",
+      "group": "Media"
+    },
+    {
+      "name": "ZEE5",
+      "icon": "zee5",
+      "appId": "com.zee5.tizen",
+      "group": "Media"
+    },
+    {
+      "name": "SonyLIV",
+      "icon": "sonyliv",
+      "appId": "com.sony.liv.tizen",
+      "group": "Media"
     },
     {
       "name": "Spotify",
       "icon": "spotify",
-      "appId": "com.spotify.tv"
-    },
-    {
-      "name": "Samsung Internet",
-      "icon": "samsung-internet",
-      "appId": "com.sec.android.app.sbrowser"
+      "appId": "com.spotify.tv",
+      "group": "Music"
     },
     {
       "name": "Settings",
       "icon": "settings",
-      "appId": ""
+      "appId": "",
+      "group": ""
     }
   ],
-  "description": "CleanHome tile configuration with end-of-row Settings tile and zero web fallbacks.",
+  "description": "CleanHome tile configuration with grouped dock tiles and Settings at the end.",
   "brand-colors": {
     "netflix": "#E50914",
     "youtube": "#FF0000",
     "primevideo": "#00A8E1",
     "disney": "#113CCF",
     "jiocinema": "#D8005A",
+    "zee5": "#8230C6",
+    "sonyliv": "#3B82F6",
     "spotify": "#1DB954",
-    "samsung-internet": "#2C2684",
     "settings": "#8E8E93"
   }
 }

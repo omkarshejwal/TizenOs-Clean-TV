@@ -136,8 +136,19 @@ def main():
         except Exception as e:
             error(f"wallpapers.json parsing error: {e}")
 
-    # 6. Core assets
-    print("\n6. Checking HTML/CSS/JS core files...")
+    # 6. hero.json
+    print("\n6. Checking config/hero.json...")
+    hero_path = os.path.join(PROJECT_ROOT, "config", "hero.json")
+    if check_file(hero_path, "config/hero.json"):
+        try:
+            with open(hero_path, "r", encoding="utf-8") as f:
+                heroes = json.load(f)
+            print(f"  [OK] Found {len(heroes)} hero configurations")
+        except Exception as e:
+            error(f"hero.json parsing error: {e}")
+
+    # 7. Core assets
+    print("\n7. Checking HTML/CSS/JS core files...")
     check_file(os.path.join(PROJECT_ROOT, "index.html"), "index.html")
     check_file(os.path.join(PROJECT_ROOT, "css", "style.css"), "css/style.css")
     check_file(os.path.join(PROJECT_ROOT, "js", "motion-config.js"), "js/motion-config.js")
@@ -145,8 +156,8 @@ def main():
     check_file(os.path.join(PROJECT_ROOT, "js", "launcher.js"), "js/launcher.js")
     check_file(os.path.join(PROJECT_ROOT, "js", "remote.js"), "js/remote.js")
 
-    # 7. Package Size Calculation (Packageable WGT assets, excluding docs/tools/dev files)
-    print("\n7. Checking package size...")
+    # 8. Package Size Calculation (Packageable WGT assets, excluding docs/tools/dev files)
+    print("\n8. Checking package size...")
     pkg_dirs = ['css', 'js', 'assets', 'config']
     pkg_files = ['config.xml', 'index.html', 'icon.png']
     total_size = sum(os.path.getsize(os.path.join(PROJECT_ROOT, f)) for f in pkg_files if os.path.isfile(os.path.join(PROJECT_ROOT, f)))
